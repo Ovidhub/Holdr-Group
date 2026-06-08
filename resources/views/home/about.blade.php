@@ -20,6 +20,7 @@
   <div class="breadcrumb-title">
   <br><br>
   <h2>{{ pc('about','header_title') }}</h2>
+  <p>{{ pc('about','header_subtext') }}</p>
   <ul class="breadcrumb-menu list-style">
   <li><a href="/">Home </a></li>
   <li>{{ pc('about','header_title') }}</li>
@@ -35,6 +36,7 @@
   <div class="col-xl-10 offset-xl-1 col-lg-10 offset-lg-1">
   <div class="section-title text-center mb-40">
   <h2>{{ pc('about','who_heading') }}</h2>
+  <p>{{ pc('about','who_body') }}</p>
   </div>
   </div>
   </div>
@@ -250,6 +252,7 @@
   <div class="section-title style1 text-center mb-40">
   <span>SOME FUN FACTS</span>
   <h2>{{ pc('about','customers_heading') }}</h2>
+  <p>{{ pc('about','customers_body') }}</p>
   </div>
   </div>
   </div>

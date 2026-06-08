@@ -32,7 +32,7 @@
 <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-1">
 <div class="section-title style1 text-center mb-40">
 <span style="text-transform: uppercase;">{{$settings->site_name}}</span>
-<h4>Personal Checking, Savings, Credit Cards, Loans That Works For You.</h4>
+<h4>{{ pc('personal','intro_heading') }}</h4>
 </div>
 </div>
 </div>
@@ -41,8 +41,8 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="single-terms">
-			<h3>Our Personal Banking</h3>
-			<p>We offer personal banking products that typically include savings and transaction facilities such as a bank transaction account, debit cards/EFT, an interest bearing floating account (savings account) and a fixed interest deposit account for a specific agreed period (certificates of deposit / term deposit) which can vary according to the bank.</p>
+			<h3>{{ pc('personal','overview_heading') }}</h3>
+			<p>{{ pc('personal','overview_body') }}</p>
 			<ul class="content-feature-list list-style">
 			<li><i class="ri-checkbox-multiple-line"></i>To meet your banking needs, you'll need a combination of current and savings accounts.</li>
 			<li><i class="ri-checkbox-multiple-line"></i>Complementary accounts that work together to meet the demands of each individual's cash portfolio.</li>
@@ -142,11 +142,10 @@
 <div class="app-content">
 <div class="content-title style1">
 <span>OUR APP</span>
-<h2>Let's Answer Some Of Your Questions Or Download Our App</h2>
-<p>Our digital banking platform is up to date and completely trustworthy.
-You can use your mobile to perform transactions, loan requests, and credit card transactions.</p>
+<h2>{{ pc('personal','app_heading') }}</h2>
+<p>{{ pc('personal','app_body') }}</p>
 </div>
-<h5>Over 9.2 million Downloads Worldwide</h5>
+<h5>{{ pc('personal','app_stat') }}</h5>
 <div class="app-btn-wrap">
 <a href="app">
 <img src="temp/custom/assets/img/about/play-store.png" alt="Image">

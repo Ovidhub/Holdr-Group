@@ -1,18 +1,19 @@
 <?php
 namespace Tests\Feature;
+use App\Models\PageContent;
 use App\Models\Settings;
 use Database\Seeders\PageContentSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AboutPageContentRenderTest extends TestCase
+class CardsPageContentRenderTest extends TestCase
 {
     use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-        \App\Models\PageContent::flushCache();
+        PageContent::flushCache();
         Settings::forceCreate([
             'id' => 1, 'site_name' => 'Mortil Holders',
             'site_address' => 'https://mortilholders.online',
@@ -21,12 +22,12 @@ class AboutPageContentRenderTest extends TestCase
         (new PageContentSeeder())->run();
     }
 
-    public function test_about_shows_seeded_header()
+    public function test_cards_shows_seeded_content()
     {
-        $this->get('/about')->assertOk()
-            ->assertSee('About Mortil Holders')
-            ->assertSee('Digital Banking, Reinvented')
-            ->assertSee('world-class banking simple')
-            ->assertSee('with responsive support whenever you need it.');
+        $this->get('/cards')->assertOk()
+            ->assertSee('Cards Designed Around How You Spend')
+            ->assertSee('Apply for a Credit Card')
+            ->assertSee('Full Card Control at Your Fingertips')
+            ->assertSee('Over 2 million credit card users');
     }
 }

@@ -32,7 +32,7 @@
 <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-1">
 <div class="section-title style1 text-center mb-40">
 <span style="text-transform: uppercase;">{{$settings->site_name}}</span>
-<h4>We Invite You to See if You're Pre-Approved for a Credit Card from {{$settings->site_name}}</h4>
+<h4>{{ pc('cards','intro_heading') }}</h4>
 </div>
 </div>
 </div>
@@ -104,8 +104,8 @@
                             <img src="temp/custom/images/1086741.png" class="img-responsive" style="margin-top: 15px;" width="150">
                          </div>
                          <div class="col-sm-4">
-                         	<h3>Apply For Credit Cards</h3>
-                         	<p>Welcome to {{$settings->site_name}}, Apply For Credit Cards to be delivered to your doorstep today.</p>
+                         	<h3>{{ pc('cards','apply_heading') }}</h3>
+                         	<p>{{ pc('cards','apply_body') }}</p>
                          	<br>
                          	<a href="login" target="_blank" class="btn btn-primary">Apply</a>
                          </div>
@@ -204,10 +204,10 @@
 <div class="app-content">
 <div class="content-title style1">
 <span>OUR CARDS</span>
-<h2>Protect Your Card From Anywhere</h2>
-<p><p>Leave your card at the restaurant or drop it at the concert? Instantly lock your card with a few taps. And if you find it, unlock it just as fast.</p></p>
+<h2>{{ pc('cards','app_heading') }}</h2>
+<p>{{ pc('cards','app_body') }}</p>
 </div>
-<h5>Over 2 million credit card users</h5>
+<h5>{{ pc('cards','app_stat') }}</h5>
 <div class="app-btn-wrap">
 <a href="app">
 <img src="temp/custom/assets/img/about/play-store.png" alt="Image">

@@ -17,6 +17,7 @@
 <div class="breadcrumb-title">
 	<br><br>
 <h2>{{ pc('contact','header_title') }}</h2>
+<p>{{ pc('contact','header_subtext') }}</p>
 <ul class="breadcrumb-menu list-style">
 <li><a href="/">Home </a></li>
 <li>{{ pc('contact','header_title') }}</li>

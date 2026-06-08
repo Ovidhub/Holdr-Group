@@ -32,7 +32,7 @@
 <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-1">
 <div class="section-title style1 text-center mb-40">
 <span style="text-transform: uppercase;">{{$settings->site_name}}</span>
-<h4>We've got you covered whether you're looking to pre-qualify for vehicle financing, refinancing your current auto loan, or have been pre-approved for an exclusive financing offer. Let's get started on your financial journey.</h4>
+<h4>{{ pc('loans','intro_heading') }}</h4>
 </div>
 </div>
 </div>
@@ -102,8 +102,8 @@
                             <img  src="temp/custom/images/1907675.png" class="img-responsive" style="margin-top: 15px;" width="150">
                          </div>
                          <div class="col-sm-4">
-                          <h3>Apply For Loans</h3>
-                                   <p>Welcome to {{$settings->site_name}}, Apply For loans to be delivered to your doorstep today.</p>
+                          <h3>{{ pc('loans','apply_heading') }}</h3>
+                                   <p>{{ pc('loans','apply_body') }}</p>
                                    <br>
                                    <a href="loans" target="_blank" class="btn btn-primary">Apply</a>
                          </div>
@@ -202,10 +202,10 @@
 <div class="app-content">
 <div class="content-title style1">
 <span>OUR LOANS</span>
-<h2>Finance your next car</h2>
-<p>Are you looking for a car loan for a new or used vehicle? In minutes, find out if you're pre-qualified for financing with no influence on your credit score. Also, before visiting a participating dealer, make sure you understand your loan terms.</p>
+<h2>{{ pc('loans','app_heading') }}</h2>
+<p>{{ pc('loans','app_body') }}</p>
 </div>
-<h5>Over 700K+ approved loans</h5>
+<h5>{{ pc('loans','app_stat') }}</h5>
 <div class="app-btn-wrap">
 <a href="app">
 <img src="temp/custom/assets/img/about/play-store.png" alt="Image">
