@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" fill="none">
+  <title>Mortil Holders</title>
+  <polygon points="53,5 107,5 155,53 155,107 107,155 53,155 5,107 5,53"
+           fill="#ffffff" stroke="#1C3FE8" stroke-width="10" stroke-linejoin="round"/>
+  <polygon points="80,32 128,80 80,128 32,80" fill="#1C3FE8"/>
+  <path d="M99 54 L68 80 L99 106 L86 106 L55 80 L86 54 Z" fill="#ffffff"/>
+</svg>

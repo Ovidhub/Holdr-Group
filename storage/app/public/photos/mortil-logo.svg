@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 170" width="560" height="170" fill="none">
+  <title>Mortil Holders</title>
+  <!-- Emblem -->
+  <g>
+    <!-- Octagon frame -->
+    <polygon points="53,25 107,25 145,63 145,117 107,155 53,155 15,117 15,63"
+             fill="#ffffff" stroke="#1C3FE8" stroke-width="9" stroke-linejoin="round"/>
+    <!-- Solid diamond -->
+    <polygon points="80,50 120,90 80,130 40,90" fill="#1C3FE8"/>
+    <!-- White left chevron (negative space) -->
+    <path d="M95 68 L70 90 L95 112 L85 112 L60 90 L85 68 Z" fill="#ffffff"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="170" y="92" font-family="Arial, Helvetica, sans-serif" font-size="54"
+        font-weight="800" letter-spacing="1" fill="#1C3FE8">MORTIL</text>
+  <text x="172" y="122" font-family="Arial, Helvetica, sans-serif" font-size="20"
+        font-weight="600" letter-spacing="9" fill="#1C3FE8">HOLDERS</text>
+</svg>
