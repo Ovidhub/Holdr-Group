@@ -16,10 +16,10 @@
 <div class="container">
 <div class="breadcrumb-title">
 	<br><br>
-<h2>Contact Us</h2>
+<h2>{{ pc('contact','header_title') }}</h2>
 <ul class="breadcrumb-menu list-style">
 <li><a href="/">Home </a></li>
-<li>Contact Us</li>
+<li>{{ pc('contact','header_title') }}</li>
 </ul>
 </div>
 </div>
@@ -35,8 +35,8 @@
 <i class="ri-map-pin-line"></i>
 </span>
 <div class="contact-info">
-<h3>Our Location</h3>
-<p>{{ $settings->address }}
+<h3>{{ pc('contact','location_label') }}</h3>
+<p>{{ pc('contact','location_value') }}
 </p>
 </div>
 </div>
@@ -47,10 +47,8 @@
 <i class="ri-mail-send-line"></i>
 </span>
 <div class="contact-info">
-<h3>Email Us</h3>
-{{ $settings->contact_email }}
-<br>
-{{ $settings->emailfrom }}
+<h3>{{ pc('contact','email_label') }}</h3>
+{{ pc('contact','email_value') }}
 </div>
 </div>
 </div>
@@ -60,9 +58,8 @@
 <i class="ri-phone-line"></i>
 </span>
 <div class="contact-info">
-<h3>Phone</h3>
-<a href="#">VIP ONLY</a>
-<a href="#">VVIP DIAL</a>
+<h3>{{ pc('contact','phone_label') }}</h3>
+<a href="#">{{ pc('contact','phone_value') }}</a>
 </div>
 </div>
 </div>

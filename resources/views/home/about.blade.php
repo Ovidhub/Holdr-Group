@@ -19,10 +19,10 @@
   <div class="container">
   <div class="breadcrumb-title">
   <br><br>
-  <h2>About Us</h2>
+  <h2>{{ pc('about','header_title') }}</h2>
   <ul class="breadcrumb-menu list-style">
   <li><a href="/">Home </a></li>
-  <li>About Us</li>
+  <li>{{ pc('about','header_title') }}</li>
   </ul>
   </div>
   </div>
@@ -34,7 +34,7 @@
   <div class="row">
   <div class="col-xl-10 offset-xl-1 col-lg-10 offset-lg-1">
   <div class="section-title text-center mb-40">
-  <h2>Used By 100K+ Businesses Of All Shapes &amp; Sizes</h2>
+  <h2>{{ pc('about','who_heading') }}</h2>
   </div>
   </div>
   </div>
@@ -94,8 +94,8 @@
   <div class="about-content">
   <div class="content-title style1">
   <span>ABOUT US</span>
-  <h2>Digital Banking was revolutionized by us.</h2>
-  <p>We've developed to become one of the most well-known digital banking companies, dedicated to reinventing, simplifying, and humanizing the banking experience.</p>
+  <h2>{{ pc('about','story_heading') }}</h2>
+  <p>{{ pc('about','story_body') }}</p>
   </div>
   <div class="feature-item-wrap">
   <div class="feature-item">
@@ -103,8 +103,8 @@
   <i class="flaticon-clicking"></i>
   </div>
   <div class="feature-text">
-  <h3>Powerful Mobile &amp; Online App</h3>
-  <p>Our mobile app service is quick and easy to use, and you can get it from your app store.</p>
+  <h3>{{ pc('about','feature_app_title') }}</h3>
+  <p>{{ pc('about','feature_app_body') }}</p>
    </div>
   </div>
   <div class="feature-item">
@@ -121,8 +121,8 @@
   <i class="flaticon-setting"></i>
   </div>
   <div class="feature-text">
-  <h3>Special For Multiple User Capabilities</h3>
-  <p>The ability of a computer or operating system to create independent working environments for several users is referred to as multiuser.</p>
+  <h3>{{ pc('about','feature_team_title') }}</h3>
+  <p>{{ pc('about','feature_team_body') }}</p>
   </div>
   </div>
   </div>
@@ -249,7 +249,7 @@
   <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-2">
   <div class="section-title style1 text-center mb-40">
   <span>SOME FUN FACTS</span>
-  <h2>We Always Try To Understand Customer's Expectation</h2>
+  <h2>{{ pc('about','customers_heading') }}</h2>
   </div>
   </div>
   </div>
@@ -389,9 +389,8 @@
   <div class="app-content">
   <div class="content-title style1">
   <span>OUR APP</span>
-  <h2>Let's Answer Some Of Your Questions Or Download Our App</h2>
-  <p>Our digital banking platform is up to date and completely trustworthy.
-  You can use your mobile to perform transactions, loan requests, and credit card transactions.</p>
+  <h2>{{ pc('about','cta_heading') }}</h2>
+  <p>{{ pc('about','cta_body') }}</p>
   </div>
   <h5>Over 9.2 million Downloads Worldwide</h5>
   <div class="app-btn-wrap">

@@ -359,6 +359,13 @@
                         </div>
                     </li>
                 @endif
+                <li class="nav-item {{ request()->routeIs('pages.index') ? 'active' : '' }}">
+                    <a href="{{ route('pages.index') }}">
+                        <i class="fas fa-file-alt"></i>
+                        <p>Pages</p>
+                    </a>
+                </li>
+
                 <li class="nav-item {{ request()->routeIs('aboutonlinetrade') ? 'active' : '' }}">
                     <a href="{{ url('/admin/dashboard/about') }}">
                         <i class=" fa fa-info-circle" aria-hidden="true"></i>
