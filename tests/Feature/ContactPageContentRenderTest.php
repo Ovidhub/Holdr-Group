@@ -25,6 +25,7 @@ class ContactPageContentRenderTest extends TestCase
     {
         $this->get('/contact')->assertOk()
             ->assertSee('Contact Us')
-            ->assertSee('info@mortilholders.online');
+            ->assertSee('info@mortilholders.online')
+            ->assertSee('love to hear from you');
     }
 }

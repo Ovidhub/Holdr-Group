@@ -26,6 +26,7 @@ class HomePageContentRenderTest extends TestCase
     {
         $this->get('/')->assertOk()
             ->assertSee('Move Money Across the World in Real Time')
+            ->assertSee('Ready to Bank Smarter?')
             ->assertDontSee('Transfer Money Across The World In Real time');
 
         PageContent::where('page', 'home')->where('section_key', 'hero_heading')

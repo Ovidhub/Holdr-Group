@@ -156,6 +156,7 @@ window.smartsupp||(function(d) {
     <div class="section-title style1 text-center mb-40">
     <span>POPULAR CURRENCY TOOLS</span>
     <h2>{{ pc('home','feature_cards_title') }}</h2>
+    <p>{{ pc('home','feature_cards_body') }}</p>
     </div>
     </div>
      </div>
@@ -440,6 +441,7 @@ window.smartsupp||(function(d) {
     <div class="section-title style1 text-center mb-40">
     <span>YOUR BENIFITS</span>
     <h2>{{ pc('home','platform_heading') }}</h2>
+    <p>{{ pc('home','platform_body') }}</p>
     </div>
     </div>
     </div>
@@ -781,4 +783,16 @@ window.smartsupp||(function(d) {
     </section>
   <script src="//code.jivosite.com/widget/rqqNjqNday" async></script>
 
+    <section class="cta-wrap ptb-100 bg-whisper">
+    <div class="container">
+    <div class="section-title style1 text-center mb-40">
+    <span>GET STARTED</span>
+    <h2>{{ pc('home','cta_heading') }}</h2>
+    <p>{{ pc('home','cta_body') }}</p>
+    </div>
+    <div class="text-center">
+    <a href="register" class="btn style1">{{ pc('home','cta_button') }}<i class="ri-arrow-right-s-line"></i></a>
+    </div>
+    </div>
+    </section>
 @endsection

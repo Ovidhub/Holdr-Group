@@ -25,6 +25,8 @@ class AboutPageContentRenderTest extends TestCase
     {
         $this->get('/about')->assertOk()
             ->assertSee('About Mortil Holders')
-            ->assertSee('Digital Banking, Reinvented');
+            ->assertSee('Digital Banking, Reinvented')
+            ->assertSee('world-class banking simple')
+            ->assertSee('with responsive support whenever you need it.');
     }
 }
