@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\SignalProvderController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TradingAccountController;
 use App\Http\Controllers\Admin\TradingPaymentController;
+use App\Http\Controllers\Admin\PageContentController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
@@ -94,6 +95,11 @@ Route::middleware(['isadmin', '2fa'])->prefix('admin')->group(function () {
 	Route::get('dashboard/msubtrade', [HomeController::class, 'msubtrade'])->name('msubtrade');
 	Route::get('dashboard/settings', [HomeController::class, 'settings'])->name('settings');
 	Route::get('dashboard/frontpage', [HomeController::class, 'frontpage'])->name('frontpage');
+
+	// Editable page content (CMS)
+	Route::get('dashboard/pages', [PageContentController::class, 'index'])->name('pages.index');
+	Route::get('dashboard/pages/{page}', [PageContentController::class, 'edit'])->name('pages.edit');
+	Route::put('dashboard/pages/{page}', [PageContentController::class, 'update'])->name('pages.update');
 	Route::get('dashboard/ipaddress', [IpaddressController::class, 'index'])->name('ipaddress');
 	Route::get('dashboard/allipaddress', [IpaddressController::class, 'getaddress'])->name('allipaddress');
 	Route::get('dashboard/delete-ip/{id}', [IpaddressController::class, 'deleteip'])->name('deleteip');
