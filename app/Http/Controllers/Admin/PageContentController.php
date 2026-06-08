@@ -10,9 +10,13 @@ class PageContentController extends Controller
 {
     /** Editable pages: slug => display name. */
     protected $pages = [
-        'home'    => 'Home',
-        'about'   => 'About Us',
-        'contact' => 'Contact',
+        'home'     => 'Home',
+        'about'    => 'About Us',
+        'contact'  => 'Contact',
+        'business' => 'Business',
+        'personal' => 'Personal',
+        'loans'    => 'Loans',
+        'cards'    => 'Cards',
     ];
 
     public function index()

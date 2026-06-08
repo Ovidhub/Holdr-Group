@@ -32,7 +32,7 @@
 <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-1">
 <div class="section-title style1 text-center mb-40">
 <span style="text-transform: uppercase;">{{$settings->site_name}}</span>
-<h4>You can get a $300 bonus if you have a business checking account and take certain tasks.</h4>
+<h4>{{ pc('business','intro_heading') }}</h4>
 </div>
 </div>
 </div>
@@ -41,8 +41,8 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="single-terms">
-			<h3>Our Business Banking</h3>
-			<p>A variety of services given by a bank to a business or corporation is known as business banking. Our Business banking services include loans, credit, savings accounts, and checking accounts, all of which are tailored to the needs of the company.</p>
+			<h3>{{ pc('business','overview_heading') }}</h3>
+			<p>{{ pc('business','overview_body') }}</p>
 			<ul class="content-feature-list list-style">
 			<li><i class="ri-checkbox-multiple-line"></i>A mix of current and savings accounts to cover your banking needs.</li>
 			<li><i class="ri-checkbox-multiple-line"></i>Accounts that complement each other, combining to suit the needs of each individual’s cash portfolio.</li>
@@ -145,11 +145,10 @@ have two.</li>
 <div class="app-content">
 <div class="content-title style1">
 <span>OUR APP</span>
-<h2>Let's Answer Some Of Your Questions Or Download Our App</h2>
-<p>Our digital banking platform is up to date and completely trustworthy.
-You can use your mobile to perform transactions, loan requests, and credit card transactions.</p>
+<h2>{{ pc('business','app_heading') }}</h2>
+<p>{{ pc('business','app_body') }}</p>
 </div>
-<h5>Over 9.2 million Downloads Worldwide</h5>
+<h5>{{ pc('business','app_stat') }}</h5>
 <div class="app-btn-wrap">
 <a href="app">
 <img src="temp/custom/assets/img/about/play-store.png" alt="Image">

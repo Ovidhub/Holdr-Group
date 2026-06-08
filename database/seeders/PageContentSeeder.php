@@ -30,7 +30,15 @@ class PageContentSeeder extends Seeder
 
     private function sections(): array
     {
-        return array_merge($this->home(), $this->about(), $this->contact());
+        return array_merge(
+            $this->home(),
+            $this->about(),
+            $this->contact(),
+            $this->business(),
+            $this->personal(),
+            $this->loans(),
+            $this->cards()
+        );
     }
 
     private function home(): array
@@ -92,6 +100,62 @@ class PageContentSeeder extends Seeder
             ['page'=>$p,'key'=>'email_value','label'=>'Email value','group'=>'Details','type'=>'text','value'=>'info@mortilholders.online'],
             ['page'=>$p,'key'=>'phone_label','label'=>'Phone label','group'=>'Details','type'=>'text','value'=>'Call Us'],
             ['page'=>$p,'key'=>'phone_value','label'=>'Phone value','group'=>'Details','type'=>'text','value'=>'+44 20 0000 0000'],
+        ];
+    }
+
+    private function business(): array
+    {
+        $p = 'business';
+        return [
+            ['page'=>$p,'key'=>'intro_heading','label'=>'Intro heading','group'=>'Header','type'=>'text','value'=>'Smarter Banking for Every Business'],
+            ['page'=>$p,'key'=>'intro_subtext','label'=>'Intro subtext','group'=>'Header','type'=>'textarea','value'=>'Unlock dedicated business accounts, competitive credit lines, and real-time cash-flow tools designed to help your company move faster and spend smarter.'],
+            ['page'=>$p,'key'=>'overview_heading','label'=>'Overview heading','group'=>'Overview','type'=>'text','value'=>'Built for the Way Businesses Actually Work'],
+            ['page'=>$p,'key'=>'overview_body','label'=>'Overview body','group'=>'Overview','type'=>'textarea','value'=>'From sole traders to scaling enterprises, Mortil Holders delivers a complete suite of banking services — current accounts, multi-currency wallets, instant transfers, and dedicated relationship managers — all in one secure platform.'],
+            ['page'=>$p,'key'=>'app_heading','label'=>'App section heading','group'=>'App','type'=>'text','value'=>'Manage Your Business Finances on the Move'],
+            ['page'=>$p,'key'=>'app_body','label'=>'App section body','group'=>'App','type'=>'textarea','value'=>'Our award-winning mobile and web platform keeps you in full control of payroll, supplier payments, and real-time reporting — whether you are in the boardroom or on the road.'],
+            ['page'=>$p,'key'=>'app_stat','label'=>'App download stat','group'=>'App','type'=>'text','value'=>'Trusted by 500K+ businesses worldwide'],
+        ];
+    }
+
+    private function personal(): array
+    {
+        $p = 'personal';
+        return [
+            ['page'=>$p,'key'=>'intro_heading','label'=>'Intro heading','group'=>'Header','type'=>'text','value'=>'Banking That Puts You First'],
+            ['page'=>$p,'key'=>'intro_subtext','label'=>'Intro subtext','group'=>'Header','type'=>'textarea','value'=>'From everyday spending accounts to high-interest savings, Mortil Holders gives you flexible, transparent personal banking products that fit your life — not the other way around.'],
+            ['page'=>$p,'key'=>'overview_heading','label'=>'Overview heading','group'=>'Overview','type'=>'text','value'=>'Everything You Need for Day-to-Day Banking'],
+            ['page'=>$p,'key'=>'overview_body','label'=>'Overview body','group'=>'Overview','type'=>'textarea','value'=>'Open a personal current account in minutes, link a savings pot, and access fee-free foreign currency transactions. Mortil Holders makes it easy to stay on top of your finances with real-time notifications, spending insights, and instant card controls.'],
+            ['page'=>$p,'key'=>'app_heading','label'=>'App section heading','group'=>'App','type'=>'text','value'=>'Your Finances, Wherever You Are'],
+            ['page'=>$p,'key'=>'app_body','label'=>'App section body','group'=>'App','type'=>'textarea','value'=>'Bank on the go with our fully featured mobile app. Check balances, set savings goals, freeze your card, and send money instantly — all from the palm of your hand.'],
+            ['page'=>$p,'key'=>'app_stat','label'=>'App download stat','group'=>'App','type'=>'text','value'=>'Over 9.2 million downloads worldwide'],
+        ];
+    }
+
+    private function loans(): array
+    {
+        $p = 'loans';
+        return [
+            ['page'=>$p,'key'=>'intro_heading','label'=>'Intro heading','group'=>'Header','type'=>'text','value'=>'Flexible Loans for Every Stage of Life'],
+            ['page'=>$p,'key'=>'intro_subtext','label'=>'Intro subtext','group'=>'Header','type'=>'textarea','value'=>'Whether you need funding for a new vehicle, a home purchase, a growing business, or unexpected medical costs, Mortil Holders offers straightforward loans with clear terms and competitive rates.'],
+            ['page'=>$p,'key'=>'apply_heading','label'=>'Apply section heading','group'=>'Apply','type'=>'text','value'=>'Apply for a Loan Today'],
+            ['page'=>$p,'key'=>'apply_body','label'=>'Apply section body','group'=>'Apply','type'=>'textarea','value'=>'Getting started is simple. Check your eligibility in seconds with no impact on your credit score, then choose the loan amount and repayment schedule that works for you. Funds are delivered quickly once approved.'],
+            ['page'=>$p,'key'=>'app_heading','label'=>'App section heading','group'=>'App','type'=>'text','value'=>'Fast Financing for Your Next Chapter'],
+            ['page'=>$p,'key'=>'app_body','label'=>'App section body','group'=>'App','type'=>'textarea','value'=>'Looking for vehicle financing, a home improvement loan, or working capital for your business? Find out if you qualify in minutes and lock in your terms before visiting any dealership or supplier.'],
+            ['page'=>$p,'key'=>'app_stat','label'=>'Approved loans stat','group'=>'App','type'=>'text','value'=>'Over 700K+ loans approved'],
+        ];
+    }
+
+    private function cards(): array
+    {
+        $p = 'cards';
+        return [
+            ['page'=>$p,'key'=>'intro_heading','label'=>'Intro heading','group'=>'Header','type'=>'text','value'=>'Cards Designed Around How You Spend'],
+            ['page'=>$p,'key'=>'intro_subtext','label'=>'Intro subtext','group'=>'Header','type'=>'textarea','value'=>'Discover a range of Visa, Mastercard, Amex, and Discover credit cards with cashback rewards, zero foreign transaction fees, and instant digital issuance — all managed from a single dashboard.'],
+            ['page'=>$p,'key'=>'apply_heading','label'=>'Apply section heading','group'=>'Apply','type'=>'text','value'=>'Apply for a Credit Card'],
+            ['page'=>$p,'key'=>'apply_body','label'=>'Apply section body','group'=>'Apply','type'=>'textarea','value'=>'Check if you are pre-approved without affecting your credit score. Select the card tier that matches your lifestyle and get your virtual card number instantly upon approval — no waiting for the post.'],
+            ['page'=>$p,'key'=>'app_heading','label'=>'App section heading','group'=>'App','type'=>'text','value'=>'Full Card Control at Your Fingertips'],
+            ['page'=>$p,'key'=>'app_body','label'=>'App section body','group'=>'App','type'=>'textarea','value'=>'Misplaced your card? Lock it instantly from the app. Found it? Unlock with a single tap. Set spending limits, view real-time transactions, and manage multiple cards all from one secure place.'],
+            ['page'=>$p,'key'=>'app_stat','label'=>'Card users stat','group'=>'App','type'=>'text','value'=>'Over 2 million credit card users'],
         ];
     }
 }
