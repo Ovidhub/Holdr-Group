@@ -25,11 +25,11 @@ window.smartsupp||(function(d) {
     <div class="row align-items-center gx-5">
     <div class="col-lg-6">
     <div class="hero-content">
-    <span data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">SIMPLE, QUICK, SECURED</span>
-    <h1 data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">Transfer Money Across The World In Real time</h1>
-    <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">{{$settings->site_name}} transformed the digital banking industry using data and technology more than ten years ago. We are now one of the largest digital banking providers, dedicated to innovating, simplifying, and humanizing banking.</p>
+    <span data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">{{ pc('home','hero_eyebrow') }}</span>
+    <h1 data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">{{ pc('home','hero_heading') }}</h1>
+    <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">{{ pc('home','hero_subtext') }}</p>
     <div class="hero-btn" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
-    <a href="login" class="btn style1">ONLINE BANKING<i class="ri-arrow-right-s-line"></i></a>
+    <a href="login" class="btn style1">{{ pc('home','hero_button') }}<i class="ri-arrow-right-s-line"></i></a>
     <a class="play-video" data-fancybox="" href="https://www.youtube.com/watch?v=oDDbVC3Hekc">
     <span class="play-now icon">
     <i class="ri-play-fill"></i>
@@ -59,7 +59,7 @@ window.smartsupp||(function(d) {
     <div class="hero-img-wrap">
     <div class="hero-promo-text bounce">
     <span><i class="flaticon-group"></i></span>
-    <h6>18.5M+ <span>Active Users</span></h6>
+    <h6>{{ pc('home','stats_value') }} <span>{{ pc('home','stats_label') }}</span></h6>
     </div>
     <div class="hero-img-one">
     <img src="temp/custom/assets/img/hero/hero-img-2.jpg" alt="Image">
@@ -118,8 +118,8 @@ window.smartsupp||(function(d) {
     <div class="about-content">
     <div class="content-title style1">
     <span>ABOUT US</span>
-    <h2>We revolutionized Digital Banking</h2>
-    <p>We've grown to become one of the largest digital banking providers, committed to inventing, simplifying, and humanizing the banking experience.</p>
+    <h2>{{ pc('home','why_heading') }}</h2>
+    <p>{{ pc('home','why_subtext') }}</p>
     </div>
     <div class="feature-item-wrap">
     <div class="feature-item">
@@ -127,8 +127,8 @@ window.smartsupp||(function(d) {
     <i class="flaticon-application"></i>
     </div>
     <div class="feature-text">
-    <h3>Powerful Mobile &amp; Online App</h3>
-    <p>Our mobile app service is quick and easy to use, and you can get it from your app store.</p>
+    <h3>{{ pc('home','feature_app_title') }}</h3>
+    <p>{{ pc('home','feature_app_body') }}</p>
     </div>
     </div>
     <div class="feature-item">
@@ -155,7 +155,7 @@ window.smartsupp||(function(d) {
     <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-1">
     <div class="section-title style1 text-center mb-40">
     <span>POPULAR CURRENCY TOOLS</span>
-    <h2>Set Up &amp; Exchange Money From Your Cards In A Minute</h2>
+    <h2>{{ pc('home','feature_cards_title') }}</h2>
     </div>
     </div>
      </div>
@@ -212,8 +212,8 @@ window.smartsupp||(function(d) {
     <div class="wh-content">
     <div class="content-title style1">
     <span>WHY CHOOSE US</span>
-    <h2>We are innovative and digital</h2>
-    <p>{{$settings->site_name}} transformed the credit card business using data and technology more than ten years ago. We are now one of the largest digital banking providers, dedicated to innovating, simplifying, and humanizing banking.</p>
+    <h2>{{ pc('home','feature_secure_title') }}</h2>
+    <p>{{ pc('home','feature_secure_body') }}</p>
     </div>
     <div class="feature-item-wrap">
     <div class="feature-item">
@@ -221,8 +221,8 @@ window.smartsupp||(function(d) {
      <i class="flaticon-tick"></i>
     </div>
     <div class="feature-text">
-    <h3>Historical Currency Rates</h3>
-    <p></p>
+    <h3>{{ pc('home','tool_rates_title') }}</h3>
+    <p>{{ pc('home','tool_rates_body') }}</p>
     </div>
     </div>
     <div class="feature-item">
@@ -230,8 +230,8 @@ window.smartsupp||(function(d) {
     <i class="flaticon-tick"></i>
     </div>
     <div class="feature-text">
-    <h3>Travel Expense Calculator</h3>
-    <p></p>
+    <h3>{{ pc('home','tool_travel_title') }}</h3>
+    <p>{{ pc('home','tool_travel_body') }}</p>
     </div>
     </div>
     <div class="feature-item">
@@ -239,8 +239,8 @@ window.smartsupp||(function(d) {
     <i class="flaticon-tick"></i>
     </div>
     <div class="feature-text">
-    <h3>Currency Email Updates</h3>
-    <p></p>
+    <h3>{{ pc('home','tool_alerts_title') }}</h3>
+    <p>{{ pc('home','tool_alerts_body') }}</p>
     </div>
     </div>
     </div>
@@ -439,7 +439,7 @@ window.smartsupp||(function(d) {
     <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
     <div class="section-title style1 text-center mb-40">
     <span>YOUR BENIFITS</span>
-    <h2>Your one-stop digital banking platform</h2>
+    <h2>{{ pc('home','platform_heading') }}</h2>
     </div>
     </div>
     </div>
@@ -620,7 +620,7 @@ window.smartsupp||(function(d) {
     <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
     <div class="section-title style1 text-center mb-40">
     <span>OUR REVIEWS</span>
-    <h2>More Than 18M+ Happy Customers Trust Our Services</h2>
+    <h2>{{ pc('home','stats_heading') }}</h2>
     </div>
     </div>
     <div class="testimonial-slider-two owl-carousel">
