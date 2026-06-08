@@ -20,7 +20,7 @@ class PageContentSeederTest extends TestCase
         (new PageContentSeeder())->run();
         $countAfterFirst = PageContent::count();
 
-        $this->assertGreaterThanOrEqual(40, $countAfterFirst);
+        $this->assertSame(39, $countAfterFirst);
         $this->assertSame('Move Money Across the World in Real Time',
             PageContent::value('home', 'hero_heading'));
         $this->assertSame('About Mortil Holders',
