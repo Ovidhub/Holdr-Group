@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
          \App\Models\Adverts::factory(7)->create();
+         $this->call(PageContentSeeder::class);
     }
 }

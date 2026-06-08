@@ -8,6 +8,12 @@ class PageContentModelTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        PageContent::flushCache();
+    }
+
     public function test_it_stores_and_reads_a_section()
     {
         PageContent::create([

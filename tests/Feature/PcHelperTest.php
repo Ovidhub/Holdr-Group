@@ -8,6 +8,12 @@ class PcHelperTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        PageContent::flushCache();
+    }
+
     public function test_pc_returns_value_and_default()
     {
         PageContent::create([
