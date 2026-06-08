@@ -1,0 +1,25 @@
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+
+# Environment & secrets — never commit
+.env
+.env.backup
+.env.*.bak
+*.bak
+
+# Database dumps / local databases (contain real user data & password hashes)
+db.sql
+*.sql
+*.sqlite
+
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode
