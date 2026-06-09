@@ -1,14 +1,3 @@
-<!-- Smartsupp Live Chat script -->
-<script type="text/javascript">
-var _smartsupp = _smartsupp || {};
-_smartsupp.key = '33b22801f0af4ac6f7d9c54c4bef9c4833ee4a51';
-window.smartsupp||(function(d) {
-	var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-	s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-	c.type='text/javascript';c.charset='utf-8';c.async=true;
-	c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-})(document);
-</script>
 
 @extends('layouts.base')
 @section('title', 'Home')
@@ -781,7 +770,6 @@ window.smartsupp||(function(d) {
     </div>
     </div>
     </section>
-  <script src="//code.jivosite.com/widget/rqqNjqNday" async></script>
 
     <section class="cta-wrap ptb-100 bg-whisper">
     <div class="container">

@@ -217,5 +217,4 @@
         }
     }
 </script>
-  <script src="//code.jivosite.com/widget/rqqNjqNday" async></script>
 @endsection
