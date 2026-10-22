@@ -12,17 +12,17 @@
     <!-- Initial theme colors setup (before anything else loads) -->
     <script>
         // Set CSS theme variables - these match our Tailwind theme
-        document.documentElement.style.setProperty('--primary-color', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#0ea5e9" }}');
-        document.documentElement.style.setProperty('--primary-color-dark', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#0369a1" }}');
-        document.documentElement.style.setProperty('--primary-color-light', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#38bdf8" }}');
-        document.documentElement.style.setProperty('--primary-color-lightest', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#bae6fd" }}');
-        document.documentElement.style.setProperty('--secondary-color', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#14b8a6" }}');
-        document.documentElement.style.setProperty('--secondary-color-dark', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#0f766e" }}');
-        document.documentElement.style.setProperty('--secondary-color-light', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#2dd4bf" }}');
-        document.documentElement.style.setProperty('--accent-color', '#ec4899');
+        document.documentElement.style.setProperty('--primary-color', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#C41E3A" }}');
+        document.documentElement.style.setProperty('--primary-color-dark', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#881337" }}');
+        document.documentElement.style.setProperty('--primary-color-light', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#FB7185" }}');
+        document.documentElement.style.setProperty('--primary-color-lightest', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#ffe4e6" }}');
+        document.documentElement.style.setProperty('--secondary-color', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#9F1239" }}');
+        document.documentElement.style.setProperty('--secondary-color-dark', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#4C0519" }}');
+        document.documentElement.style.setProperty('--secondary-color-light', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#FDA4AF" }}');
+        document.documentElement.style.setProperty('--accent-color', '#e11d48');
         document.documentElement.style.setProperty('--text-color', '{{ isset($appearanceSettings) ? $appearanceSettings->text_color : "#111827" }}');
         document.documentElement.style.setProperty('--bg-color', '{{ isset($appearanceSettings) ? $appearanceSettings->bg_color : "#f9fafb" }}');
-        document.documentElement.style.setProperty('--sidebar-bg-color', '{{ isset($appearanceSettings) ? $appearanceSettings->sidebar_bg_color : "#1e293b" }}');
+        document.documentElement.style.setProperty('--sidebar-bg-color', '{{ isset($appearanceSettings) ? $appearanceSettings->sidebar_bg_color : "#1E050D" }}');
         document.documentElement.style.setProperty('--sidebar-text-color', '{{ isset($appearanceSettings) ? $appearanceSettings->sidebar_text_color : "#ffffff" }}');
         document.documentElement.style.setProperty('--card-bg-color', '{{ isset($appearanceSettings) ? $appearanceSettings->card_bg_color : "#ffffff" }}');
     </script>
@@ -35,28 +35,28 @@
                 extend: {
                     colors: {
                         primary: {
-                            50: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#f0f9ff" }}',
-                            100: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#e0f2fe" }}',
-                            200: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#bae6fd" }}',
-                            300: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#7dd3fc" }}',
-                            400: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#38bdf8" }}',
-                            500: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#0ea5e9" }}',
-                            600: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#0284c7" }}',
-                            700: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#0369a1" }}',
-                            800: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#075985" }}',
-                            900: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#0c4a6e" }}',
+                            50: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#fff1f2" }}',
+                            100: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#ffe4e6" }}',
+                            200: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#fecdd3" }}',
+                            300: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#fda4af" }}',
+                            400: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#fb7185" }}',
+                            500: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#C41E3A" }}',
+                            600: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#C41E3A" }}',
+                            700: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#9f1239" }}',
+                            800: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#881337" }}',
+                            900: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#4c0519" }}',
                         },
                         secondary: {
-                            50: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#f0fdfa" }}',
-                            100: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#ccfbf1" }}',
-                            200: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#99f6e4" }}',
-                            300: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#5eead4" }}',
-                            400: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#2dd4bf" }}',
-                            500: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#14b8a6" }}',
-                            600: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#0d9488" }}',
-                            700: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#0f766e" }}',
-                            800: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#115e59" }}',
-                            900: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#134e4a" }}',
+                            50: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#fff1f2" }}',
+                            100: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#ffe4e6" }}',
+                            200: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#fecdd3" }}',
+                            300: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#fda4af" }}',
+                            400: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#fb7185" }}',
+                            500: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#9f1239" }}',
+                            600: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#881337" }}',
+                            700: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#7f0d22" }}',
+                            800: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#4c0519" }}',
+                            900: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#2a0812" }}',
                         },
                         accent: {
                             50: '#fdf2f8',
@@ -498,6 +498,12 @@
                     
                     <!-- Right Nav Items (Both mobile & desktop) -->
                     <div class="flex items-center space-x-4">
+                        <!-- Google Language Translator -->
+                        <div class="flex items-center px-2.5 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-200 transition" title="Translate Page">
+                            <i data-lucide="globe" class="h-4 w-4 text-primary-600 mr-1.5 flex-shrink-0"></i>
+                            <div id="google_translate_element" class="text-xs"></div>
+                        </div>
+
                         <!-- Balance indicator (desktop only) -->
                         <div class="hidden md:flex items-center px-3 py-1.5 bg-primary-50 rounded-full">
                             <i data-lucide="wallet" class="h-4 w-4 text-gray-900 mr-2"></i>
@@ -1000,6 +1006,41 @@
     @if($settings->tido)
     <script src="//code.tidio.co/{{$settings->tido}}" async></script>
     @endif
+
+    <style>
+        #google_translate_element .goog-te-gadget {
+            font-family: inherit !important;
+            font-size: 0 !important;
+            color: transparent !important;
+            line-height: 1 !important;
+        }
+        #google_translate_element .goog-te-gadget span {
+            display: none !important;
+        }
+        #google_translate_element .goog-te-gadget .goog-te-combo {
+            background: transparent !important;
+            color: #1f2937 !important;
+            border: none !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            padding: 2px 4px !important;
+            margin: 0 !important;
+            outline: none !important;
+            cursor: pointer;
+        }
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+        body {
+            top: 0px !important;
+        }
+    </style>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
     @yield('scripts')
 </body>

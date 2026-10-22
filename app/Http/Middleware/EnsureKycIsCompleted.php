@@ -25,12 +25,7 @@ class EnsureKycIsCompleted
             if ($user->account_verify != 'Verified') {
                 return redirect()->route('account.verify');
             }
-
         }
-        
-        if ($user->pinstatus != 0) {
-                return redirect()->route('pin');
-            }
 
         return $next($request);
     }

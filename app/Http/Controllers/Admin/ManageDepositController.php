@@ -31,16 +31,12 @@ class ManageDepositController extends Controller
     {
         //confirm the users plan
         $deposit = Deposit::where('id', $id)->first();
+        if (!$deposit) {
+            return redirect()->back()->with('message', 'Deposit record not found.');
+        }
         $user = User::where('id', $deposit->user)->first();
         //get settings 
         $settings = Settings::where('id', '=', '1')->first();
-
-        $response = $this->callServer('earnings', '/process-deposit', [
-            'referral_commission' => $settings->referral_commission,
-            'amount' => $deposit->amount,
-            'account_bal' => $user->account_bal,
-            'depositBonus' => $settings->deposit_bonus,
-        ]);
 
     if($deposit->user==$user->id){
             //add funds to user's account

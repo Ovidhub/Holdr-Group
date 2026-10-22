@@ -25,9 +25,9 @@ class PersonalPageContentRenderTest extends TestCase
     public function test_personal_shows_seeded_content()
     {
         $this->get('/personal')->assertOk()
-            ->assertSee('Banking That Puts You First')
-            ->assertSee('Everything You Need for Day-to-Day Banking')
-            ->assertSee('Your Finances, Wherever You Are')
-            ->assertSee('Over 9.2 million downloads worldwide');
+            ->assertSee('Private & Personal Banking Tailored Around Your Life')
+            ->assertSee('Effortless Everyday Banking Meets Private Wealth Stewardship')
+            ->assertSee('Total Clarity Over Your Personal Wealth, 24/7')
+            ->assertSee('Over 9.2 million personal banking clients worldwide');
     }
 }

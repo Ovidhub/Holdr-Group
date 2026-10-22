@@ -6,7 +6,7 @@
 @endphp
 @extends('layouts.base')
 @inject('content', 'App\Http\Controllers\FrontController')
-@section('title', 'About Us')
+@section('title', 'Client Advisory & Support')
 
 
 @section('content')
@@ -60,7 +60,7 @@
 </span>
 <div class="contact-info">
 <h3>{{ pc('contact','phone_label') }}</h3>
-<a href="#">{{ pc('contact','phone_value') }}</a>
+<a href="tel:{{ pc('contact','phone_value') }}">{{ pc('contact','phone_value') }}</a>
 </div>
 </div>
 </div>
@@ -69,9 +69,11 @@
 <div class="col-lg-7">
 <div class="contact-form">
 
-
-
-                
+<div class="section-title style1 mb-20">
+<span>DIRECT INQUIRY</span>
+<h3>Connect With a Relationship Officer</h3>
+<p>Submit your inquiry below and a dedicated private client or corporate treasury specialist will respond promptly.</p>
+</div>
 
 <form method="POST" action="{{route('homesendcontact')}}" class="form-wrap" id="">
 <div class="row">
@@ -99,21 +101,21 @@
 	</div>
 <div class="form-group">
 	<br>
-<input type="text" name="fullname" placeholder="Name*" class="form-control input-lg" id="name" required data-error="Please enter your name">
+<input type="text" name="fullname" placeholder="Full Legal Name *" class="form-control input-lg" id="name" required data-error="Please enter your full name">
 <div class="help-block with-errors"></div>
 </div>
 </div>
 <div class="col-md-6">
 <div class="form-group">
 	<br>
-<input type="email" name="email" id="email" class="form-control input-lg" required placeholder="Email*" data-error="Please enter your email">
+<input type="email" name="email" id="email" class="form-control input-lg" required placeholder="Business or Personal Email *" data-error="Please enter your email">
 <div class="help-block with-errors"></div>
 </div>
 </div>
 <div class="col-md-6">
 <div class="form-group">
 	<br>
-<input type="text" name="phone" placeholder="Phone*" class="form-control input-lg" id="phone_number" required data-error="Please enter your phone number">
+<input type="text" name="phone" placeholder="Direct Telephone Number *" class="form-control input-lg" id="phone_number" required data-error="Please enter your phone number">
 <div class="help-block with-errors"></div>
 </div>
 </div>
@@ -123,7 +125,7 @@
 <div class="col-md-12">
 <div class="form-group v1">
 	<br>
-<textarea name="message" id="message" placeholder="Your Messages.." class="form-control input-lg" cols="20" rows="5" required data-error="Please enter your message"></textarea>
+<textarea name="message" id="message" placeholder="How can our advisory or support desk assist you today?" class="form-control input-lg" cols="20" rows="5" required data-error="Please enter your message"></textarea>
 <div class="help-block with-errors"></div>
 </div>
 </div>
@@ -133,30 +135,24 @@
 	<br>
 <input name="gridCheck" value="I agree to the terms and privacy policy." class="form-check-input" type="checkbox" id="gridCheck" required>
 <label class="form-check-label" for="gridCheck">
-
-I agree to the <a class="link style1" href="terms">Terms &amp; Conditions</a> and <a class="link style1" href="privacy">Privacy Policy</a>
+I acknowledge and agree to the <a class="link style1" href="terms">Terms of Custody</a> and <a class="link style1" href="privacy">Privacy &amp; Data Charter</a>
 </label>
 <div class="help-block with-errors gridCheck-error"></div>
 </div>
 </div>
 <div class="col-md-12">
-<button type="submit" name="submitbtn" class="btn style1">SEND MESSAGE<i class="ri-arrow-right-s-line"></i></button>
+<button type="submit" name="submitbtn" class="btn style1">DISPATCH INQUIRY<i class="ri-arrow-right-s-line"></i></button>
 <div id="msgSubmit" class="h3 text-center hidden"></div>
 <div class="clearfix"></div>
 </div>
 </div>
 </form>
 
-
-
-
-
-
 </div>
 </div>
 <div class="col-lg-5">
 <div class="comp-map">
-<img  src="temp/custom/images/support.gif" width="100%">
+<img src="temp/custom/images/support.gif?v=cherry3" width="100%" alt="24/7 Client Advisory">
 </div>
 </div>
 </div>
@@ -165,4 +161,3 @@ I agree to the <a class="link style1" href="terms">Terms &amp; Conditions</a> an
 
 </div>
 @endsection
-

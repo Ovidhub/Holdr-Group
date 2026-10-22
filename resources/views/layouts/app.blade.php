@@ -20,13 +20,150 @@
         <!-- CSS Files -->
         <link rel="stylesheet" href="{{ asset('dash/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('dash/css/fonts.min.css') }}">
-        @php
-            $theme = $settings->website_theme == 'blue.css' ? 'atlantis.min.css' : $settings->website_theme;
-        @endphp
-        <link rel="stylesheet" href="{{ asset('dash/css/' . $theme) }}">
+        <link rel="stylesheet" href="{{ asset('dash/css/atlantis.min.css') }}">
         <link rel="stylesheet" href="{{ asset('dash/css/customs.css') }}">
         <link rel="stylesheet" href="{{ asset('dash/css/style.css') }}">
-        {{-- <link rel="stylesheet" href="{{ asset('dash/css/atlantis.min.css') }}"> --}}
+        <style>
+            /* Cherry Brand Admin Theme & Full Readability Overrides */
+            .main-header {
+                border-bottom: 2px solid #C41E3A !important;
+            }
+            .logo-header[data-background-color="dark"],
+            .logo-header[data-background-color="blue"],
+            .logo-header {
+                background: #1E050D !important;
+            }
+            .navbar-header[data-background-color="dark"],
+            .navbar-header[data-background-color="blue"],
+            .navbar-header {
+                background: linear-gradient(90deg, #1E050D 0%, #3B0A1B 100%) !important;
+            }
+            .sidebar[data-background-color="dark"],
+            .sidebar[data-background-color="white"],
+            .sidebar {
+                background: #160309 !important;
+                color: #f8fafc !important;
+            }
+            .sidebar .nav > .nav-item > a p,
+            .sidebar .nav > .nav-item > a i,
+            .sidebar .user .info a > span,
+            .sidebar .user .info a > span .user-level {
+                color: rgba(255, 255, 255, 0.88) !important;
+            }
+            .sidebar.sidebar-style-2 .nav.nav-primary > .nav-item.active > a,
+            .sidebar .nav > .nav-item.active > a {
+                background: #C41E3A !important;
+                box-shadow: 4px 4px 10px 0 rgba(196, 30, 58, 0.35) !important;
+                color: #ffffff !important;
+            }
+            .sidebar.sidebar-style-2 .nav.nav-primary > .nav-item.active > a p,
+            .sidebar.sidebar-style-2 .nav.nav-primary > .nav-item.active > a i,
+            .sidebar.sidebar-style-2 .nav.nav-primary > .nav-item.active > a .caret,
+            .sidebar .nav > .nav-item.active > a p,
+            .sidebar .nav > .nav-item.active > a i {
+                color: #ffffff !important;
+            }
+            .main-panel {
+                background-color: #f8fafc !important;
+                color: #1e293b !important;
+            }
+            .main-panel > .content {
+                background-color: #f8fafc !important;
+            }
+            .main-panel .card:not(.card-primary):not(.card-secondary):not(.card-info):not(.card-success):not(.card-warning):not(.card-danger),
+            .main-panel .card.bg-dark,
+            .main-panel .card.bg-light,
+            .main-panel .modal-content {
+                background-color: #ffffff !important;
+                color: #1e293b !important;
+                border: 1px solid #f1e4e8 !important;
+                border-radius: 12px !important;
+            }
+            .main-panel .card-header,
+            .main-panel .card-footer,
+            .main-panel .modal-header,
+            .main-panel .modal-footer {
+                background-color: transparent !important;
+                border-color: #f1f5f9 !important;
+                color: #1e293b !important;
+            }
+            .main-panel .text-light:not(.badge):not(.btn),
+            .main-panel h1:not(.text-white),
+            .main-panel h2:not(.text-white),
+            .main-panel h3:not(.text-white),
+            .main-panel h4:not(.text-white),
+            .main-panel h5:not(.text-white),
+            .main-panel h6:not(.text-white),
+            .main-panel .title1,
+            .main-panel label,
+            .main-panel p:not(.text-white),
+            .main-panel span:not(.badge):not(.btn):not(.text-white),
+            .main-panel .table th,
+            .main-panel .table td {
+                color: #1e293b !important;
+            }
+            .main-panel .table thead th {
+                background-color: #fdf2f4 !important;
+                color: #881337 !important;
+                font-weight: 600 !important;
+                border-bottom: 2px solid #f9d8de !important;
+            }
+            .main-panel .table tbody tr:hover {
+                background-color: #fff5f7 !important;
+            }
+            .main-panel .form-control,
+            .main-panel select.form-control,
+            .main-panel input.form-control,
+            .main-panel textarea.form-control,
+            .modal-content .form-control {
+                background-color: #ffffff !important;
+                color: #1e293b !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+            .main-panel .form-control::placeholder,
+            .modal-content .form-control::placeholder {
+                color: #64748b !important;
+            }
+            .main-panel .form-control:focus,
+            .modal-content .form-control:focus {
+                border-color: #C41E3A !important;
+                box-shadow: 0 0 0 2px rgba(196, 30, 58, 0.15) !important;
+            }
+            .btn-primary, .bg-primary, .btn-secondary {
+                background: #C41E3A !important;
+                border-color: #C41E3A !important;
+                color: #ffffff !important;
+            }
+            .btn-primary span, .btn-secondary span, .btn-info span, .btn-success span, .btn-danger span {
+                color: #ffffff !important;
+            }
+            .btn-primary:hover, .btn-primary:focus, .btn-secondary:hover {
+                background: #9E152D !important;
+                border-color: #9E152D !important;
+                color: #ffffff !important;
+            }
+            /* Google Translate styling in Admin Header */
+            #google_translate_element .goog-te-gadget {
+                font-family: inherit !important;
+                font-size: 0 !important;
+                color: transparent !important;
+            }
+            #google_translate_element .goog-te-gadget .goog-te-combo {
+                background-color: rgba(255, 255, 255, 0.14) !important;
+                color: #ffffff !important;
+                border: 1px solid rgba(255, 255, 255, 0.28) !important;
+                border-radius: 6px !important;
+                padding: 5px 10px !important;
+                font-size: 13px !important;
+                outline: none !important;
+                margin: 0 !important;
+                cursor: pointer;
+            }
+            #google_translate_element .goog-te-gadget .goog-te-combo option {
+                color: #1e293b !important;
+                background: #ffffff !important;
+            }
+        </style>
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css">
         <link rel="stylesheet" type="text/css"
             href="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/b-1.6.3/b-flash-1.6.3/b-html5-1.6.3/b-print-1.6.3/r-2.2.5/datatables.min.css" />
@@ -65,8 +202,7 @@
                 <footer class="footer">
                     <div class="container-fluid">
                         <div class="text-center row copyright text-align-center">
-                            <p>All Rights Reserved &copy; {{ $settings->site_name }} {{ date('Y') }}</p> <br>
-                            <a href="{{ url('/admin/dashboard/about') }}"  class='btn btn-warning'> About script</a>
+                            <p>All Rights Reserved &copy; {{ $settings->site_name }} {{ date('Y') }}</p>
                         </div>
                     </div>
                 </footer>

@@ -19,7 +19,7 @@
             <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             <!-- Main Css -->
             @php
-                $theme = $settings->website_theme == 'purpose.css' ? 'default.css' : $settings->website_theme;
+                $theme = ($settings->website_theme == 'purpose.css' || empty($settings->website_theme)) ? 'default.css' : $settings->website_theme;
             @endphp
             <link href="{{ asset('temp/css/style.css')}}" rel="stylesheet" type="text/css" />
             <link href="{{ asset('temp/css/colors/'.$theme)}}" rel="stylesheet">

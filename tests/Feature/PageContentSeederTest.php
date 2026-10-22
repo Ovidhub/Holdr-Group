@@ -21,7 +21,7 @@ class PageContentSeederTest extends TestCase
         $countAfterFirst = PageContent::count();
 
         $this->assertSame(76, $countAfterFirst);
-        $this->assertSame('Move Money Across the World in Real Time',
+        $this->assertSame('Borderless Wealth & Treasury Built for Modern Ambition',
             PageContent::value('home', 'hero_heading'));
         $this->assertSame('About Mortil Holders',
             PageContent::value('about', 'header_title'));

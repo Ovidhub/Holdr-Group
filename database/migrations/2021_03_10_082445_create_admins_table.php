@@ -21,7 +21,7 @@ class CreateAdminsTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone')->nullable();
-            $table->string('dashboard_style')->default('dark');
+            $table->string('dashboard_style')->default('light');
             $table->string('remember_token')->nullable();
             $table->string('acnt_type_active')->nullable();
             $table->string('status')->nullable();

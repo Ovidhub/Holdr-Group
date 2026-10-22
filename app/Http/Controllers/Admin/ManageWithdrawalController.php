@@ -23,11 +23,10 @@ class ManageWithdrawalController extends Controller
         $withdrawal=Withdrawal::where('id',$request->id)->first();
         $user=User::where('id',$withdrawal->user)->first();
        
-        if($request->date!=' '){
-         $created_at = $request->date;
-         
-        }else{
-         $created_at = $withdrawal->$created_at;
+        if (!empty($request->date) && trim($request->date) !== '') {
+            $created_at = $request->date;
+        } else {
+            $created_at = $withdrawal->created_at;
         }
    
         if ($request->action == "Paid") {
@@ -50,7 +49,9 @@ class ManageWithdrawalController extends Controller
             $settings=Settings::where('id', '=', '1')->first();
             $message = "This is to inform you that your transfer request of $settings->currency$withdrawal->amount  to  $withdrawal->accountname  have approved.";
 
-            Mail::to($user->email)->send(new NewNotification($message, 'Successful Transfer', $user->name));
+            try {
+                Mail::to($user->email)->send(new NewNotification($message, 'Successful Transfer', $user->name));
+            } catch (\Throwable $e) {}
         }elseif($request->action == "On-hold"){
             Withdrawal::where('id',$request->id)
             ->update([
@@ -71,7 +72,9 @@ class ManageWithdrawalController extends Controller
             $settings=Settings::where('id', '=', '1')->first();
             $message = "This is to inform you that your transfer request of $settings->currency$withdrawal->amount to $withdrawal->accountname is currently On-hold; contact support on $settings->contact_email for more details ";
      
-            Mail::to($user->email)->send(new NewNotification($message, 'On-hold transfer Transction', $user->name));
+            try {
+                Mail::to($user->email)->send(new NewNotification($message, 'On-hold transfer Transction', $user->name));
+            } catch (\Throwable $e) {}
         }
         else {
 

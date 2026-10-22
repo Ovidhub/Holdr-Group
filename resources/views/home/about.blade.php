@@ -5,22 +5,18 @@
     }
 @endphp
 @extends('layouts.base')
-@inject('content', 'App\Http\Controllers\FrontController')
+
 @section('title', 'About Us')
 
-
+@inject('content', 'App\Http\Controllers\FrontController')
 @section('content')
 
+  <div class="content-wrapper">
 
-
-<div class="content-wrapper">
-
-  <div class="breadcrumb-wrap bg-f br-1" style="margin-top:-140px;">
+  <div class="breadcrumb-wrap bg-f br-1">
   <div class="container">
   <div class="breadcrumb-title">
-  <br><br>
   <h2>{{ pc('about','header_title') }}</h2>
-  <p>{{ pc('about','header_subtext') }}</p>
   <ul class="breadcrumb-menu list-style">
   <li><a href="/">Home </a></li>
   <li>{{ pc('about','header_title') }}</li>
@@ -35,32 +31,33 @@
   <div class="row">
   <div class="col-xl-10 offset-xl-1 col-lg-10 offset-lg-1">
   <div class="section-title text-center mb-40">
-  <h2>{{ pc('about','who_heading') }}</h2>
-  <p>{{ pc('about','who_body') }}</p>
+  <h2>Built for Global Commerce, Private Wealth, and Institutional Custody</h2>
+  <br>
+  <h6>We pair the capital discipline and fiduciary standards of private banking with cloud-native financial technology—giving individuals, family offices, and global corporations a single, resilient home for their capital.</h6>
   </div>
   </div>
   </div>
   <div class="partner-slider owl-carousel">
   <div class="partner-item">
-  <img src="temp/custom/assets/img/partner/partner-1.png" alt="Image">
+  <img src="temp/custom/assets/img/partner/partner-1.png?v=cherry3" alt="Image">
   </div>
   <div class="partner-item">
-  <img src="temp/custom/assets/img/partner/partner-2.png" alt="Image">
+  <img src="temp/custom/assets/img/partner/partner-2.png?v=cherry3" alt="Image">
   </div>
   <div class="partner-item">
-  <img src="temp/custom/assets/img/partner/partner-3.png" alt="Image">
+  <img src="temp/custom/assets/img/partner/partner-3.png?v=cherry3" alt="Image">
   </div>
   <div class="partner-item">
-  <img src="temp/custom/assets/img/partner/partner-4.png" alt="Image">
+  <img src="temp/custom/assets/img/partner/partner-4.png?v=cherry3" alt="Image">
   </div>
   <div class="partner-item">
-  <img src="temp/custom/assets/img/partner/partner-5.png" alt="Image">
+  <img src="temp/custom/assets/img/partner/partner-5.png?v=cherry3" alt="Image">
   </div>
   <div class="partner-item">
-  <img src="temp/custom/assets/img/partner/partner-6.png" alt="Image">
+  <img src="temp/custom/assets/img/partner/partner-6.png?v=cherry3" alt="Image">
   </div>
   <div class="partner-item">
-  <img src="temp/custom/assets/img/partner/partner-7.png" alt="Image">
+  <img src="temp/custom/assets/img/partner/partner-3.png?v=cherry3" alt="Image">
   </div>
   </div>
   </div>
@@ -73,21 +70,21 @@
   <div class="col-lg-6">
   <div class="row">
   <div class="col-6 about-img-wrap">
-  <img src="temp/custom/assets/img/about/about-shape-4.png" alt="Image" class="about-shape-one bounce">
+  <img src="temp/custom/assets/img/about/about-shape-4.png?v=cherry3" alt="Image" class="about-shape-one bounce">
   <div class="about-img">
-  <img src="temp/custom/assets/img/about/about-img-1.jpg" alt="Image">
+  <img src="temp/custom/assets/img/about/about-img-1.jpg?v=cherry3" alt="Image">
   </div>
   <div class="about-img">
-  <img src="temp/custom/assets/img/about/about-img-2.jpg" alt="Image">
+  <img src="temp/custom/assets/img/about/about-img-2.jpg?v=cherry3" alt="Image">
   </div>
   </div>
   <div class="col-6 about-img-wrap lgm-70">
-  <img src="temp/custom/assets/img/shape-1.png" alt="Image" class="about-shape-two moveHorizontal">
+  <img src="temp/custom/assets/img/shape-1.png?v=cherry3" alt="Image" class="about-shape-two moveHorizontal">
   <div class="about-img">
-  <img src="temp/custom/assets/img/about/about-img-3.jpg" alt="Image">
+  <img src="temp/custom/assets/img/about/about-img-3.jpg?v=cherry3" alt="Image">
   </div>
   <div class="about-img">
-  <img src="temp/custom/assets/img/about/about-img-4.jpg" alt="Image">
+  <img src="temp/custom/assets/img/about/about-img-4.jpg?v=cherry3" alt="Image">
   </div>
   </div>
   </div>
@@ -95,7 +92,7 @@
   <div class="col-lg-6">
   <div class="about-content">
   <div class="content-title style1">
-  <span>ABOUT US</span>
+  <span>{{ pc('about','story_tagline') }}</span>
   <h2>{{ pc('about','story_heading') }}</h2>
   <p>{{ pc('about','story_body') }}</p>
   </div>
@@ -105,17 +102,17 @@
   <i class="flaticon-clicking"></i>
   </div>
   <div class="feature-text">
-  <h3>{{ pc('about','feature_app_title') }}</h3>
-  <p>{{ pc('about','feature_app_body') }}</p>
-   </div>
+  <h3>Unified Multi-Currency Custody</h3>
+  <p>{{ pc('about','bullet_1') }}</p>
+  </div>
   </div>
   <div class="feature-item">
   <div class="feature-icon">
   <i class="flaticon-alarm"></i>
   </div>
   <div class="feature-text">
-  <h3>Brings More Transperency &amp; Speed</h3>
-  <p>Our digital banking services are transparent and quick, and we're building a reliable network.</p>
+  <h3>Round-the-Clock Private Advisory</h3>
+  <p>{{ pc('about','bullet_2') }}</p>
   </div>
   </div>
   <div class="feature-item">
@@ -123,136 +120,39 @@
   <i class="flaticon-setting"></i>
   </div>
   <div class="feature-text">
-  <h3>{{ pc('about','feature_team_title') }}</h3>
-  <p>{{ pc('about','feature_team_body') }}</p>
+  <h3>Zero-Markup Global Clearing</h3>
+  <p>{{ pc('about','bullet_3') }}</p>
   </div>
   </div>
   </div>
-  <a href="register" class="btn style1">START WITH US<i class="ri-arrow-right-s-line"></i></a>
-  </div>
-  </div>
-  </div>
-  </div>
-  </section>
-  
-  
-  <div class="feature-wrap style1 pt-100 pb-75 bg-whisper">
-  <div class="container">
-  <div class="row">
-  <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-1">
-  <div class="section-title style1 text-center mb-40">
-  <span>MOST POPULAR CURRENCY TOOLS</span>
-  <h2>Set Up &amp; Exchange Money From Your Cards In A Minute</h2>
-  </div>
-  </div>
-  </div>
-  <div class="row justify-content-center">
-  <div class=" col-xxl-3 col-xl-4 col-lg-6 col-md-6">
-  <div class="feature-card style1">
-  <div class="feature-icon">
-  <i class="flaticon-hand"></i>
-  </div>
-  <h3><a href="login">Money Transfer</a></h3>
-  <p>With our digital platform, you may send money to relatives and friends all around the world.</p>
-  <a href="login" class="link style1">Send Money <i class="ri-arrow-right-s-line"></i></a>
-  </div>
-  </div>
-  <div class=" col-xxl-3 col-xl-4 col-lg-6 col-md-6">
-  <div class="feature-card style1">
-  <div class="feature-icon">
-  <i class="flaticon-pie-chart"></i>
-  </div>
-  <h3><a href="chart">Curreny Charts</a></h3>
-  <p>You can always watch the market's movement and make trading decisions with our currency charts.</p>
-  <a href="login" class="link style1">View Charts<i class="ri-arrow-right-s-line"></i></a>
-  </div>
-   </div>
-  <div class=" col-xxl-3 col-xl-4 col-lg-6 col-md-6">
-  <div class="feature-card style1">
-  <div class="feature-icon">
-  <i class="flaticon-notification"></i>
-  </div>
-  <h3><a href="alerts">Rate Alerts</a></h3>
-  <p>To enable our clients to convert, we at Stana Group provide the finest currency rates in the market.</p>
-  <a href="register" class="link style1">Create Alerts<i class="ri-arrow-right-s-line"></i></a>
-  </div>
-  </div>
-  <div class=" col-xxl-3 col-xl-4 col-lg-6 col-md-6">
-  <div class="feature-card style1">
-  <div class="feature-icon">
-  <i class="flaticon-user-3"></i>
-  </div>
-  <h3><a href="register">Create Account</a></h3>
-  <p>Create a free digital bank account with us today to send money around the world.</p>
-  <a href="register" class="link style1">Get Started <i class="ri-arrow-right-s-line"></i></a>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  
-  
-  
-  <section class="wh-wrap style3 ptb-100">
-  <div class="container">
-  <div class="row gx-5 align-items-center">
-  <div class="col-lg-6 order-lg-1 order-md-2 order-2">
-  <div class="wh-content">
-  <div class="content-title style1">
-  <span>WHY CHOOSE US</span>
-  <h2>We are innovative and digital</h2>
-  <p>New Capital Ltd transformed the credit card business using data and technology more than ten years ago. We are now one of the largest digital banking providers, dedicated to innovating, simplifying, and humanizing banking.</p>
-  </div>
-  <div class="feature-item-wrap">
-  <div class="feature-item">
-  <div class="feature-icon">
-  <i class="flaticon-tick"></i>
-  </div>
-  <div class="feature-text">
-  <h3>Historical Currency Rates</h3>
-  <p></p>
-  </div>
-  </div>
-  <div class="feature-item">
-  <div class="feature-icon">
-  <i class="flaticon-tick"></i>
-  </div>
-  <div class="feature-text">
-  <h3>Travel Expense Calculator</h3>
-  <p></p>
-  </div>
-  </div>
-  <div class="feature-item">
-   <div class="feature-icon">
-  <i class="flaticon-tick"></i>
-  </div>
-  <div class="feature-text">
-  <h3>Currency Email Updates</h3>
-  <p></p>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  <div class="col-lg-6 order-lg-2 order-md-1 order-1">
-  <div class="wh-img-wrap">
-  <img src="temp/custom/assets/img/shape-6.png" alt="Image" class="wh-shape-one animationFramesTwo">
-  <img src="temp/custom/assets/img/why-choose-us/wh-img-7.jpg" alt="Image">
+  <a href="register" class="btn style1">Open an Account<i class="ri-arrow-right-s-line"></i></a>
   </div>
   </div>
   </div>
   </div>
   </section>
   
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title style1">
+          <span>OUR GOVERNANCE &amp; MANDATE</span>
+          <h3>Stewardship Designed for Complex Financial Lives</h3>
+        </div>
+        <p>{{$settings->site_name}} operates as a full-spectrum digital banking and treasury institution serving private clients, family offices, and commercial enterprises across North America, Europe, the Middle East, Africa, and Asia-Pacific. Our architecture eliminates the delays and opaque fee structures of legacy correspondent banking by connecting directly to real-time domestic and cross-border clearing rails.</p>
+        <p>Every account held with {{$settings->site_name}} is underpinned by segregated tier-one liquidity management, multi-jurisdictional regulatory compliance, and continuous cryptographic auditing. Whether you are structuring cross-border trade payables, managing multi-currency liquidity reserves, or accessing bespoke credit facilities, our platform gives you institutional execution speed with complete transparency.</p>
+        <p>Our private advisory teams work alongside each client to tailor account structures, foreign exchange hedging strategies, corporate card programs, and credit lines—ensuring your capital is protected, liquid, and positioned for growth in every market condition.</p>
+      </div>
+    </div>
+  </div>
   
   <div class="counter-wrap style1 pb-75">
   <div class="container">
   <div class="row">
   <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-2">
   <div class="section-title style1 text-center mb-40">
-  <span>SOME FUN FACTS</span>
-  <h2>{{ pc('about','customers_heading') }}</h2>
-  <p>{{ pc('about','customers_body') }}</p>
+  <span>INSTITUTIONAL FOOTPRINT</span>
+  <h2>Global Scale Backed by Disciplined Risk Governance</h2>
   </div>
   </div>
   </div>
@@ -260,52 +160,42 @@
   <div class="counter-card">
   <div class="counter-text">
   <h2 class="counter-num">
-  <span class="odometer" data-count="2"></span>
-  <span class="target">M+</span>
-  </h2>
-  <p>Downloaded</p>
-  </div>
-  </div>
-  <div class="counter-card">
-  <div class="counter-text">
-  <h2 class="counter-num">
-  <span class="odometer" data-count="18"></span>
+  <span class="odometer" data-count="1450"></span>
   <span class="target">K+</span>
   </h2>
-  <p>Feedback</p>
+  <p>Verified Account Holders</p>
   </div>
   </div>
   <div class="counter-card">
   <div class="counter-text">
   <h2 class="counter-num">
-  <span class="odometer" data-count="13"></span>
-  <span class="target">K+</span>
-  </h2>
-  <p>Workers</p>
-  </div>
-  </div>
-  <div class="counter-card">
-  <div class="counter-text">
-  <h2 class="counter-num">
-  <span class="odometer" data-count="18"></span>
+  <span class="odometer" data-count="28"></span>
   <span class="target">+</span>
   </h2>
-  <p>Years Of Ecperience</p>
+  <p>Years of Banking Heritage</p>
   </div>
   </div>
   <div class="counter-card">
   <div class="counter-text">
   <h2 class="counter-num">
-  <span class="odometer" data-count="5"></span>
-  <span class="target">K+</span>
+  <span class="odometer" data-count="2650"></span>
+  <span class="target">+</span>
   </h2>
-  <p>Contributors</p>
+  <p>Partner Clearing Hubs</p>
+  </div>
+  </div>
+  <div class="counter-card">
+  <div class="counter-text">
+  <h2 class="counter-num">
+  <span class="odometer" data-count="48"></span>
+  <span class="target">B+</span>
+  </h2>
+  <p>Annual Settled Volume ($)</p>
   </div>
   </div>
   </div>
   </div>
   </div>
-  
   
   
   <div class="feature-wrap style1 ptb-100 bg-whisper">
@@ -313,8 +203,8 @@
   <div class="row">
   <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
   <div class="section-title style1 text-center mb-40">
-  <span>YOUR BENIFITS</span>
-  <h2>Your one-stop digital banking platform</h2>
+  <span>CLIENT ADVANTAGES</span>
+  <h2>A Unified Platform for Every Financial Requirement</h2>
   </div>
   </div>
   </div>
@@ -324,8 +214,8 @@
   <i class="flaticon-planet-earth"></i>
   </div>
   <div class="feature-info">
-  <h3><a href="#">Global Coverage</a></h3>
-  <p></p>
+  <h3><a href="business">104+ Countries Covered</a></h3>
+  <p>Seamless cross-border settlement and local account credentials across all major economic corridors.</p>
   </div>
   </div>
   <div class="feature-card style6">
@@ -333,8 +223,8 @@
   <i class="flaticon-money-bag-1"></i>
   </div>
   <div class="feature-info">
-  <h3><a href="#">Easy Transfer Method</a></h3>
-  <p></p>
+  <h3><a href="personal">Frictionless Transfers</a></h3>
+  <p>Move capital via SWIFT, SEPA Instant, ACH, Fedwire, and Faster Payments from one dashboard.</p>
   </div>
   </div>
   <div class="feature-card style6">
@@ -342,8 +232,8 @@
   <i class="flaticon-notification"></i>
   </div>
   <div class="feature-info">
-  <h3><a href="#">Global 24/7 Support</a></h3>
-  <p></p>
+  <h3><a href="contact">24/7 Specialist Desk</a></h3>
+  <p>Direct access to private banking officers and treasury specialists at any hour of the day.</p>
   </div>
   </div>
   <div class="feature-card style6">
@@ -351,8 +241,8 @@
   <i class="flaticon-money-1"></i>
   </div>
   <div class="feature-info">
-  <h3><a href="#">Lowest Fee</a></h3>
-  <p></p>
+  <h3><a href="business">Interbank FX Rates</a></h3>
+  <p>Convert currencies at institutional rates with complete fee transparency and zero hidden spreads.</p>
   </div>
   </div>
   <div class="feature-card style6">
@@ -360,8 +250,8 @@
   <i class="flaticon-automation"></i>
   </div>
   <div class="feature-info">
-  <h3><a href="#">Instant Processing</a></h3>
-  <p></p>
+  <h3><a href="loans">Real-Time Clearing</a></h3>
+  <p>Automated smart-routing ensures your domestic and international instructions settle in seconds.</p>
   </div>
   </div>
   <div class="feature-card style6">
@@ -369,14 +259,13 @@
   <i class="flaticon-shield"></i>
   </div>
   <div class="feature-info">
-  <h3><a href="#">Bank Lavel Security</a></h3>
-  <p></p>
+  <h3><a href="about">Bank-Grade Custody</a></h3>
+  <p>Protected by multi-factor hardware keys, biometric verification, and segregated tier-one reserves.</p>
   </div>
   </div>
   </div>
   </div>
   </div>
-  
   
   
   <section class="app-wrap style1 ptb-100 bg-whisper">
@@ -384,23 +273,23 @@
   <div class="row gx-5 align-items-center">
   <div class="col-lg-6">
   <div class="app-img-wrap">
-  <img src="temp/custom/assets/img/shape-4.png" alt="Image" class="app-shape-one bounce">
-  <img src="temp/custom/assets/img/app-screen.png" alt="Image">
+  <img src="temp/custom/assets/img/shape-4.png?v=cherry3" alt="Image" class="app-shape-one bounce">
+  <img src="temp/custom/assets/img/app-screen.png?v=cherry3" alt="Image">
   </div>
   </div>
   <div class="col-lg-6">
   <div class="app-content">
   <div class="content-title style1">
-  <span>OUR APP</span>
+  <span>MOBILE BANKING SUITE</span>
   <h2>{{ pc('about','cta_heading') }}</h2>
   <p>{{ pc('about','cta_body') }}</p>
   </div>
-  <h5>Over 9.2 million Downloads Worldwide</h5>
+  <h5>Trusted by Over 9.2 Million Clients Worldwide</h5>
   <div class="app-btn-wrap">
   <a href="app">
-  <img src="temp/custom/assets/img/about/play-store.png" alt="Image">
+  <img src="temp/custom/assets/img/about/play-store.png?v=cherry3" alt="Image">
   </a><a href="app">
-  <img src="temp/custom/assets/img/about/app-store.png" alt="Image">
+  <img src="temp/custom/assets/img/about/app-store.png?v=cherry3" alt="Image">
   </a>
   </div>
   </div>
@@ -410,9 +299,5 @@
   </section>
   
   </div>
-  
-  
-      
-
 
 @endsection

@@ -2,164 +2,125 @@
 
 namespace Database\Seeders;
 
+use App\Models\PageContent;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PageContentSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        $now = now();
-        $order = 0;
+        $rows = [
+            // HOME
+            ['home', 'hero_tagline',     'Hero tagline',             'text',     'Private & Commercial Digital Banking'],
+            ['home', 'hero_heading',     'Hero heading',             'text',     'Borderless Wealth & Treasury Built for Modern Ambition'],
+            ['home', 'hero_subtext',     'Hero subtext',             'textarea', 'Mortil Holders pairs institutional-grade security with instant multi-currency settlement. Hold, convert, and deploy capital across 100+ jurisdictions with zero hidden spreads and round-the-clock private client support.'],
+            ['home', 'hero_cta_label',   'Hero CTA button label',    'text',     'Open an Account'],
+            ['home', 'cta_heading',      'Bottom CTA heading',       'text',     'Elevate the Way You Hold and Move Capital'],
+            ['home', 'cta_subtext',      'Bottom CTA subtext',       'textarea', 'Open your Mortil Holders personal or corporate account in minutes and unlock instant global clearing, high-yield liquidity vaults, and bespoke credit lines.'],
+            ['home', 'cta_btn1_label',   'CTA primary button',       'text',     'Open Private Account'],
+            ['home', 'cta_btn2_label',   'CTA secondary button',     'text',     'Speak with an Advisor'],
 
-        foreach ($this->sections() as $row) {
-            DB::table('page_contents')->updateOrInsert(
-                ['page' => $row['page'], 'section_key' => $row['key']],
-                [
-                    'label' => $row['label'],
-                    'section_group' => $row['group'],
-                    'type' => $row['type'],
-                    'value' => $row['value'],
-                    'sort_order' => $order++,
-                    'updated_at' => $now,
-                    'created_at' => $now,
-                ]
+            // HOME — Why Choose Us (3 feature cards)
+            ['home', 'feature1_title', 'Feature 1 title', 'text',     'Transparent Interbank Pricing'],
+            ['home', 'feature1_body',  'Feature 1 body',  'textarea', 'Execute domestic and international transfers at real-time interbank rates with upfront fee disclosure and zero surprise markups.'],
+            ['home', 'feature2_title', 'Feature 2 title', 'text',     'Instant Settlement Rails'],
+            ['home', 'feature2_body',  'Feature 2 body',  'textarea', 'Clear funds in seconds across SEPA, SWIFT, ACH, and Faster Payments with automated smart-routing and real-time tracking.'],
+            ['home', 'feature3_title', 'Feature 3 title', 'text',     'Dedicated Relationship Desk'],
+            ['home', 'feature3_body',  'Feature 3 body',  'textarea', 'Every account is backed by 24/7 specialist support and treasury advisors ready to assist with high-value transactions and compliance.'],
+
+            // HOME — Smart Digital Banking (2 feature items)
+            ['home', 'smart_tagline',       'Smart Banking tagline', 'text',     'INTELLIGENT TREASURY'],
+            ['home', 'smart_heading',       'Smart Banking heading', 'text',     'Precision Financial Control From a Single Unified Ledger'],
+            ['home', 'smart_body',          'Smart Banking body',    'textarea', 'Consolidate your everyday liquidity, cross-border settlements, and credit facilities inside an intuitive platform engineered for speed and clarity.'],
+            ['home', 'smart_feat1_title',   'Smart feature 1 title', 'text',     'Global Multi-Currency Clearing'],
+            ['home', 'smart_feat1_body',    'Smart feature 1 body',  'textarea', 'Hold, exchange, and disburse funds in over 50 currencies with local account details and instant cross-border settlement.'],
+            ['home', 'smart_feat2_title',   'Smart feature 2 title', 'text',     'Automated Liquidity & Spend Controls'],
+            ['home', 'smart_feat2_body',    'Smart feature 2 body',  'textarea', 'Configure granular approval workflows, dynamic card limits, and automated sweeps that put idle balances to work.'],
+
+            // HOME — Banking Security (2 feature items)
+            ['home', 'sec_tagline',     'Security tagline',         'text',     'FORTRESS INFRASTRUCTURE'],
+            ['home', 'sec_heading',     'Security heading',         'text',     'Uncompromising Protection for Every Asset You Hold'],
+            ['home', 'sec_body',        'Security body',            'textarea', 'Your capital is safeguarded by hardware-backed encryption, biometric authentication, real-time behavioral fraud telemetry, and segregated tier-one safeguarding.'],
+            ['home', 'sec_feat1_title', 'Security feature 1 title', 'text',     'End-to-End Cryptographic Custody'],
+            ['home', 'sec_feat1_body',  'Security feature 1 body',  'textarea', 'Every sign-in and wire instruction is verified through multi-factor hardware keys, TLS 1.3 encryption, and continuous anomaly monitoring.'],
+            ['home', 'sec_feat2_title', 'Security feature 2 title', 'text',     'Instant Card & Vault Lockdown'],
+            ['home', 'sec_feat2_body',  'Security feature 2 body',  'textarea', 'Freeze physical or virtual cards, restrict merchant categories, or lock outbound wires in a single tap from web or mobile.'],
+
+            // HOME — App section
+            ['home', 'app_tagline', 'App section tagline', 'text',     'MOBILE COMMAND CENTER'],
+            ['home', 'app_heading', 'App section heading', 'text',     'Your Entire Private Bank in the Palm of Your Hand'],
+            ['home', 'app_body',    'App section body',    'textarea', 'Approve wires, issue virtual cards on the fly, monitor foreign exchange exposure, and draw down credit lines from anywhere in the world.'],
+            ['home', 'app_stat',    'App downloads stat',  'text',     'Trusted by over 9.2 million account holders across 100+ countries'],
+
+            // HOME — Testimonials header
+            ['home', 'test_tagline', 'Testimonials tagline', 'text', 'CLIENT PERSPECTIVES'],
+            ['home', 'test_heading', 'Testimonials heading', 'text', 'Why Global Leaders & Private Clients Bank With Mortil Holders'],
+
+            // HOME — Counters (4 numbers)
+            ['home', 'counter1_num', 'Counter 1 number (Happy Customers)',   'text', '1450'],
+            ['home', 'counter2_num', 'Counter 2 number (Years in Banking)',  'text', '28'],
+            ['home', 'counter3_num', 'Counter 3 number (Branches)',          'text', '2650'],
+            ['home', 'counter4_num', 'Counter 4 number (Countries)',         'text', '104'],
+
+            // ABOUT
+            ['about', 'header_title',    'Page header title',        'text',     'About Mortil Holders'],
+            ['about', 'story_tagline',   'Story section tagline',    'text',     'THE MORTIL HOLDERS STANDARD'],
+            ['about', 'story_heading',   'Story section heading',    'text',     'Engineering the Future of Private & Commercial Banking'],
+            ['about', 'story_body',      'Story section body',       'textarea', 'Mortil Holders was founded on a clear conviction: private individuals and ambitious enterprises deserve banking infrastructure that moves as fast as the modern global economy. By combining tier-one capital stewardship with real-time settlement rails, we deliver frictionless accounts, transparent foreign exchange, and tailored credit facilities across more than 100 countries.'],
+            ['about', 'bullet_1',        'Highlight bullet 1',       'text',     'Instant multi-currency accounts with local IBAN and routing credentials across major financial hubs.'],
+            ['about', 'bullet_2',        'Highlight bullet 2',       'text',     '24/7 dedicated relationship managers and specialist treasury support whenever your operations demand it.'],
+            ['about', 'bullet_3',        'Highlight bullet 3',       'text',     'Direct interbank pricing with zero concealed spreads, monthly surprises, or legacy wire delays.'],
+            ['about', 'cta_heading',     'Bottom CTA heading',       'text',     'Experience Private Digital Banking Without Boundaries'],
+            ['about', 'cta_body',        'Bottom CTA body',          'textarea', 'Manage personal wealth, corporate treasury, credit lines, and global card programs from one unified platform built for reliability and speed.'],
+
+            // CONTACT
+            ['contact', 'header_title',   'Page header title',       'text',     'Contact Us'],
+            ['contact', 'header_subtext', 'Page header subtext',     'textarea', 'Connect with our private client desk or corporate treasury specialists. Our global support team is available 24/7 to assist you.'],
+            ['contact', 'location_label', 'Location card label',     'text',     'Global Headquarters'],
+            ['contact', 'location_value', 'Location address',        'textarea', '301 East Water Street, Charlottesville, VA 22904, United States'],
+            ['contact', 'email_label',    'Email card label',        'text',     'Client Advisory Desk'],
+            ['contact', 'email_value',    'Email address',           'text',     'info@mortilholders.online'],
+            ['contact', 'phone_label',    'Phone card label',        'text',     'Direct Private Line'],
+            ['contact', 'phone_value',    'Phone number',            'text',     '+1 (800) 555-0199'],
+
+            // BUSINESS
+            ['business', 'intro_heading',   'Intro section heading',  'text',     'Enterprise Treasury & Commercial Banking Built for Scale'],
+            ['business', 'overview_heading','Overview block heading', 'text',     'Institutional Financial Infrastructure for Modern Enterprises'],
+            ['business', 'overview_body',   'Overview block body',    'textarea', 'From high-growth ventures to established multinational groups, Mortil Holders provides the multi-currency accounts, automated payables, trade finance, and treasury controls required to operate globally with confidence.'],
+            ['business', 'app_heading',     'App section heading',    'text',     'Command Your Corporate Treasury From Anywhere'],
+            ['business', 'app_body',        'App section body',       'textarea', 'Approve batch payroll runs, issue virtual corporate cards with real-time spend caps, and hedge foreign currency exposure directly from our mobile and web suite.'],
+            ['business', 'app_stat',        'App downloads stat',     'text',     'Trusted by 550K+ corporate and commercial entities worldwide'],
+
+            // PERSONAL
+            ['personal', 'intro_heading',   'Intro section heading',  'text',     'Private & Personal Banking Tailored Around Your Life'],
+            ['personal', 'overview_heading','Overview block heading', 'text',     'Effortless Everyday Banking Meets Private Wealth Stewardship'],
+            ['personal', 'overview_body',   'Overview block body',    'textarea', 'Whether you are managing daily household finances, saving for milestone acquisitions, or sending funds to family abroad, Mortil Holders gives you instant liquidity, fee-free global spending, and bank-grade protection.'],
+            ['personal', 'app_heading',     'App section heading',    'text',     'Total Clarity Over Your Personal Wealth, 24/7'],
+            ['personal', 'app_body',        'App section body',       'textarea', 'Track real-time balances, automate high-yield savings vaults, split expenses, and send instant domestic or cross-border transfers from one refined app.'],
+            ['personal', 'app_stat',        'App downloads stat',     'text',     'Over 9.2 million personal banking clients worldwide'],
+
+            // LOANS
+            ['loans', 'intro_heading', 'Intro section heading', 'text',     'Bespoke Credit Facilities & Flexible Lending Solutions'],
+            ['loans', 'apply_heading', 'Apply block heading',   'text',     'Structured Financing With Rapid Decisions'],
+            ['loans', 'apply_body',    'Apply block body',      'textarea', 'Access competitive fixed and variable credit facilities for residential property, automotive acquisitions, commercial expansion, and personal liquidity—with transparent amortization and zero prepayment penalties.'],
+            ['loans', 'app_heading',   'App section heading',   'text',     'Fast, Transparent Capital for Your Next Milestone'],
+            ['loans', 'app_body',      'App section body',      'textarea', 'Submit your credit application in minutes, review clear repayment schedules upfront, and receive direct disbursement into your Mortil Holders account upon approval.'],
+            ['loans', 'app_stat',      'App stat line',         'text',     'Over 750K+ personal and commercial credit facilities funded'],
+
+            // CARDS
+            ['cards', 'intro_heading', 'Intro section heading', 'text',     'Precision-Engineered Credit & Multi-Currency Debit Cards'],
+            ['cards', 'apply_heading', 'Apply block heading',   'text',     'Request Your Mortil Holders Card'],
+            ['cards', 'apply_body',    'Apply block body',      'textarea', 'Accepted at over 80 million merchants worldwide across Visa, Mastercard, American Express, and Discover networks—featuring instant virtual issuance, zero foreign transaction fees, and elevated cashback rewards.'],
+            ['cards', 'app_heading',   'App section heading',   'text',     'Granular Card Governance at Your Fingertips'],
+            ['cards', 'app_body',      'App section body',      'textarea', 'Generate single-use virtual cards, set real-time merchant and geographic spend limits, view instant transaction telemetry, and freeze or unfreeze cards with a single tap.'],
+            ['cards', 'app_stat',      'App stat line',         'text',     'Over 2.4 million active Mortil Holders cardholders globally'],
+        ];
+
+        foreach ($rows as [$page, $key, $label, $type, $value]) {
+            PageContent::updateOrCreate(
+                ['page' => $page, 'section_key' => $key],
+                ['label' => $label, 'type' => $type, 'value' => $value]
             );
         }
-    }
-
-    private function sections(): array
-    {
-        return array_merge(
-            $this->home(),
-            $this->about(),
-            $this->contact(),
-            $this->business(),
-            $this->personal(),
-            $this->loans(),
-            $this->cards()
-        );
-    }
-
-    private function home(): array
-    {
-        $p = 'home';
-        return [
-            ['page'=>$p,'key'=>'hero_eyebrow','label'=>'Hero eyebrow','group'=>'Hero','type'=>'text','value'=>'BANKING WITHOUT BORDERS'],
-            ['page'=>$p,'key'=>'hero_heading','label'=>'Hero heading','group'=>'Hero','type'=>'text','value'=>'Move Money Across the World in Real Time'],
-            ['page'=>$p,'key'=>'hero_subtext','label'=>'Hero subtext','group'=>'Hero','type'=>'textarea','value'=>'Mortil Holders brings modern, secure digital banking to everyone. Open an account in minutes, hold multiple currencies, and send money worldwide with transparent, low fees — all from one app.'],
-            ['page'=>$p,'key'=>'hero_button','label'=>'Hero button label','group'=>'Hero','type'=>'text','value'=>'Open Online Banking'],
-            ['page'=>$p,'key'=>'why_heading','label'=>'Why-us heading','group'=>'Why Us','type'=>'text','value'=>'We Reimagined Digital Banking'],
-            ['page'=>$p,'key'=>'why_subtext','label'=>'Why-us text','group'=>'Why Us','type'=>'textarea','value'=>"For over a decade we've combined data, technology and thoughtful design to make banking simpler and more human. Today, millions trust Mortil Holders to manage, move and grow their money."],
-            ['page'=>$p,'key'=>'feature_app_title','label'=>'Feature: app title','group'=>'Features','type'=>'text','value'=>'A Powerful Mobile & Online Experience'],
-            ['page'=>$p,'key'=>'feature_app_body','label'=>'Feature: app body','group'=>'Features','type'=>'textarea','value'=>'Check balances, move funds, freeze cards and track every transaction in real time. Our mobile and web apps put complete control of your money in your hands, wherever you are.'],
-            ['page'=>$p,'key'=>'feature_cards_title','label'=>'Feature: cards title','group'=>'Features','type'=>'text','value'=>'Set Up & Spend From Your Cards in a Minute'],
-            ['page'=>$p,'key'=>'feature_cards_body','label'=>'Feature: cards body','group'=>'Features','type'=>'textarea','value'=>'Create virtual and physical cards instantly, set your own limits, and spend in the currency you choose — with total transparency and total speed.'],
-            ['page'=>$p,'key'=>'feature_secure_title','label'=>'Feature: security title','group'=>'Features','type'=>'text','value'=>'Innovative, Secure and Truly Digital'],
-            ['page'=>$p,'key'=>'feature_secure_body','label'=>'Feature: security body','group'=>'Features','type'=>'textarea','value'=>'Bank-grade encryption, two-factor authentication and round-the-clock monitoring keep your money and data safe, so you can focus on living rather than worrying.'],
-            ['page'=>$p,'key'=>'tool_rates_title','label'=>'Tool: rates title','group'=>'Tools','type'=>'text','value'=>'Historical Currency Rates'],
-            ['page'=>$p,'key'=>'tool_rates_body','label'=>'Tool: rates body','group'=>'Tools','type'=>'textarea','value'=>'Track how rates have moved over time and time your exchanges with confidence.'],
-            ['page'=>$p,'key'=>'tool_travel_title','label'=>'Tool: travel title','group'=>'Tools','type'=>'text','value'=>'Travel Expense Calculator'],
-            ['page'=>$p,'key'=>'tool_travel_body','label'=>'Tool: travel body','group'=>'Tools','type'=>'textarea','value'=>'Plan trips abroad with clear, upfront estimates of what your money is worth.'],
-            ['page'=>$p,'key'=>'tool_alerts_title','label'=>'Tool: alerts title','group'=>'Tools','type'=>'text','value'=>'Currency Email Updates'],
-            ['page'=>$p,'key'=>'tool_alerts_body','label'=>'Tool: alerts body','group'=>'Tools','type'=>'textarea','value'=>'Get the rates you care about delivered straight to your inbox.'],
-            ['page'=>$p,'key'=>'platform_heading','label'=>'Platform heading','group'=>'Platform','type'=>'text','value'=>'Your One-Stop Digital Banking Platform'],
-            ['page'=>$p,'key'=>'platform_body','label'=>'Platform body','group'=>'Platform','type'=>'textarea','value'=>'Exchange money across the world in real time with some of the lowest fees available, and hold and manage multiple currencies from a single, secure account.'],
-            ['page'=>$p,'key'=>'stats_heading','label'=>'Stats heading','group'=>'Stats','type'=>'text','value'=>'Trusted by Millions Around the World'],
-            ['page'=>$p,'key'=>'stats_value','label'=>'Stats figure','group'=>'Stats','type'=>'text','value'=>'18.5M+'],
-            ['page'=>$p,'key'=>'stats_label','label'=>'Stats label','group'=>'Stats','type'=>'text','value'=>'Happy customers and growing'],
-            ['page'=>$p,'key'=>'cta_heading','label'=>'CTA heading','group'=>'Call To Action','type'=>'text','value'=>'Ready to Bank Smarter?'],
-            ['page'=>$p,'key'=>'cta_body','label'=>'CTA body','group'=>'Call To Action','type'=>'textarea','value'=>'Join Mortil Holders today and experience banking built for the way you live.'],
-            ['page'=>$p,'key'=>'cta_button','label'=>'CTA button label','group'=>'Call To Action','type'=>'text','value'=>'Get Started'],        ];
-    }
-
-    private function about(): array
-    {
-        $p = 'about';
-        return [
-            ['page'=>$p,'key'=>'header_title','label'=>'Header title','group'=>'Header','type'=>'text','value'=>'About Mortil Holders'],
-            ['page'=>$p,'key'=>'header_subtext','label'=>'Header subtext','group'=>'Header','type'=>'textarea','value'=>"We're on a mission to make world-class banking simple, transparent and accessible to everyone."],            ['page'=>$p,'key'=>'who_heading','label'=>'Who-we-are heading','group'=>'Who We Are','type'=>'text','value'=>'Used by 100K+ Businesses of Every Shape & Size'],
-            ['page'=>$p,'key'=>'who_body','label'=>'Who-we-are body','group'=>'Who We Are','type'=>'textarea','value'=>'From freelancers to fast-growing companies, organisations rely on Mortil Holders to hold multiple currencies, pay teams and suppliers worldwide, and move money in real time.'],
-            ['page'=>$p,'key'=>'story_heading','label'=>'Story heading','group'=>'Our Story','type'=>'text','value'=>'Digital Banking, Reinvented'],
-            ['page'=>$p,'key'=>'story_body','label'=>'Story body','group'=>'Our Story','type'=>'textarea','value'=>'Mortil Holders was founded on a simple idea: banking should work for people, not the other way around. We replaced paperwork and hidden fees with a fast, secure, mobile-first platform you can trust.'],
-            ['page'=>$p,'key'=>'feature_app_title','label'=>'Feature: app title','group'=>'Features','type'=>'text','value'=>'Powerful Mobile & Online App'],
-            ['page'=>$p,'key'=>'feature_app_body','label'=>'Feature: app body','group'=>'Features','type'=>'textarea','value'=>'Everything you need to manage your money, on any device, around the clock.'],
-            ['page'=>$p,'key'=>'feature_team_title','label'=>'Feature: teams title','group'=>'Features','type'=>'text','value'=>'Built for Multiple Users & Teams'],
-            ['page'=>$p,'key'=>'feature_team_body','label'=>'Feature: teams body','group'=>'Features','type'=>'textarea','value'=>'Give your business controlled, role-based access so the right people manage the right money.'],
-            ['page'=>$p,'key'=>'customers_heading','label'=>'Customers heading','group'=>'Customers','type'=>'text','value'=>'We Always Aim to Exceed Your Expectations'],
-            ['page'=>$p,'key'=>'customers_body','label'=>'Customers body','group'=>'Customers','type'=>'textarea','value'=>'Our product and our people are built around your needs, with responsive support whenever you need it.'],
-            ['page'=>$p,'key'=>'cta_heading','label'=>'CTA heading','group'=>'Call To Action','type'=>'text','value'=>'Have Questions? Download Our App'],
-            ['page'=>$p,'key'=>'cta_body','label'=>'CTA body','group'=>'Call To Action','type'=>'textarea','value'=>'Get started with Mortil Holders in minutes and take your banking with you everywhere.'],
-        ];
-    }
-
-    private function contact(): array
-    {
-        $p = 'contact';
-        return [
-            ['page'=>$p,'key'=>'header_title','label'=>'Header title','group'=>'Header','type'=>'text','value'=>'Contact Us'],
-            ['page'=>$p,'key'=>'header_subtext','label'=>'Header subtext','group'=>'Header','type'=>'textarea','value'=>"We'd love to hear from you. Reach out and our team will get back to you as soon as possible."],            ['page'=>$p,'key'=>'location_label','label'=>'Location label','group'=>'Details','type'=>'text','value'=>'Our Location'],
-            ['page'=>$p,'key'=>'location_value','label'=>'Location value','group'=>'Details','type'=>'text','value'=>'London, United Kingdom'],
-            ['page'=>$p,'key'=>'email_label','label'=>'Email label','group'=>'Details','type'=>'text','value'=>'Email Us'],
-            ['page'=>$p,'key'=>'email_value','label'=>'Email value','group'=>'Details','type'=>'text','value'=>'info@mortilholders.online'],
-            ['page'=>$p,'key'=>'phone_label','label'=>'Phone label','group'=>'Details','type'=>'text','value'=>'Call Us'],
-            ['page'=>$p,'key'=>'phone_value','label'=>'Phone value','group'=>'Details','type'=>'text','value'=>'+44 20 0000 0000'],
-        ];
-    }
-
-    private function business(): array
-    {
-        $p = 'business';
-        return [
-            ['page'=>$p,'key'=>'intro_heading','label'=>'Intro heading','group'=>'Header','type'=>'text','value'=>'Smarter Banking for Every Business'],
-            ['page'=>$p,'key'=>'intro_subtext','label'=>'Intro subtext','group'=>'Header','type'=>'textarea','value'=>'Unlock dedicated business accounts, competitive credit lines, and real-time cash-flow tools designed to help your company move faster and spend smarter.'],
-            ['page'=>$p,'key'=>'overview_heading','label'=>'Overview heading','group'=>'Overview','type'=>'text','value'=>'Built for the Way Businesses Actually Work'],
-            ['page'=>$p,'key'=>'overview_body','label'=>'Overview body','group'=>'Overview','type'=>'textarea','value'=>'From sole traders to scaling enterprises, Mortil Holders delivers a complete suite of banking services — current accounts, multi-currency wallets, instant transfers, and dedicated relationship managers — all in one secure platform.'],
-            ['page'=>$p,'key'=>'app_heading','label'=>'App section heading','group'=>'App','type'=>'text','value'=>'Manage Your Business Finances on the Move'],
-            ['page'=>$p,'key'=>'app_body','label'=>'App section body','group'=>'App','type'=>'textarea','value'=>'Our award-winning mobile and web platform keeps you in full control of payroll, supplier payments, and real-time reporting — whether you are in the boardroom or on the road.'],
-            ['page'=>$p,'key'=>'app_stat','label'=>'App download stat','group'=>'App','type'=>'text','value'=>'Trusted by 500K+ businesses worldwide'],
-        ];
-    }
-
-    private function personal(): array
-    {
-        $p = 'personal';
-        return [
-            ['page'=>$p,'key'=>'intro_heading','label'=>'Intro heading','group'=>'Header','type'=>'text','value'=>'Banking That Puts You First'],
-            ['page'=>$p,'key'=>'intro_subtext','label'=>'Intro subtext','group'=>'Header','type'=>'textarea','value'=>'From everyday spending accounts to high-interest savings, Mortil Holders gives you flexible, transparent personal banking products that fit your life — not the other way around.'],
-            ['page'=>$p,'key'=>'overview_heading','label'=>'Overview heading','group'=>'Overview','type'=>'text','value'=>'Everything You Need for Day-to-Day Banking'],
-            ['page'=>$p,'key'=>'overview_body','label'=>'Overview body','group'=>'Overview','type'=>'textarea','value'=>'Open a personal current account in minutes, link a savings pot, and access fee-free foreign currency transactions. Mortil Holders makes it easy to stay on top of your finances with real-time notifications, spending insights, and instant card controls.'],
-            ['page'=>$p,'key'=>'app_heading','label'=>'App section heading','group'=>'App','type'=>'text','value'=>'Your Finances, Wherever You Are'],
-            ['page'=>$p,'key'=>'app_body','label'=>'App section body','group'=>'App','type'=>'textarea','value'=>'Bank on the go with our fully featured mobile app. Check balances, set savings goals, freeze your card, and send money instantly — all from the palm of your hand.'],
-            ['page'=>$p,'key'=>'app_stat','label'=>'App download stat','group'=>'App','type'=>'text','value'=>'Over 9.2 million downloads worldwide'],
-        ];
-    }
-
-    private function loans(): array
-    {
-        $p = 'loans';
-        return [
-            ['page'=>$p,'key'=>'intro_heading','label'=>'Intro heading','group'=>'Header','type'=>'text','value'=>'Flexible Loans for Every Stage of Life'],
-            ['page'=>$p,'key'=>'intro_subtext','label'=>'Intro subtext','group'=>'Header','type'=>'textarea','value'=>'Whether you need funding for a new vehicle, a home purchase, a growing business, or unexpected medical costs, Mortil Holders offers straightforward loans with clear terms and competitive rates.'],
-            ['page'=>$p,'key'=>'apply_heading','label'=>'Apply section heading','group'=>'Apply','type'=>'text','value'=>'Apply for a Loan Today'],
-            ['page'=>$p,'key'=>'apply_body','label'=>'Apply section body','group'=>'Apply','type'=>'textarea','value'=>'Getting started is simple. Check your eligibility in seconds with no impact on your credit score, then choose the loan amount and repayment schedule that works for you. Funds are delivered quickly once approved.'],
-            ['page'=>$p,'key'=>'app_heading','label'=>'App section heading','group'=>'App','type'=>'text','value'=>'Fast Financing for Your Next Chapter'],
-            ['page'=>$p,'key'=>'app_body','label'=>'App section body','group'=>'App','type'=>'textarea','value'=>'Looking for vehicle financing, a home improvement loan, or working capital for your business? Find out if you qualify in minutes and lock in your terms before visiting any dealership or supplier.'],
-            ['page'=>$p,'key'=>'app_stat','label'=>'Approved loans stat','group'=>'App','type'=>'text','value'=>'Over 700K+ loans approved'],
-        ];
-    }
-
-    private function cards(): array
-    {
-        $p = 'cards';
-        return [
-            ['page'=>$p,'key'=>'intro_heading','label'=>'Intro heading','group'=>'Header','type'=>'text','value'=>'Cards Designed Around How You Spend'],
-            ['page'=>$p,'key'=>'intro_subtext','label'=>'Intro subtext','group'=>'Header','type'=>'textarea','value'=>'Discover a range of Visa, Mastercard, Amex, and Discover credit cards with cashback rewards, zero foreign transaction fees, and instant digital issuance — all managed from a single dashboard.'],
-            ['page'=>$p,'key'=>'apply_heading','label'=>'Apply section heading','group'=>'Apply','type'=>'text','value'=>'Apply for a Credit Card'],
-            ['page'=>$p,'key'=>'apply_body','label'=>'Apply section body','group'=>'Apply','type'=>'textarea','value'=>'Check if you are pre-approved without affecting your credit score. Select the card tier that matches your lifestyle and get your virtual card number instantly upon approval — no waiting for the post.'],
-            ['page'=>$p,'key'=>'app_heading','label'=>'App section heading','group'=>'App','type'=>'text','value'=>'Full Card Control at Your Fingertips'],
-            ['page'=>$p,'key'=>'app_body','label'=>'App section body','group'=>'App','type'=>'textarea','value'=>'Misplaced your card? Lock it instantly from the app. Found it? Unlock with a single tap. Set spending limits, view real-time transactions, and manage multiple cards all from one secure place.'],
-            ['page'=>$p,'key'=>'app_stat','label'=>'Card users stat','group'=>'App','type'=>'text','value'=>'Over 2 million credit card users'],
-        ];
     }
 }

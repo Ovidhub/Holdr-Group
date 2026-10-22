@@ -1,5 +1,5 @@
 @php
-    if (Auth('admin')->User()->dashboard_style == 'light') {
+    if (optional(Auth('admin')->User())->dashboard_style == 'light') {
         $text = 'dark';
         $bg = 'light';
     } else {
@@ -107,7 +107,12 @@
                                                         <input type="checkbox" wire:model='checkrecord'
                                                             value="{{ $user->id }}" />
                                                     </td>
-                                                    <td><img alt="" src="{{$settings->site_address}}/storage/app/public/photos/{{$user->profile_photo_path}}" width="35" height="35" style='border-radius: 50%;'>{{ $user->name }}</td>
+                                                    <td>
+                                                        @if(!empty($user->profile_photo_path))
+                                                            <img alt="" src="{{ asset('storage/app/public/photos/' . $user->profile_photo_path) }}" width="35" height="35" style="border-radius: 50%; margin-right: 8px;">
+                                                        @endif
+                                                        {{ $user->name }}
+                                                    </td>
                                                     <td>{{ $user->username }}</td>
                                                     <td>{{ $user->email }}</td>
                                                     <td>{{ $user->phone }}</td>
@@ -232,8 +237,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header ">
-                    <h4 class="modal-title text-{{ $text }}">Add ROI to selected users{{ $user->l_name }}
-                    </h4>
+                    <h4 class="modal-title text-{{ $text }}">Add ROI to selected users</h4>
                     <button type="button" class="close text-{{ $text }}"
                         data-dismiss="modal">&times;</button>
                 </div>

@@ -196,13 +196,14 @@ public function app(){
     //Privacy policy route
     public function privacy(){
         $terms = TermsPrivacy::find(1);
-        if ($terms->useterms == 'no') {
+        if ($terms && $terms->useterms == 'no') {
            return redirect()->back();
         }
         return view('home.privacy')
         ->with(array(
             'mplans' => Plans::where('type','Main')->get(),
-            'title' => 'Privacy Policy',
+            'title' => 'Privacy & Data Charter',
+            'terms' => $terms,
             'settings' => Settings::where('id', '=', '1')->first(),
         ));
     }

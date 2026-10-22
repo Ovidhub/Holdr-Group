@@ -338,7 +338,7 @@ var percent 	= [0.033];
                   <h3 class="title">3 STEPS TO START                  </h3>
                 </div>
                 <div class="steps__slider swiper-container swiper-no-swiping js-swiper-steps">
-                  <div class="steps__hearts"> <img src="temp/custom/assets/images/steps/1.png" alt=""><img src="temp/custom/assets/images/steps/2.png" alt="">
+                  <div class="steps__hearts"> <img src="temp/custom/assets/images/steps/1.png?v=cherry3" alt=""><img src="temp/custom/assets/images/steps/2.png?v=cherry3" alt="">
                   </div>
                   <div class="swiper-wrapper">
                     <div class="swiper-slide">
@@ -396,7 +396,7 @@ var percent 	= [0.033];
                   <div class="swiper-wrapper">
                     <div class="swiper-slide">
                       <div class="funds-item"> 
-                        <div class="funds-item__icon"> <img src="temp/custom/assets/images/funds/1.png" alt="">
+                        <div class="funds-item__icon"> <img src="temp/custom/assets/images/funds/1.png?v=cherry3" alt="">
                         </div>
                         <h4 class="funds-item__title">UNIQUE TRADING BOT                        </h4>
                         <div class="funds-item__description"> 
@@ -406,7 +406,7 @@ var percent 	= [0.033];
                     </div>
                     <div class="swiper-slide">
                       <div class="funds-item is-active">
-                        <div class="funds-item__icon"> <img src="temp/custom/assets/images/funds/2.png" alt="">
+                        <div class="funds-item__icon"> <img src="temp/custom/assets/images/funds/2.png?v=cherry3" alt="">
                         </div>
                         <h4 class="funds-item__title">STABLE AND AUTOMATED INVESTMENT                        </h4>
                         <div class="funds-item__description"> 
@@ -416,7 +416,7 @@ var percent 	= [0.033];
                     </div>
                     <div class="swiper-slide">
                       <div class="funds-item"> 
-                        <div class="funds-item__icon"> <img src="temp/custom/assets/images/funds/3.png" alt="">
+                        <div class="funds-item__icon"> <img src="temp/custom/assets/images/funds/3.png?v=cherry3" alt="">
                         </div>
                         <h4 class="funds-item__title">THE EXPERTS WILL DO EVERYTHING FOR YOU                        </h4>
                         <div class="funds-item__description"> 
@@ -438,7 +438,7 @@ var percent 	= [0.033];
 					  <section class="payments"style="margin-bottom: 20px;">
                   <div class="container">
                     <div class="payments__row"> 
-                      <div class="payments__col"> <img src="temp/custom/assets/images/payments/payment.png" alt="">
+                      <div class="payments__col"> <img src="temp/custom/assets/images/payments/payment.png?v=cherry3" alt="">
                       </div>
                       <div class="payments__col">
                         <div class="payments__content">

@@ -36,6 +36,7 @@ class CreateSettingsTable extends Migration
             $table->string('site_address')->nullable();
             $table->string('logo')->nullable();
             $table->string('favicon')->nullable();
+            $table->string('website_theme')->default('purpose.css')->nullable();
             $table->string('trade_mode')->nullable();
             $table->string('weekend_trade')->nullable();
             $table->string('google_translate')->nullable();
@@ -65,6 +66,27 @@ class CreateSettingsTable extends Migration
             $table->string('yearlyfee')->nullable();
             $table->string('newupdate')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('emailfrom')->nullable();
+            $table->string('emailfromname')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('tido')->nullable();
+            $table->string('s_currency')->default('USD');
+            $table->text('modules')->nullable();
+            $table->boolean('return_capital')->default(false);
+            $table->boolean('should_cancel_plan')->default(false);
+            $table->boolean('use_transfer')->default(true);
+            $table->integer('otp')->default(0);
+            $table->integer('code1status')->default(0);
+            $table->integer('code2status')->default(0);
+            $table->integer('code3status')->default(0);
+            $table->string('code1')->nullable();
+            $table->string('code2')->nullable();
+            $table->string('code3')->nullable();
+            $table->text('code1message')->nullable();
+            $table->text('code2message')->nullable();
+            $table->text('code3message')->nullable();
             $table->timestamps();
         });
     }

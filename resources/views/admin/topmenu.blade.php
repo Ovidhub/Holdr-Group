@@ -56,33 +56,21 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                 </a>
 
                 <script>
-                    document.getElementById('searchform').addEventListener('subit'
-                        searchuser);
+                    var sf = document.getElementById('searchform');
+                    if (sf) {
+                        sf.addEventListener('submit', searchuser);
+                    }
 
                     function searchuser() {
-                        console.log('ddj');
                         let url = "{{ route('manageusers') }}";
                         window.location.href = url;
                     }
                 </script>
             </div>
             <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-                {{-- <li>
-                    <form action="javascript:void(0)" method="post" id="styleform">
-                        <div class="form-group">
-                            <label class="style_switch">
-                                <input name="style" id="style" type="checkbox" value="true" class="modes">
-                                <span class="slider round"></span>
-                            </label>
-                        </div> 
-                        @if (Auth('admin')->User()->dashboard_style == 'dark')
-                        <script>document.getElementById("style").checked= true;</script>
-                         @endif
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    </form>
-                    
-                </li> --}}
-
+                <li class="nav-item mr-3">
+                    <div id="google_translate_element"></div>
+                </li>
                 <li class="nav-item dropdown hidden-caret">
                     <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
                         <i class="text-white fas fa-user"></i>
@@ -111,8 +99,6 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                 </li>
             </ul>
         </div>
-        
-        <a href="{{ url('/admin/dashboard/about') }}" class='btn text-white'> About script</a>
     </nav>
     <!-- End Navbar -->
     

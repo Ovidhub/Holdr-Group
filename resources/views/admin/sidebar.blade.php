@@ -365,19 +365,7 @@
                         <p>Pages</p>
                     </a>
                 </li>
-
-                <li class="nav-item {{ request()->routeIs('aboutonlinetrade') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/dashboard/about') }}">
-                        <i class=" fa fa-info-circle" aria-hidden="true"></i>
-                        <p>For More script</p>
-                    </a>
-                </li>
-
-              
-                   
-        
             </ul>
-Success!
         </div>
     </div>
 </div>

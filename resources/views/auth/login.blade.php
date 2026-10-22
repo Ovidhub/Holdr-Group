@@ -24,11 +24,11 @@
             </a>
             
             <!-- Title -->
-            <h1 class="text-4xl font-extrabold mb-6 text-center">Swift Money Transfer</h1>
+            <h1 class="text-4xl font-extrabold mb-6 text-center">Private &amp; Commercial Client Portal</h1>
             
             <!-- Description -->
             <p class="text-xl mb-8 max-w-md text-center text-white/80">
-                Swift and Secure Money Transfer to any bank account will become a breeze with {{ $settings->site_name }}.
+                Instant multi-currency clearing, institutional custody, and real-time treasury management with {{ $settings->site_name }}.
             </p>
             
             <!-- Features -->
@@ -37,25 +37,25 @@
                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                         <i data-lucide="shield" class="h-5 w-5"></i>
                     </div>
-                    <span>Secure Transfers</span>
+                    <span>Tier-One Custody</span>
                 </div>
                 <div class="flex items-center space-x-3">
                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                         <i data-lucide="zap" class="h-5 w-5"></i>
                     </div>
-                    <span>Lightning Fast</span>
+                    <span>Instant Settlement</span>
                 </div>
                 <div class="flex items-center space-x-3">
                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                         <i data-lucide="globe" class="h-5 w-5"></i>
                     </div>
-                    <span>Global Access</span>
+                    <span>104+ Jurisdictions</span>
                 </div>
                 <div class="flex items-center space-x-3">
                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                         <i data-lucide="smartphone" class="h-5 w-5"></i>
                     </div>
-                    <span>Mobile Ready</span>
+                    <span>24/7 Private Desk</span>
                 </div>
             </div>
         </div>
@@ -92,8 +92,8 @@
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
                 <!-- Card Header -->
                 <div class="px-8 pt-8 pb-6">
-                    <h2 class="text-2xl font-bold text-gray-900">Sign In to {{ $settings->site_name }}</h2>
-                    <p class="mt-2 text-sm text-gray-600">Access the {{ $settings->site_name }} panel using your email and password.</p>
+                    <h2 class="text-2xl font-bold text-gray-900">Client Portal Sign In</h2>
+                    <p class="mt-2 text-sm text-gray-600">Authenticate with your registered {{ $settings->site_name }} credentials to access your accounts and treasury ledger.</p>
                 </div>
                 
                 <!-- Login Form -->
