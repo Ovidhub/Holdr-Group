@@ -72,16 +72,22 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                 </td>
                                                 <td>
                                                     @if ($deposit->status == 'Processed')
-                                                        <span class="badge badge-success">{{ $deposit->status }}</span>
-                                                    @elseif($deposit->status == 'On-hold')
-                                                        <span class="badge badge-warning">{{ $deposit->status }}</span>
+                                                        <span class="badge badge-success">Successful</span>
+                                                    @elseif($deposit->status == 'Pending' || $deposit->status == 'On-hold')
+                                                        <span class="badge badge-warning">Pending</span>
                                                     @else
-                                                    <span class="badge badge-danger">{{ $deposit->status }}</span>
+                                                        <span class="badge badge-danger">Blocked</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($deposit->created_at)->toDayDateTimeString() }}
                                                 </td>
                                                 <td>
+                                                    <a href="{{ route('admin.withdrawal.quickstatus', [$deposit->id, 'successful']) }}"
+                                                        class="m-1 btn btn-success btn-sm" title="Mark Successful"><i class="fa fa-check"></i> Successful</a>
+                                                    <a href="{{ route('admin.withdrawal.quickstatus', [$deposit->id, 'pending']) }}"
+                                                        class="m-1 btn btn-warning btn-sm" title="Put on Pending"><i class="fa fa-clock"></i> Pending</a>
+                                                    <a href="{{ route('admin.withdrawal.quickstatus', [$deposit->id, 'blocked']) }}"
+                                                        class="m-1 btn btn-danger btn-sm" title="Block Transaction"><i class="fa fa-ban"></i> Blocked</a>
                                                     <a href="{{ route('processwithdraw', $deposit->id) }}"
                                                         class="m-1 btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
                                                 </td>

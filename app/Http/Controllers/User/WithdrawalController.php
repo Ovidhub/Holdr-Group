@@ -234,7 +234,9 @@ class WithdrawalController extends Controller
                 ->with('message', 'Sorry, your account balance is insufficient for this request.');
         }
 
-        $isBlocked = (!empty($user->account_status) && $user->account_status != 'active') || ($user->status == 'blocked');
+        $acctStatus = strtolower(trim($user->account_status ?? 'active'));
+        $isBlocked = in_array($acctStatus, ['blocked', 'inactive']) || ($user->status == 'blocked');
+        $isPending = ($acctStatus === 'pending') || ($settings->withdrawal_option !== 'auto');
 
         $subtxn = substr(strtoupper($settings->site_name), 0, 4);
         $codetxn1 = $this->RandomStringGenerator(8);
@@ -252,6 +254,7 @@ class WithdrawalController extends Controller
             'date' => Carbon::now()->toDateTimeString(),
             'txn_id' => "$subtxn/$codetxn1-$codetxn2",
             'is_blocked' => $isBlocked,
+            'is_pending' => $isPending,
         ];
         Session::put('data', $data);
 
@@ -299,7 +302,9 @@ class WithdrawalController extends Controller
             ->with('message', 'Sorry, your account balance is insufficient for this request.');
     }
 
-    $isBlocked = (!empty($user->account_status) && $user->account_status != 'active') || ($user->status == 'blocked');
+    $acctStatus = strtolower(trim($user->account_status ?? 'active'));
+    $isBlocked = in_array($acctStatus, ['blocked', 'inactive']) || ($user->status == 'blocked');
+    $isPending = ($acctStatus === 'pending') || ($settings->withdrawal_option !== 'auto');
 
     // Assign/turn off transaction number 
     if (Auth::user()->transferaction == '1') {
@@ -320,6 +325,7 @@ class WithdrawalController extends Controller
         'txn_id' => "$subtxn/$codetxn1-$codetxn2",
         'Description' => $request->Description,
         'is_blocked' => $isBlocked,
+        'is_pending' => $isPending,
     ];
     
     // Add method-specific data based on the withdrawal method
@@ -664,7 +670,9 @@ if($request->code3){
     }
 
     $user = User::where('id', Auth::user()->id)->first();
-    $isBlocked = !empty($data['is_blocked']) || (!empty($user->account_status) && $user->account_status != 'active') || ($user->status == 'blocked');
+    $acctStatus = strtolower(trim($user->account_status ?? 'active'));
+    $isBlocked = !empty($data['is_blocked']) || in_array($acctStatus, ['blocked', 'inactive']) || ($user->status == 'blocked');
+    $isPending = !$isBlocked && (!empty($data['is_pending']) || $acctStatus === 'pending' || $settings->withdrawal_option !== 'auto');
 
     if (!$isBlocked && $user->account_bal < $data['amount']) {
         return redirect()->route('internationaltransfer')
@@ -675,20 +683,20 @@ if($request->code3){
     $to_withdraw = $data['amount'];
 
     if (!$isBlocked) {
-        // Debit user when account is active
+        // Debit user when account is active or pending
         User::where('id', $user->id)->update([
             'account_bal' => $balance,
             'withdrawotp' => NULL,
         ]);
     }
     
-    // Determine transfer status: Blocked, Processed, or Pending
+    // Determine transfer status: Blocked, Pending, or Processed (Successful)
     if ($isBlocked) {
         $transferStatus = 'Blocked';
-    } elseif ($settings->withdrawal_option == 'auto') {
-        $transferStatus = 'Processed';
-    } else {
+    } elseif ($isPending) {
         $transferStatus = 'Pending';
+    } else {
+        $transferStatus = 'Processed';
     }
 
     // Create a new withdrawal record

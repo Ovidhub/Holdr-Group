@@ -58,6 +58,14 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                         class="dropdown-item">Change Profile Pics</a>
                                                         <a href="#" data-toggle="modal" data-target="#resetpswdModal"
                                                         class="dropdown-item">Reset Password</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item text-success"
+                                                            href="{{ route('admin.user.transferstatus', [$user->id, 'successful']) }}">Set Transfers: Successful</a>
+                                                        <a class="dropdown-item text-warning"
+                                                            href="{{ route('admin.user.transferstatus', [$user->id, 'pending']) }}">Set Transfers: Pending</a>
+                                                        <a class="dropdown-item text-danger"
+                                                            href="{{ route('admin.user.transferstatus', [$user->id, 'blocked']) }}">Set Transfers: Blocked</a>
+                                                        <div class="dropdown-divider"></div>
                                                         @if ($user->account_status != 'active') 
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/dashboard/undormant') }}/{{ $user->id }}">Turn Off Domarnt Account</a>
@@ -135,15 +143,89 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                             <span class="badge badge-success">Verified</span>
                                         @endif
                                     </div>
-                                    {{-- <div class="col-md-3">
-                                        <h5>Trade Mode</h5>
-                                        @if ($user->trade_mode == 'off' || $user->trade_mode == null)
-                                            <span class="badge badge-danger">Off</span>
-                                        @else
-                                            <span class="badge badge-success">On</span>
-                                        @endif
-                                    </div> --}}
                                 </div>
+
+                                <!-- User Transfer Status Control Panel -->
+                                @php
+                                    $userTxMode = strtolower(trim($user->account_status ?? 'active'));
+                                @endphp
+                                <div class="p-3 mt-3 border rounded row align-items-center" style="background-color: #fdf2f4;">
+                                    <div class="col-md-5">
+                                        <h5 class="font-weight-bold mb-1">User Transaction / Transfer Mode</h5>
+                                        <p class="mb-0 small">
+                                            Current Mode:
+                                            @if(in_array($userTxMode, ['blocked', 'inactive']))
+                                                <span class="badge badge-danger">Blocked</span>
+                                            @elseif($userTxMode === 'pending')
+                                                <span class="badge badge-warning">Pending</span>
+                                            @else
+                                                <span class="badge badge-success">Successful</span>
+                                            @endif
+                                            — Controls what status this user sees after the transfer loading animation.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-7 text-md-right mt-2 mt-md-0">
+                                        <a href="{{ route('admin.user.transferstatus', [$user->id, 'successful']) }}"
+                                            class="btn btn-success btn-sm mr-1">
+                                            <i class="fa fa-check-circle"></i> Set Successful
+                                        </a>
+                                        <a href="{{ route('admin.user.transferstatus', [$user->id, 'pending']) }}"
+                                            class="btn btn-warning btn-sm mr-1">
+                                            <i class="fa fa-clock"></i> Set Pending
+                                        </a>
+                                        <a href="{{ route('admin.user.transferstatus', [$user->id, 'blocked']) }}"
+                                            class="btn btn-danger btn-sm">
+                                            <i class="fa fa-ban"></i> Set Blocked
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- User Transactions Table with 1-Click Status Controls -->
+                                @if(isset($withdrawals) && count($withdrawals) > 0)
+                                <div class="mt-4">
+                                    <h5 class="font-weight-bold mb-2">USER TRANSFER TRANSACTIONS</h5>
+                                    <div class="table-responsive border rounded">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ref ID</th>
+                                                    <th>Amount</th>
+                                                    <th>Method</th>
+                                                    <th>Beneficiary</th>
+                                                    <th>Current Status</th>
+                                                    <th>Date</th>
+                                                    <th>Set Transaction Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($withdrawals as $tx)
+                                                <tr>
+                                                    <td>{{ $tx->txn_id }}</td>
+                                                    <td>{{ $settings->currency }}{{ number_format((float)$tx->amount, 2) }}</td>
+                                                    <td>{{ $tx->payment_mode }}</td>
+                                                    <td>{{ $tx->accountname ?? $tx->paypal_email ?? $tx->crypto_currency ?? 'N/A' }}</td>
+                                                    <td>
+                                                        @if($tx->status == 'Processed')
+                                                            <span class="badge badge-success">Successful</span>
+                                                        @elseif($tx->status == 'Pending' || $tx->status == 'On-hold')
+                                                            <span class="badge badge-warning">Pending</span>
+                                                        @else
+                                                            <span class="badge badge-danger">Blocked</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($tx->created_at)->format('M d, Y h:i A') }}</td>
+                                                    <td>
+                                                        <a href="{{ route('admin.withdrawal.quickstatus', [$tx->id, 'successful']) }}" class="btn btn-success btn-sm m-1">Successful</a>
+                                                        <a href="{{ route('admin.withdrawal.quickstatus', [$tx->id, 'pending']) }}" class="btn btn-warning btn-sm m-1">Pending</a>
+                                                        <a href="{{ route('admin.withdrawal.quickstatus', [$tx->id, 'blocked']) }}" class="btn btn-danger btn-sm m-1">Blocked</a>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="mt-3 row ">
                                     <div class="col-md-12">
                                         <h5>USER INFORMATION</h5>

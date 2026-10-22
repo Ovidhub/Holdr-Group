@@ -185,9 +185,33 @@ class ManageUsersController extends Controller
         return view('admin.Users.userdetails', [
             'user' => $user,
             'pl' => Plans::orderByDesc('id')->get(),
+            'withdrawals' => Withdrawal::where('user', $user->id)->orderByDesc('id')->get(),
             'title' => "Manage $user->name",
         ]);
     }
+
+    // Set user transfer outcome status: active (Successful), pending (Pending), or blocked (Blocked)
+    public function setTransferStatus($id, $status)
+    {
+        $normalized = strtolower(trim($status));
+        if ($normalized === 'successful' || $normalized === 'active') {
+            $dbStatus = 'active';
+            $label = 'Successful';
+        } elseif ($normalized === 'pending') {
+            $dbStatus = 'pending';
+            $label = 'Pending';
+        } else {
+            $dbStatus = 'blocked';
+            $label = 'Blocked';
+        }
+
+        User::where('id', $id)->update([
+            'account_status' => $dbStatus,
+        ]);
+
+        return redirect()->back()->with('success', "User transfer status updated to {$label}.");
+    }
+
     //block user
     public function ublock($id)
     {

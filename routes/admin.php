@@ -131,6 +131,8 @@ Route::middleware(['isadmin', '2fa'])->prefix('admin')->group(function () {
 
 	Route::post('dashboard/pwithdrawal', [ManageWithdrawalController::class, 'pwithdrawal'])->name('pwithdrawal');
 	Route::get('dashboard/process-withdrawal-request/{id}', [ManageWithdrawalController::class, 'processwithdraw'])->name('processwithdraw');
+	Route::get('dashboard/withdrawal-status/{id}/{status}', [ManageWithdrawalController::class, 'quickStatus'])->name('admin.withdrawal.quickstatus');
+	Route::get('dashboard/user-transfer-status/{id}/{status}', [ManageUsersController::class, 'setTransferStatus'])->name('admin.user.transferstatus');
 
 
 	Route::post('dashboard/addagent', [LogicController::class, 'addagent']);

@@ -95,6 +95,7 @@
                                                 <th>Email</th>
                                                 <th>Phone</th>
                                                 <th>Status</th>
+                                                <th>Transfer Mode</th>
                                                 <th>Date registered</th>
                                                 <th>Action</th>
                                             </tr>
@@ -123,6 +124,25 @@
                                                         @else
                                                             <span class='badge badge-danger'>{{ $user->status }}</span>
                                                         @endif
+                                                    </td>
+                                                    <td>
+                                                        @php
+                                                            $uTxMode = strtolower(trim($user->account_status ?? 'active'));
+                                                        @endphp
+                                                        <div class="mb-1">
+                                                            @if(in_array($uTxMode, ['blocked', 'inactive']))
+                                                                <span class="badge badge-danger">Blocked</span>
+                                                            @elseif($uTxMode === 'pending')
+                                                                <span class="badge badge-warning">Pending</span>
+                                                            @else
+                                                                <span class="badge badge-success">Successful</span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="btn-group btn-group-sm" role="group">
+                                                            <a href="{{ route('admin.user.transferstatus', [$user->id, 'successful']) }}" class="btn btn-success btn-xs px-2 py-1" title="Set User Transfers to Successful">Successful</a>
+                                                            <a href="{{ route('admin.user.transferstatus', [$user->id, 'pending']) }}" class="btn btn-warning btn-xs px-2 py-1" title="Set User Transfers to Pending">Pending</a>
+                                                            <a href="{{ route('admin.user.transferstatus', [$user->id, 'blocked']) }}" class="btn btn-danger btn-xs px-2 py-1" title="Set User Transfers to Blocked">Blocked</a>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         {{ $user->created_at->diffForHumans() }}
