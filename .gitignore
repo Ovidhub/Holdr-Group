@@ -19,7 +19,7 @@ db.sql
 # ...but keep the safe branding script and ready-to-import MySQL seed dump
 !database/branding-mortil-holders.sql
 !database/mortil_holders_mysql.sql
-*.zip
+!docs/mortil-holders-cpanel-mysql-ready.zip
 
 .phpunit.result.cache
 docker-compose.override.yml

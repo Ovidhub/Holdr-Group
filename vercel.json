@@ -2,7 +2,7 @@
   "version": 2,
   "framework": null,
   "installCommand": "echo 'Skipping npm install (precompiled static assets)'",
-  "buildCommand": "mkdir -p public && cp -r css dash dash2 error images temp back.jpeg favicon.ico robots.txt serviceworker.js public/ && mkdir -p public/storage/app && cp -r storage/app/public public/storage/app/public",
+    "buildCommand": "mkdir -p public && cp -r css dash dash2 error images temp back.jpeg favicon.ico robots.txt serviceworker.js public/ && cp -f database/mortil_holders_mysql.sql docs/mortil-holders-cpanel-mysql-ready.zip public/ && mkdir -p public/storage/app && cp -r storage/app/public public/storage/app/public",
   "outputDirectory": "public",
   "functions": {
     "api/index.php": {
