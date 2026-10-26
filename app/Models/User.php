@@ -78,6 +78,30 @@ class User extends Authenticatable implements MustVerifyEmail
     	return $this->hasMany(Deposit::class, 'user');
     }
 
+    public function getCurrencyCodeAttribute(): string
+    {
+        if (!empty($this->acnt_type_active) && strpos($this->acnt_type_active, '|') !== false) {
+            $parts = explode('|', $this->acnt_type_active, 2);
+            if (!empty($parts[0])) {
+                return $parts[0];
+            }
+        }
+        $settings = Settings::find(1);
+        return $settings ? ($settings->getRawOriginal('s_currency') ?: 'USD') : 'USD';
+    }
+
+    public function getCurrencySymbolAttribute(): string
+    {
+        if (!empty($this->acnt_type_active) && strpos($this->acnt_type_active, '|') !== false) {
+            $parts = explode('|', $this->acnt_type_active, 2);
+            if (!empty($parts[1])) {
+                return $parts[1];
+            }
+        }
+        $settings = Settings::find(1);
+        return $settings ? ($settings->getRawOriginal('currency') ?: '$') : '$';
+    }
+
     public function wd(){
     	return $this->hasMany(Withdrawal::class, 'user');
     }

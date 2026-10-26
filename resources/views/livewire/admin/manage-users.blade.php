@@ -95,6 +95,7 @@
                                                 <th>Email</th>
                                                 <th>Phone</th>
                                                 <th>Status</th>
+                                                <th>Currency</th>
                                                 <th>Transfer Mode</th>
                                                 <th>Date registered</th>
                                                 <th>Action</th>
@@ -124,6 +125,16 @@
                                                         @else
                                                             <span class='badge badge-danger'>{{ $user->status }}</span>
                                                         @endif
+                                                    </td>
+                                                    <td>
+                                                        <div class="mb-1">
+                                                            <span class="badge badge-info">{{ $user->currency_symbol }} ({{ $user->currency_code }})</span>
+                                                        </div>
+                                                        <div class="btn-group btn-group-sm" role="group">
+                                                            <a href="{{ route('admin.user.currency', [$user->id, 'USD']) }}" class="btn btn-outline-primary btn-xs px-2 py-1" title="Set Currency to US Dollar">$ USD</a>
+                                                            <a href="{{ route('admin.user.currency', [$user->id, 'EUR']) }}" class="btn btn-outline-primary btn-xs px-2 py-1" title="Set Currency to Euro">&euro; EUR</a>
+                                                            <a href="{{ route('admin.user.currency', [$user->id, 'GBP']) }}" class="btn btn-outline-primary btn-xs px-2 py-1" title="Set Currency to British Pound">&pound; GBP</a>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         @php

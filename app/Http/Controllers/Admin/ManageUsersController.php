@@ -186,8 +186,37 @@ class ManageUsersController extends Controller
             'user' => $user,
             'pl' => Plans::orderByDesc('id')->get(),
             'withdrawals' => Withdrawal::where('user', $user->id)->orderByDesc('id')->get(),
+            'availableCurrencies' => Settings::availableCurrencies(),
             'title' => "Manage $user->name",
         ]);
+    }
+
+    // Set user dashboard currency (USD $, EUR €, GBP £, CHF, CAD, AUD, etc.)
+    public function setUserCurrency(Request $request, $id, $code = null)
+    {
+        $selectedCode = strtoupper(trim($code ?: $request->input('currency_code', 'USD')));
+        $catalog = Settings::availableCurrencies();
+
+        if (isset($catalog[$selectedCode])) {
+            $symbol = $catalog[$selectedCode]['symbol'];
+            $label = $catalog[$selectedCode]['name'];
+        } else {
+            $symbol = $request->input('currency_symbol', '$');
+            $label = "{$selectedCode} ({$symbol})";
+        }
+
+        User::where('id', $id)->update([
+            'acnt_type_active' => "{$selectedCode}|{$symbol}",
+        ]);
+
+        // Also sync default settings currency so global/unauthenticated fallback matches if desired
+        Settings::where('id', 1)->update([
+            'currency' => $symbol,
+            's_currency' => $selectedCode,
+            'scurrency' => $selectedCode,
+        ]);
+
+        return redirect()->back()->with('success', "User dashboard currency updated to {$label}.");
     }
 
     // Set user transfer outcome status: active (Successful), pending (Pending), or blocked (Blocked)

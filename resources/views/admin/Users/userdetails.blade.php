@@ -66,6 +66,13 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                         <a class="dropdown-item text-danger"
                                                             href="{{ route('admin.user.transferstatus', [$user->id, 'blocked']) }}">Set Transfers: Blocked</a>
                                                         <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.user.currency', [$user->id, 'USD']) }}">Set Currency: $ USD</a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.user.currency', [$user->id, 'EUR']) }}">Set Currency: &euro; EUR</a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.user.currency', [$user->id, 'GBP']) }}">Set Currency: &pound; GBP</a>
+                                                        <div class="dropdown-divider"></div>
                                                         @if ($user->account_status != 'active') 
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/dashboard/undormant') }}/{{ $user->id }}">Turn Off Domarnt Account</a>
@@ -107,11 +114,11 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                 <div class="p-3 mt-4 border rounded row ">
                                     <div class="col-md-3">
                                         <h5 class="text-bold">Account Balance</h5>
-                                        <p>{{ $settings->currency }}{{ number_format($user->account_bal) }}</p>
+                                        <p>{{ $user->currency_symbol }}{{ number_format($user->account_bal) }} <span class="badge badge-info">{{ $user->currency_code }}</span></p>
                                     </div>
                                     <div class="col-md-3">
                                         <h5>Account Limit</h5>
-                                        <p>{{ $settings->currency }}{{ number_format($user->limit) }} </p>
+                                        <p>{{ $user->currency_symbol }}{{ number_format($user->limit) }} </p>
                                     </div>
                                     
                                     
@@ -177,6 +184,46 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                             class="btn btn-danger btn-sm">
                                             <i class="fa fa-ban"></i> Set Blocked
                                         </a>
+                                    </div>
+                                </div>
+
+                                <!-- User Dashboard Currency Control Panel -->
+                                @php
+                                    $uCurrCode = $user->currency_code;
+                                    $uCurrSym = $user->currency_symbol;
+                                    $currenciesList = $availableCurrencies ?? \App\Models\Settings::availableCurrencies();
+                                @endphp
+                                <div class="p-3 mt-3 border rounded row align-items-center" style="background-color: #fff8f9;">
+                                    <div class="col-md-4">
+                                        <h5 class="font-weight-bold mb-1">User Dashboard Currency</h5>
+                                        <p class="mb-0 small">
+                                            Active Currency:
+                                            <span class="badge badge-primary">{{ $uCurrSym }} ({{ $uCurrCode }})</span>
+                                            — Changes the currency symbol &amp; code across this user's dashboard.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 mt-2 mt-md-0">
+                                        <div class="btn-group btn-group-sm flex-wrap" role="group">
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'USD']) }}" class="btn {{ $uCurrCode == 'USD' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">$ USD</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'EUR']) }}" class="btn {{ $uCurrCode == 'EUR' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">&euro; EUR</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'GBP']) }}" class="btn {{ $uCurrCode == 'GBP' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">&pound; GBP</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'CHF']) }}" class="btn {{ $uCurrCode == 'CHF' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">CHF</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'CAD']) }}" class="btn {{ $uCurrCode == 'CAD' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">CA$ CAD</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'AUD']) }}" class="btn {{ $uCurrCode == 'AUD' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">A$ AUD</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-2 mt-md-0">
+                                        <form method="POST" action="{{ route('admin.user.currency', $user->id) }}" class="form-inline justify-content-md-end">
+                                            @csrf
+                                            <select name="currency_code" class="form-control form-control-sm mr-2" style="max-width: 190px;">
+                                                @foreach($currenciesList as $code => $meta)
+                                                    <option value="{{ $code }}" {{ $uCurrCode === $code ? 'selected' : '' }}>
+                                                        {{ $meta['name'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-sm">Update Currency</button>
+                                        </form>
                                     </div>
                                 </div>
 

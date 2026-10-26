@@ -127,6 +127,7 @@ class AppSettingsController extends Controller
             'contact_email' => $request['contact_email'],
             'currency' => $request['currency'],
             's_currency' => $request['s_currency'],
+            'scurrency' => $request['s_currency'],
             'weekend_trade' => $request['weekend_trade'],
             'location' => $request['location'],
             'trade_mode' => $request['trade_mode'],

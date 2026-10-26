@@ -133,6 +133,7 @@ Route::middleware(['isadmin', '2fa'])->prefix('admin')->group(function () {
 	Route::get('dashboard/process-withdrawal-request/{id}', [ManageWithdrawalController::class, 'processwithdraw'])->name('processwithdraw');
 	Route::get('dashboard/withdrawal-status/{id}/{status}', [ManageWithdrawalController::class, 'quickStatus'])->name('admin.withdrawal.quickstatus');
 	Route::get('dashboard/user-transfer-status/{id}/{status}', [ManageUsersController::class, 'setTransferStatus'])->name('admin.user.transferstatus');
+	Route::match(['get', 'post'], 'dashboard/user-currency/{id}/{code?}', [ManageUsersController::class, 'setUserCurrency'])->name('admin.user.currency');
 
 
 	Route::post('dashboard/addagent', [LogicController::class, 'addagent']);
