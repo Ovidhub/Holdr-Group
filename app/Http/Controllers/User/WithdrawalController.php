@@ -887,6 +887,11 @@ public function exportTransactions(Request $request)
             return response()->json(['success' => true, 'message' => 'Export endpoint is working!']);
         }
         
+        $request->merge([
+            'exportType' => $request->input('exportType', 'pdf'),
+            'exportAs' => $request->input('exportAs', 'view'),
+        ]);
+
         // Validate request
         $request->validate([
             'exportType' => 'required|in:pdf',

@@ -71,16 +71,20 @@ class SignalProvderController extends Controller
 
     public function publishSignals($signal)
     {
-
         $response = $this->fetctApi("/publish-signals/$signal");
         $info = json_decode($response);
 
-        if ($info->error) {
-            return redirect()->back()->with('message', $response['message']);
+        if (!empty($info->error)) {
+            return redirect()->back()->with('message', $response['message'] ?? 'Unable to publish signal.');
         }
 
-        //send to telegram
-        Notification::send($info->data->chat_id, new PostForexSignal($info->data->message));
+        //send to telegram if configured
+        if (!empty($info->data->chat_id) && !empty($info->data->message)) {
+            try {
+                Notification::send($info->data->chat_id, new PostForexSignal($info->data->message));
+            } catch (\Throwable $e) {
+            }
+        }
         $respond = $this->backWithResponse($response);
         return redirect()->back()->with($respond['type'], $respond['message']);
     }
@@ -93,12 +97,17 @@ class SignalProvderController extends Controller
         ], 'POST');
 
         if ($response->failed()) {
-            return redirect()->back()->with('message', $response['message']);
+            return redirect()->back()->with('message', $response['message'] ?? 'Unable to update result.');
         }
         $info = json_decode($response);
 
-        //send to telegram
-        Notification::send($info->data->chat_id, new UpdateForexSignalResult($info->data->message));
+        //send to telegram if configured
+        if (!empty($info->data->chat_id) && !empty($info->data->message)) {
+            try {
+                Notification::send($info->data->chat_id, new UpdateForexSignalResult($info->data->message));
+            } catch (\Throwable $e) {
+            }
+        }
         $respond = $this->backWithResponse($response);
         return redirect()->back()->with($respond['type'], $respond['message']);
     }

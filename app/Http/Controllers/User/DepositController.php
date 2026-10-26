@@ -30,7 +30,11 @@ class DepositController extends Controller
     public function newdeposit(Request $request)
     {
         $settings = Settings::where('id', '1')->first();
-        $methodname =  Wdmethod::where('name', $request->payment_method)->first();
+        $methodname = Wdmethod::where('name', $request->payment_method)->first();
+        if (!$methodname) {
+            $methodname = (object) ['name' => $request->payment_method ?: 'Bank Transfer'];
+        }
+        $client_secret = null;
 
         if ($methodname->name == "Credit Card" and $settings->credit_card_provider == "Stripe") {
             $secretkey = $settings->s_s_k;
@@ -158,6 +162,8 @@ class DepositController extends Controller
     public function savedeposit(Request $request)
     {
         $user = User::where('id', Auth::user()->id)->first();
+        $settings = Settings::where('id', '=', '1')->first();
+        $path = null;
         
         if($user->account_status != 'active'){
             return redirect()->back()
@@ -165,14 +171,12 @@ class DepositController extends Controller
         }
 
         $this->validate($request, [
-            'proof' => 'image|mimes:jpg,jpeg,png|max:1000',
+            'proof' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
-
-        $settings = Settings::where('id', '=', '1')->first();
 
         if ($request->hasfile('proof')) {
             $file = $request->file('proof');
-            $extension = $file->extension();
+            $extension = strtolower($file->extension());
             $whitelist = array('pdf', 'doc', 'jpeg', 'jpg', 'png');
 
             if (in_array($extension, $whitelist)) {
@@ -240,7 +244,7 @@ class DepositController extends Controller
   
           
   
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             
         }
 

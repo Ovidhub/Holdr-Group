@@ -21,9 +21,24 @@ class ManageDepositController extends Controller
     public function deldeposit($id)
     {
         $deposit = Deposit::where('id', $id)->first();
-        Storage::disk('public')->delete($deposit->proof);
+        if ($deposit && !empty($deposit->proof)) {
+            try {
+                @Storage::disk('public')->delete($deposit->proof);
+            } catch (\Throwable $e) {
+            }
+        }
         Deposit::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Deposit history has been deleted!');
+    }
+
+    public function editamount(\Illuminate\Http\Request $request)
+    {
+        if ($request->id && $request->amount !== null) {
+            Deposit::where('id', $request->id)->update([
+                'amount' => $request->amount,
+            ]);
+        }
+        return redirect()->back()->with('success', 'Deposit amount updated successfully!');
     }
 
     //process deposits

@@ -22,7 +22,7 @@ class UsersController extends Controller
   }
   public function addusername(Request $request)
   {
-    Validator::make($request, [
+    Validator::make($request->all(), [
       'username' => ['required', 'unique:users,username'],
     ])->validate();
 

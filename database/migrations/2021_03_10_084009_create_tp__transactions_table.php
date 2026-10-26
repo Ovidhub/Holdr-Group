@@ -17,6 +17,7 @@ class CreateTpTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('plan')->nullable();
             $table->integer('user')->nullable();
+            $table->integer('user_plan_id')->nullable();
             $table->string('amount')->nullable();
             $table->string('type')->nullable();
             $table->timestamps();

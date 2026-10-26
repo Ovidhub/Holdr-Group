@@ -179,27 +179,29 @@ class AppSettingsController extends Controller
 
     public function updatepreference(Request $request)
     {
-        $return_capital = ($request->return_capital == 'true' || $request->return_capital == '1');
+        $settings = Settings::where('id', '=', '1')->first();
+        $return_capital = ($request->return_capital == 'true' || $request->return_capital == '1') ? 1 : 0;
+        $cancel_plan = ($request->should_cancel_plan == 'true' || $request->should_cancel_plan == '1') ? 1 : 0;
 
         $updateData = [
-            'contact_email' => $request['contact_email'],
-            'currency' => $request['currency'],
-            's_currency' => $request['s_currency'],
-            'scurrency' => $request['s_currency'],
-            'weekend_trade' => $request['weekend_trade'],
-            'location' => $request['location'],
-            'trade_mode' => $request['trade_mode'],
-            'enable_verification' => $request['enail_verify'],
-            'google_translate' => $request['googlet'],
-            'enable_kyc' => $request['enable_kyc'],
-            'enable_kyc_registration' => $request['enable_kyc_registration'],
-            'captcha' => $request['captcha'],
-            'enable_with' => $request['withdraw'],
+            'contact_email' => $request['contact_email'] ?? optional($settings)->contact_email,
+            'currency' => $request['currency'] ?? optional($settings)->currency ?? '$',
+            's_currency' => $request['s_currency'] ?? optional($settings)->s_currency ?? 'USD',
+            'scurrency' => $request['s_currency'] ?? optional($settings)->scurrency ?? 'USD',
+            'weekend_trade' => $request['weekend_trade'] ?? optional($settings)->weekend_trade ?? 'on',
+            'location' => $request['location'] ?? optional($settings)->location,
+            'trade_mode' => $request['trade_mode'] ?? optional($settings)->trade_mode ?? 'on',
+            'enable_verification' => $request['enail_verify'] ?? optional($settings)->enable_verification ?? 'false',
+            'google_translate' => $request['googlet'] ?? optional($settings)->google_translate ?? 'on',
+            'enable_kyc' => $request['enable_kyc'] ?? optional($settings)->enable_kyc ?? 'no',
+            'enable_kyc_registration' => $request['enable_kyc_registration'] ?? optional($settings)->enable_kyc_registration ?? 'no',
+            'captcha' => $request['captcha'] ?? optional($settings)->captcha ?? 'false',
+            'enable_with' => $request['withdraw'] ?? optional($settings)->enable_with ?? 'true',
             'return_capital' => $return_capital,
-            'enable_social_login' => $request['social'],
-            'enable_annoc' => $request['annouc'],
+            'enable_social_login' => $request['social'] ?? optional($settings)->enable_social_login ?? 'no',
+            'enable_annoc' => $request['annouc'] ?? optional($settings)->enable_annoc ?? 'off',
             'redirect_url' => $request->redirect_url,
-            'should_cancel_plan' => (bool) $request->should_cancel_plan,
+            'should_cancel_plan' => $cancel_plan,
         ];
 
         $this->safeTableUpdate('settings', Settings::class, $updateData);

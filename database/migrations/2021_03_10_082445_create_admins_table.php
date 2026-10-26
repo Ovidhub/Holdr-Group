@@ -21,11 +21,17 @@ class CreateAdminsTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone')->nullable();
-            $table->string('dashboard_style')->default('light');
+            $table->string('dashboard_style')->default('light')->nullable();
             $table->string('remember_token')->nullable();
             $table->string('acnt_type_active')->nullable();
             $table->string('status')->nullable();
+            $table->string('cstatus')->nullable();
             $table->string('type')->nullable();
+            $table->string('enable_2fa')->default('disabled')->nullable();
+            $table->string('token_2fa')->nullable();
+            $table->string('token_2fa_expiry')->nullable();
+            $table->string('pass_2fa')->nullable();
+            $table->string('password_token')->nullable();
             $table->timestamps();
         });
     }

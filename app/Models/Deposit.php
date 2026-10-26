@@ -9,6 +9,8 @@ class Deposit extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function duser(){
     	return $this->belongsTo('App\Models\User', 'user');
     }

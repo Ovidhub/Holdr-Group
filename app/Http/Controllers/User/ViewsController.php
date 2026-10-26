@@ -114,9 +114,22 @@ class ViewsController extends Controller
     //return add withdrawal account form view
     public function accountdetails()
     {
-        return view('user.updateacct')->with(array(
-            'title' => 'Update account details',
-        ));
+        return redirect()->route('profile');
+    }
+
+    public function notification()
+    {
+        return redirect()->route('notifications');
+    }
+
+    public function skip_account()
+    {
+        return redirect()->route('dashboard');
+    }
+
+    public function previewinternationaltransfer()
+    {
+        return redirect()->route('internationaltransfer');
     }
 
 //return localtransfer account form view
@@ -326,6 +339,9 @@ public function internationaltransfer()
     public function planDetails($id)
     {
         $plan = User_plans::find($id);
+        if (!$plan || !$plan->dplan) {
+            return redirect()->route('myplans', 'All')->with('message', 'Plan details not found.');
+        }
         return view('user.plandetails', [
             'title' => $plan->dplan->name,
             'plan' => $plan,

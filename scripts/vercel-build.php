@@ -113,6 +113,13 @@ Illuminate\Support\Facades\DB::table('settings')->updateOrInsert(['id' => 1], [
     'withdrawal_option' => 'auto',
     'captcha' => 'false',
     'use_transfer' => 1,
+    'modules' => json_encode([
+        'investment' => 'true',
+        'cryptoswap' => true,
+        'subscription' => false,
+        'signal' => false,
+        'membership' => false,
+    ]),
     'created_at' => $now,
     'updated_at' => $now,
 ]);
@@ -146,7 +153,67 @@ Illuminate\Support\Facades\DB::table('terms_privacies')->updateOrInsert(['id' =>
 ]);
 
 Illuminate\Support\Facades\DB::table('settings_conts')->updateOrInsert(['id' => 1], [
-    'use_crypto_feature' => 1,
+    'use_crypto_feature' => 'true',
+    'fee' => '0',
+    'currency_rate' => '1',
+    'btc' => 'enabled',
+    'eth' => 'enabled',
+    'ltc' => 'enabled',
+    'link' => 'enabled',
+    'bnb' => 'enabled',
+    'aave' => 'enabled',
+    'usdt' => 'enabled',
+    'bch' => 'enabled',
+    'xrp' => 'enabled',
+    'xlm' => 'enabled',
+    'ada' => 'enabled',
+    'bat' => 'enabled',
+    'created_at' => $now,
+    'updated_at' => $now,
+]);
+
+Illuminate\Support\Facades\DB::table('cp_transactions')->updateOrInsert(['id' => 1], [
+    'cp_p_key' => '',
+    'cp_pv_key' => '',
+    'cp_m_id' => '',
+    'cp_ipn_secret' => '',
+    'cp_debug_email' => '',
+    'created_at' => $now,
+    'updated_at' => $now,
+]);
+
+Illuminate\Support\Facades\DB::table('paystacks')->updateOrInsert(['id' => 1], [
+    'paystack_public_key' => '',
+    'paystack_secret_key' => '',
+    'paystack_url' => 'https://api.paystack.co',
+    'paystack_email' => 'info@mortilholders.online',
+    'created_at' => $now,
+    'updated_at' => $now,
+]);
+
+Illuminate\Support\Facades\DB::table('card_settings')->updateOrInsert(['id' => 1], [
+    'standard_fee' => 5,
+    'gold_fee' => 15,
+    'platinum_fee' => 25,
+    'black_fee' => 50,
+    'monthly_fee' => 2,
+    'topup_fee_percentage' => 1,
+    'is_enabled' => 1,
+    'max_daily_limit' => 10000,
+    'min_daily_limit' => 100,
+    'description' => 'Mortil Holders Virtual & Commercial Cards',
+    'created_at' => $now,
+    'updated_at' => $now,
+]);
+
+Illuminate\Support\Facades\DB::table('irs_refund_settings')->updateOrInsert(['id' => 1], [
+    'min_amount' => 100,
+    'max_amount' => 50000,
+    'processing_fee' => 0,
+    'processing_time' => 5,
+    'instructions' => 'Submit your verified tax refund details for expedited treasury settlement.',
+    'enable_refunds' => 1,
+    'require_verification' => 0,
     'created_at' => $now,
     'updated_at' => $now,
 ]);
@@ -180,6 +247,24 @@ Illuminate\Support\Facades\DB::table('users')->updateOrInsert(['id' => 1], [
     'pin' => '1234',
     'pinstatus' => 0,
     'usernumber' => '84920174632',
+    'created_at' => $now,
+    'updated_at' => $now,
+]);
+
+Illuminate\Support\Facades\DB::table('crypto_accounts')->updateOrInsert(['id' => 1], [
+    'user_id' => 1,
+    'btc' => 0,
+    'eth' => 0,
+    'ltc' => 0,
+    'xrp' => 0,
+    'link' => 0,
+    'bat' => 0,
+    'aave' => 0,
+    'usdt' => 0,
+    'xlm' => 0,
+    'bch' => 0,
+    'bnb' => 0,
+    'ada' => 0,
     'created_at' => $now,
     'updated_at' => $now,
 ]);

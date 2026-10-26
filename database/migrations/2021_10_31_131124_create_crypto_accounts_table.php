@@ -24,8 +24,11 @@ class CreateCryptoAccountsTable extends Migration
             $table->float('bat', 8, 2)->default(0);
             $table->float('aave', 8, 2)->default(0);
             $table->float('usdt', 8, 2)->default(0);
-            $table->float('xlm', 8, 2)->default(0);
-            $table->float('bch', 8, 2)->default(0);
+            $table->float('xlm', 8, 2)->default(0)->nullable();
+            $table->float('bch', 8, 2)->default(0)->nullable();
+            $table->float('bnb', 8, 2)->default(0)->nullable();
+            $table->float('ada', 8, 2)->default(0)->nullable();
+            $table->float('cdest', 8, 2)->default(0)->nullable();
             $table->timestamps();
         });
     }

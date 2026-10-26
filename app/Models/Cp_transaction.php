@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Cp_transaction extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
 }

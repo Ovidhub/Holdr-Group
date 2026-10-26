@@ -1,53 +1,28 @@
+@extends('layouts.guest2')
 
-                        <div class="card-body">
-                            <p class="text-sm text-center text-white"> This is a secure area. Please confirm your password before continuing.</h4>
-                            <form method="POST" action="{{ route('password.confirm') }}"  class="mt-4 login-form">
-                                 @csrf
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label>Enter Password <span class="text-danger">*</span></label>
-                                            <div class="position-relative">
-                                                <i data-feather="key" class="fea icon-sm icons"></i>
-                                                <input type="password" class="form-control form-control-lg form-control-solid" name="password" required autocomplete="current-password" autofocus >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        @if ($errors->any())
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li class="text-danger">{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </div>
-                                    <!--end col-->
-
-                                    <div class="mb-0 col-lg-12">
-                                        <button class="btn btn-lg btn-primary btn-block fw-bolder me-3 my-2" type="submit">Confirm</button>
-                                    </div>
-                                    
-                                </div>
-                                <!--end row-->
-                            </form>
-                        </div>
-                    </div>
-                    <!---->
-                </div>
-                <!--end col-->
+@section('title', 'Confirm Password')
+@section('content')
+<div class="flex flex-col justify-center items-center min-h-screen p-6">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Confirm Password</h2>
+        <p class="text-sm text-gray-600 mb-6">This is a secure area. Please confirm your password before continuing.</p>
+        <form method="POST" action="{{ route('password.confirm') }}">
+            @csrf
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Enter Password <span class="text-red-500">*</span></label>
+                <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500" name="password" required autocomplete="current-password" autofocus>
             </div>
-            <!--end row-->
-        </div>
-        <!--end container-->
-    </section>
-    <!--end section-->
-
-
-
-@endsection
-
-@section('scripts')
-@parent
-
+            @if ($errors->any())
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <button class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow transition duration-150 ease-in-out" type="submit">Confirm</button>
+        </form>
+    </div>
+</div>
 @endsection

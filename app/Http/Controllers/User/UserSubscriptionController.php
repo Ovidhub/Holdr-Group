@@ -60,7 +60,10 @@ class UserSubscriptionController extends Controller
     // Delete mt4 details
     public function delsubtrade($id)
     {
-        Mt4Details::find($id)->delete();
+        $sub = Mt4Details::find($id);
+        if ($sub) {
+            $sub->delete();
+        }
         return redirect()->back()
             ->with('success', 'MT4 Details Sucessfully Deleted');
     }
@@ -68,21 +71,28 @@ class UserSubscriptionController extends Controller
     public function renewSubscription($id)
     {
         $account = Mt4Details::find($id);
+        if (!$account) {
+            return redirect()->back()->with('message', 'Subscription record not found.');
+        }
         $user = User::find(Auth::user()->id);
         $settings = Settings::find(1);
 
+        $baseDate = $account->end_date ? \Carbon\Carbon::parse($account->end_date) : now();
+        $amount = $settings->monthlyfee ?? 0;
+        $end_at = (clone $baseDate)->addMonths(1);
+
         if ($account->duration == 'Monthly') {
             $amount = $settings->monthlyfee;
-            $end_at = $account->end_date->addMonths(1);
+            $end_at = (clone $baseDate)->addMonths(1);
         } elseif ($account->duration == 'Quaterly') {
             $amount = $settings->quarterlyfee;
-            $end_at = $account->end_date->addMonths(4);
+            $end_at = (clone $baseDate)->addMonths(4);
         } elseif ($account->duration == 'Yearly') {
             $amount = $settings->yearlyfee;
-            $end_at = $account->end_date->addYears(1);
+            $end_at = (clone $baseDate)->addYears(1);
         }
 
-        $remindAt = $end_at->subDays(10);
+        $remindAt = (clone $end_at)->subDays(10);
 
         if ($amount > $user->account_bal) {
             return redirect()->back()->with('message', 'Your account balance is insufficient to renew your subscription, please make a deposit.');
@@ -102,7 +112,7 @@ class UserSubscriptionController extends Controller
         Mail::to($account->tuser->email)->send(new NewNotification($messageUser, 'Your subscription have been renewed', $user->firstname));
 
         // Send email to admin
-        $messageAdmin = "Subscription with MT4-ID: $amount->mt4_id have been renewed successfully.";
+        $messageAdmin = "Subscription with MT4-ID: $account->mt4_id have been renewed successfully.";
         Mail::to($settings->contact_email)->send(new NewNotification($messageAdmin, 'Subscription have been renewed', 'Admin'));
 
         return redirect()->back()->with('success', 'Your subcription have been renewed successfully.');

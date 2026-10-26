@@ -86,7 +86,7 @@ $setDefaultEnv('MAIL_MAILER', 'log');
 $dbHost = getenv('DB_HOST');
 $dbUrl = getenv('DATABASE_URL');
 if (($dbHost === false || $dbHost === '' || $dbHost === '127.0.0.1') && ($dbUrl === false || $dbUrl === '')) {
-    $runtimeSqlite = '/tmp/database-v7.sqlite';
+    $runtimeSqlite = '/tmp/database-v8.sqlite';
     $seedSqlite = $basePath . '/storage/vercel-seed.sqlite';
     if (!file_exists($runtimeSqlite) || filesize($runtimeSqlite) === 0) {
         if (file_exists($seedSqlite)) {

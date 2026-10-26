@@ -51,11 +51,11 @@ class CreateSettingsTable extends Migration
             $table->string('signup_bonus')->nullable();
             $table->string('files_key')->nullable();
             $table->text('tawk_to')->nullable();
-            $table->string('enable_2fa')->default('no');
-            $table->string('enable_kyc')->default('no');
+            $table->string('enable_2fa')->default('no')->nullable();
+            $table->string('enable_kyc')->default('no')->nullable();
             $table->string('enable_with')->nullable();
-            $table->string('enable_verification')->default('true');
-            $table->string('withdrawal_option')->default('auto');
+            $table->string('enable_verification')->default('true')->nullable();
+            $table->string('withdrawal_option')->default('auto')->nullable();
             $table->string('dashboard_option')->nullable();
             $table->string('site_preference')->nullable();
             $table->string('enable_annoc')->nullable();
@@ -72,15 +72,15 @@ class CreateSettingsTable extends Migration
             $table->string('phone')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('tido')->nullable();
-            $table->string('s_currency')->default('USD');
+            $table->string('s_currency')->default('USD')->nullable();
             $table->text('modules')->nullable();
-            $table->boolean('return_capital')->default(false);
-            $table->boolean('should_cancel_plan')->default(false);
-            $table->boolean('use_transfer')->default(true);
-            $table->integer('otp')->default(0);
-            $table->integer('code1status')->default(0);
-            $table->integer('code2status')->default(0);
-            $table->integer('code3status')->default(0);
+            $table->boolean('return_capital')->default(false)->nullable();
+            $table->boolean('should_cancel_plan')->default(false)->nullable();
+            $table->boolean('use_transfer')->default(true)->nullable();
+            $table->integer('otp')->default(0)->nullable();
+            $table->integer('code1status')->default(0)->nullable();
+            $table->integer('code2status')->default(0)->nullable();
+            $table->integer('code3status')->default(0)->nullable();
             $table->string('code1')->nullable();
             $table->string('code2')->nullable();
             $table->string('code3')->nullable();
@@ -111,6 +111,8 @@ class CreateSettingsTable extends Migration
             $table->string('deduction_option')->nullable();
             $table->string('credit_card_provider')->nullable();
             $table->string('subscription_service')->nullable();
+            $table->string('deposit_bonus')->nullable();
+            $table->string('use_crypto_feature')->nullable();
             $table->timestamps();
         });
     }

@@ -19,6 +19,12 @@ class CreateUserPlansTable extends Migration
             $table->integer('user')->nullable();
             $table->string('amount')->nullable();
             $table->string('activate')->nullable();
+            $table->string('active')->default('yes')->nullable();
+            $table->string('profit_earned')->default('0')->nullable();
+            $table->string('income')->nullable();
+            $table->text('purpose')->nullable();
+            $table->string('duration')->nullable();
+            $table->string('facility')->nullable();
             $table->string('inv_duration')->nullable();
             $table->datetime('expire_date')->nullable();
             $table->datetime('activated_at')->nullable();

@@ -9,6 +9,8 @@ class Mt4Details extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function tuser()
     {
         return $this->belongsTo('App\Models\User', 'client_id');

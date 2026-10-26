@@ -20,6 +20,7 @@ class CreateMt4DetailsTable extends Migration
             $table->string('mt4_password')->nullable();
             $table->string('type')->nullable();
             $table->string('account_type')->nullable();
+            $table->string('account_name')->nullable();
             $table->string('currency')->nullable();
             $table->string('leverage')->nullable();
             $table->string('server')->nullable();
@@ -28,6 +29,7 @@ class CreateMt4DetailsTable extends Migration
             $table->string('status')->nullable();
             $table->datetime('start_date')->nullable();
             $table->datetime('end_date')->nullable();
+            $table->datetime('reminded_at')->nullable();
             $table->timestamps();
         });
     }

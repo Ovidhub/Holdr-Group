@@ -237,4 +237,9 @@ class PaymentController extends Controller
         ]);
         return response()->json(['status' => 200, 'success' => 'Settings updated successfully']);
     }
+
+    public function updatewdmethod(Request $request)
+    {
+        return $this->updateMethod($request);
+    }
 }

@@ -9,6 +9,8 @@ class User_plans extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $casts = [
         'activated_at' => 'datetime',
         'last_growth' => 'datetime',

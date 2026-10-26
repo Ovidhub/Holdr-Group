@@ -20,13 +20,21 @@ class ExchangeController extends Controller
     public function assetview()
     {
         $settings = SettingsCont::where('id', '1')->first();
-        if ($settings->use_crypto_feature == 'false') {
+        if ($settings && $settings->use_crypto_feature == 'false') {
             abort(404);
+        }
+
+        $cbalance = CryptoAccount::where('user_id', Auth::user()->id)->first();
+        if (!$cbalance) {
+            $cbalance = new CryptoAccount();
+            $cbalance->user_id = Auth::user()->id;
+            $cbalance->save();
+            $cbalance = CryptoAccount::where('user_id', Auth::user()->id)->first();
         }
 
         return view('user.asset', [
             'title' =>  'Exchange currency',
-            'cbalance' => CryptoAccount::where('user_id', Auth::user()->id)->first(),
+            'cbalance' => $cbalance,
         ]);
     }
 

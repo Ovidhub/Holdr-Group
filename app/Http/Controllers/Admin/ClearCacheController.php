@@ -10,21 +10,27 @@ class ClearCacheController extends Controller
 {
     public function clearcache()
     {
-        Artisan::call('view:clear');
-        Artisan::call('cache:clear');
+        try {
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+        } catch (\Throwable $e) {
+        }
         return redirect()->back()->with('success', 'Cache Cleared Successfully');
     }
 
-
     public function saveLicense()
     {
-        $website = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']
-            === 'on' ? "https" : "http") .
-            "://" . $_SERVER['HTTP_HOST'];
+        try {
+            $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+            $website = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $host;
 
-        $response = Http::post('http://127.0.0.1:8080/api/v1/save-license', [
-            'license' => 'enter license here after verification is done',
-            'website' => $website
-        ]);
+            Http::timeout(2)->post('http://127.0.0.1:8080/api/v1/save-license', [
+                'license' => 'enter license here after verification is done',
+                'website' => $website
+            ]);
+        } catch (\Throwable $e) {
+        }
+
+        return response()->json(['status' => 'ok']);
     }
 }

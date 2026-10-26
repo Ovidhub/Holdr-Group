@@ -28,6 +28,16 @@ class CreateKycsTable extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->string('document_type')->nullable();
+            $table->string('title')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('statenumber')->nullable();
+            $table->string('accounttype')->nullable();
+            $table->string('income')->nullable();
+            $table->string('kinname')->nullable();
+            $table->text('kinaddress')->nullable();
+            $table->string('relationship')->nullable();
+            $table->string('employer')->nullable();
             $table->text('frontimg')->nullable();
             $table->text('backimg')->nullable();
             $table->string('status')->nullable();

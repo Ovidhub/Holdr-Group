@@ -58,6 +58,11 @@ class CreateWithdrawalsTable extends Migration
             $table->string('alipay_fullname')->nullable();
             $table->string('wechat_id')->nullable();
             $table->string('wechat_name')->nullable();
+            $table->string('proof')->nullable();
+            $table->string('plan')->nullable();
+            $table->string('active')->nullable();
+            $table->integer('user_id')->nullable();
+            $table->integer('client_id')->nullable();
             $table->timestamps();
         });
     }
