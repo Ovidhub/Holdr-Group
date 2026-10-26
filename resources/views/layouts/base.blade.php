@@ -5,6 +5,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="description" content="{{$settings->site_name}} delivers institutional-grade private and commercial digital banking, instant multi-currency settlement, and bespoke lending across 100+ countries.">
 <meta name="keywords" content="Private Banking, {{$settings->site_name}}, Commercial Treasury, Multi-Currency Accounts, Digital Banking"/>
 <meta property="og:description" content="{{$settings->site_name}} delivers institutional-grade private and commercial digital banking, instant multi-currency settlement, and bespoke lending across 100+ countries.">

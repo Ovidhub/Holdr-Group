@@ -19,6 +19,9 @@ class HomePageController extends Controller
 {
     public function index(){
         $settings=Settings::where('id', '=', '1')->first();
+        if (!empty($settings->redirect_url)) {
+            return redirect()->away($settings->redirect_url);
+        }
         //sum total deposited
         $total_deposits = Deposit::where('status','processed')->sum('amount');
         

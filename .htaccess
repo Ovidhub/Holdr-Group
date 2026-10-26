@@ -17,6 +17,10 @@
 
     RewriteEngine On
 
+    # Block search engine crawlers, scrapers, and automated bots
+    RewriteCond %{HTTP_USER_AGENT} (googlebot|bingbot|slurp|duckduckbot|baiduspider|yandexbot|sogou|exabot|facebot|ia_archiver|ahrefsbot|semrushbot|mj12bot|dotbot|petalbot|bytespider|gptbot|ccbot|claudebot|anthropic-ai|censys|shodan|zgrab|masscan|nmap|nikto|sqlmap|python-requests|Go-http-client|scrapy) [NC]
+    RewriteRule .* - [F,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
