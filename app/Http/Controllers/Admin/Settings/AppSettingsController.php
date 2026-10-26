@@ -6,10 +6,59 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Settings;
 use App\Models\SettingsCont;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Storage;
 
 class AppSettingsController extends Controller
 {
+    /**
+     * Safely update a row in a settings table, automatically adding any missing columns first
+     * so existing MySQL/SQLite installations never throw a 500 "Unknown column" error.
+     */
+    protected function safeTableUpdate(string $tableName, string $modelClass, array $data): void
+    {
+        try {
+            $existingCols = array_map('strtolower', Schema::getColumnListing($tableName));
+            $missingCols = [];
+            foreach (array_keys($data) as $col) {
+                if (!in_array(strtolower($col), $existingCols, true)) {
+                    $missingCols[] = $col;
+                }
+            }
+            if (!empty($missingCols)) {
+                Schema::table($tableName, function (Blueprint $table) use ($missingCols) {
+                    foreach ($missingCols as $col) {
+                        $table->text($col)->nullable();
+                    }
+                });
+                $existingCols = array_map('strtolower', Schema::getColumnListing($tableName));
+            }
+
+            $filtered = [];
+            foreach ($data as $col => $val) {
+                if (in_array(strtolower($col), $existingCols, true)) {
+                    $filtered[$col] = $val;
+                }
+            }
+
+            if (!empty($filtered)) {
+                $modelClass::where('id', 1)->update($filtered);
+            }
+        } catch (\Throwable $e) {
+            // Fallback: filter strictly to existing columns
+            $existingCols = array_map('strtolower', Schema::getColumnListing($tableName));
+            $filtered = [];
+            foreach ($data as $col => $val) {
+                if (in_array(strtolower($col), $existingCols, true)) {
+                    $filtered[$col] = $val;
+                }
+            }
+            if (!empty($filtered)) {
+                $modelClass::where('id', 1)->update($filtered);
+            }
+        }
+    }
 
     // Return view
     public function appsettingshow()
@@ -35,95 +84,104 @@ class AppSettingsController extends Controller
             $index = rand(0, $len - 1);
             $generated_string = $generated_string . $domain[$index];
         }
-        // Return the random generated string 
         return $generated_string;
     }
 
     // updatertransfercodes
-    public function updatertransfercodes(Request $request){
-        Settings::where('id', '1')
-            ->update([
-                'code1'=> $request->code1,
-                'code2'=> $request->code2,
-                'code3'=> $request->code3,
-                'code1status' => $request->code1status,
-                'code2status' => $request->code2status,
-                'code3status' => $request->code3status,
-                'code1message'=> $request->code1message,
-                'code2message'=> $request->code2message,
-                'code3message'=> $request->code3message,
-                'otp'=>$request->otp,
-            ]);
-
-            return redirect()->back()->with('success', 'Settings Saved successfully');
-    }
-    // update wensite information
-    public function updatewebinfo(Request $request)
+    public function updatertransfercodes(Request $request)
     {
-        $this->validate($request, [
-            'logo' => 'mimes:jpg,jpeg,png|max:500|image',
-            'favicon' => 'mimes:jpg,jpeg,png,ico|max:500',
+        $this->safeTableUpdate('settings', Settings::class, [
+            'code1' => $request->code1,
+            'code2' => $request->code2,
+            'code3' => $request->code3,
+            'code1status' => $request->code1status ?? 0,
+            'code2status' => $request->code2status ?? 0,
+            'code3status' => $request->code3status ?? 0,
+            'code1message' => $request->code1message,
+            'code2message' => $request->code2message,
+            'code3message' => $request->code3message,
+            'otp' => $request->otp ?? 0,
         ]);
-
-        $settings = Settings::where('id', '=', '1')->first();
-
-        if ($request->hasfile('logo')) {
-            $file = $request->file('logo');
-            Storage::disk('public')->delete($settings->logo);
-            $path = $file->store('photos', 'public');
-        } else {
-            $path  = $settings->logo;
-        }
-
-        if ($request->hasfile('favicon')) {
-            $favfile = $request->file('favicon');
-            Storage::disk('public')->delete($settings->favicon);
-            $pathfav = $favfile->store('photos', 'public');
-        } else {
-            $pathfav = $settings->favicon;
-        }
-        
-        Settings::where('id', '1')
-            ->update([
-                'newupdate' => $request['update'],
-                'site_name' => $request['site_name'],
-                'description' => $request['description'],
-                'keywords' => $request['keywords'],
-                'timezone' => $request['timezone'],
-                'site_title' => $request['site_title'],
-                'install_type' => $request['install_type'],
-                'logo' => $path,
-                'merchant_key' => $request->merchant_key,
-                'favicon' => $pathfav,
-                'tawk_to' => strip_tags($request['tawk_to']),
-                'site_address' => $request['site_address'],
-                'welcome_message' => $request->welcome_message,
-                'whatsapp'=> $request->whatsapp,
-                'tido'=> $request->tido,
-                'address'=> $request->address,
-                'sms'=> $request->sms,
-                
-            ]);
-
-        $moreset = SettingsCont::find(1);
-        $moreset->purchase_code = $request->purchase_code;
-        $moreset->save();
 
         return redirect()->back()->with('success', 'Settings Saved successfully');
     }
 
+    // update website information
+    public function updatewebinfo(Request $request)
+    {
+        $this->validate($request, [
+            'logo' => 'nullable|mimes:jpg,jpeg,png,svg,webp,gif,ico|max:5120',
+            'favicon' => 'nullable|mimes:jpg,jpeg,png,svg,webp,gif,ico|max:5120',
+        ]);
 
+        $settings = Settings::where('id', '=', '1')->first();
+
+        $path = $settings ? $settings->logo : 'photos/mortil-logo.svg';
+        if ($request->hasfile('logo')) {
+            $file = $request->file('logo');
+            try {
+                if ($settings && !empty($settings->logo)) {
+                    @Storage::disk('public')->delete($settings->logo);
+                }
+                $stored = $file->store('photos', 'public');
+                if ($stored) {
+                    $path = $stored;
+                }
+            } catch (\Throwable $e) {
+                // Keep existing path if storage is read-only
+            }
+        }
+
+        $pathfav = $settings ? $settings->favicon : 'photos/mortil-icon.svg';
+        if ($request->hasfile('favicon')) {
+            $favfile = $request->file('favicon');
+            try {
+                if ($settings && !empty($settings->favicon)) {
+                    @Storage::disk('public')->delete($settings->favicon);
+                }
+                $storedFav = $favfile->store('photos', 'public');
+                if ($storedFav) {
+                    $pathfav = $storedFav;
+                }
+            } catch (\Throwable $e) {
+                // Keep existing path if storage is read-only
+            }
+        }
+
+        $this->safeTableUpdate('settings', Settings::class, [
+            'newupdate' => $request['update'] ?? ($settings->newupdate ?? null),
+            'site_name' => $request['site_name'],
+            'description' => $request['description'] ?? ($settings->description ?? null),
+            'keywords' => $request['keywords'],
+            'timezone' => $request['timezone'] ?? 'UTC',
+            'site_title' => $request['site_title'],
+            'install_type' => $request['install_type'] ?? 'Main-Domain',
+            'logo' => $path,
+            'merchant_key' => $request->merchant_key,
+            'favicon' => $pathfav,
+            'tawk_to' => !empty($request['tawk_to']) ? strip_tags((string) $request['tawk_to']) : ($settings->tawk_to ?? null),
+            'site_address' => $request['site_address'],
+            'welcome_message' => $request->welcome_message,
+            'whatsapp' => $request->whatsapp,
+            'tido' => $request->tido,
+            'address' => $request->address,
+            'sms' => $request->sms ?? '0',
+        ]);
+
+        if ($request->has('purchase_code')) {
+            $this->safeTableUpdate('settings_conts', SettingsCont::class, [
+                'purchase_code' => $request->purchase_code,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Settings Saved successfully');
+    }
 
     public function updatepreference(Request $request)
     {
+        $return_capital = ($request->return_capital == 'true' || $request->return_capital == '1');
 
-        if ($request->return_capital == 'true') {
-            $return_capital = true;
-        } else {
-            $return_capital = false;
-        }
-
-        Settings::where('id', 1)->update([
+        $updateData = [
             'contact_email' => $request['contact_email'],
             'currency' => $request['currency'],
             's_currency' => $request['s_currency'],
@@ -141,31 +199,39 @@ class AppSettingsController extends Controller
             'enable_social_login' => $request['social'],
             'enable_annoc' => $request['annouc'],
             'redirect_url' => $request->redirect_url,
-            'should_cancel_plan' => $request->should_cancel_plan,
-        ]);
-        return response()->json(['status' => 200, 'success' => 'Settings Saved successfully']);
+            'should_cancel_plan' => (bool) $request->should_cancel_plan,
+        ];
+
+        $this->safeTableUpdate('settings', Settings::class, $updateData);
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['status' => 200, 'success' => 'Settings Saved successfully']);
+        }
+        return redirect()->back()->with('success', 'Settings Saved successfully');
     }
 
     // Update email preference
     public function updateemail(Request $request)
     {
-        Settings::where('id', ' 1')
-            ->update([
-                'mail_server' => $request['server'],
-                'emailfrom' => $request['emailfrom'],
-                'emailfromname' => $request['emailfromname'],
-                'smtp_host' => $request['smtp_host'],
-                'smtp_port' => $request['smtp_port'],
-                'smtp_encrypt' => $request['smtp_encrypt'],
-                'smtp_user' => $request['smtp_user'],
-                'smtp_password' => $request['smtp_password'],
-                'google_id' => $request['google_id'],
-                'google_secret' => $request['google_secret'],
-                'google_redirect' => $request['google_redirect'],
-                'capt_secret' => $request['capt_secret'],
-                'capt_sitekey' => $request['capt_sitekey'],
-            ]);
-        return response()->json(['status' => 200, 'success' => 'Settings Saved successfully']);
-        //return redirect()->back()->with('message', 'Action Sucessful');
+        $this->safeTableUpdate('settings', Settings::class, [
+            'mail_server' => $request['server'],
+            'emailfrom' => $request['emailfrom'],
+            'emailfromname' => $request['emailfromname'],
+            'smtp_host' => $request['smtp_host'],
+            'smtp_port' => $request['smtp_port'],
+            'smtp_encrypt' => $request['smtp_encrypt'],
+            'smtp_user' => $request['smtp_user'],
+            'smtp_password' => $request['smtp_password'],
+            'google_id' => $request['google_id'],
+            'google_secret' => $request['google_secret'],
+            'google_redirect' => $request['google_redirect'],
+            'capt_secret' => $request['capt_secret'],
+            'capt_sitekey' => $request['capt_sitekey'],
+        ]);
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['status' => 200, 'success' => 'Settings Saved successfully']);
+        }
+        return redirect()->back()->with('success', 'Settings Saved successfully');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\Settings;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Settings;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class SubscriptionSettings extends Controller
 {
@@ -18,8 +20,15 @@ class SubscriptionSettings extends Controller
     
     //Update Subscription Fees
     public function updatesubfee(Request $request){
-        
-        Settings::where('id', $request['id'])
+        $existingCols = array_map('strtolower', Schema::getColumnListing('settings'));
+        if (!in_array('subscription_service', $existingCols, true)) {
+            try {
+                Schema::table('settings', function (Blueprint $table) {
+                    $table->string('subscription_service')->nullable();
+                });
+            } catch (\Throwable $e) {}
+        }
+        Settings::where('id', $request['id'] ?: 1)
         ->update([
             'monthlyfee'=>$request['monthlyfee'],
             'quarterlyfee'=>$request['quaterlyfee'],

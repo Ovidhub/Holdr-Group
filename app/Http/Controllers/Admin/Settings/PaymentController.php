@@ -9,10 +9,52 @@ use App\Models\SettingsCont;
 use App\Models\Wdmethod;
 use App\Models\Paystack;
 use App\Models\Cp_transaction;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
+    protected function safeTableUpdate(string $tableName, string $modelClass, array $data): void
+    {
+        try {
+            $existingCols = array_map('strtolower', Schema::getColumnListing($tableName));
+            $missingCols = [];
+            foreach (array_keys($data) as $col) {
+                if (!in_array(strtolower($col), $existingCols, true)) {
+                    $missingCols[] = $col;
+                }
+            }
+            if (!empty($missingCols)) {
+                Schema::table($tableName, function (Blueprint $table) use ($missingCols) {
+                    foreach ($missingCols as $col) {
+                        $table->text($col)->nullable();
+                    }
+                });
+                $existingCols = array_map('strtolower', Schema::getColumnListing($tableName));
+            }
+            $filtered = [];
+            foreach ($data as $col => $val) {
+                if (in_array(strtolower($col), $existingCols, true)) {
+                    $filtered[$col] = $val;
+                }
+            }
+            if (!empty($filtered)) {
+                $modelClass::where('id', 1)->update($filtered);
+            }
+        } catch (\Throwable $e) {
+            $existingCols = array_map('strtolower', Schema::getColumnListing($tableName));
+            $filtered = [];
+            foreach ($data as $col => $val) {
+                if (in_array(strtolower($col), $existingCols, true)) {
+                    $filtered[$col] = $val;
+                }
+            }
+            if (!empty($filtered)) {
+                $modelClass::where('id', 1)->update($filtered);
+            }
+        }
+    }
     // Return view
     public function paymentview(Request $request)
     {
@@ -126,17 +168,15 @@ class PaymentController extends Controller
 
     public function paypreference(Request $request)
     {
+        $this->safeTableUpdate('settings', Settings::class, [
+            'withdrawal_option' => $request['withdrawal_option'],
+            'deposit_option' => $request['deposit_option'],
+            'auto_merchant_option' => $request->merchat,
+            'deduction_option' => $request->deduction_option,
+            'credit_card_provider' => $request->credit_card_provider,
+        ]);
 
-        Settings::where('id', 1)
-            ->update([
-                'withdrawal_option' => $request['withdrawal_option'],
-                'deposit_option' => $request['deposit_option'],
-                'auto_merchant_option' => $request->merchat,
-                'deduction_option' => $request->deduction_option,
-                'credit_card_provider' => $request->credit_card_provider,
-            ]);
-
-        SettingsCont::where('id', 1)->update([
+        $this->safeTableUpdate('settings_conts', SettingsCont::class, [
             'minamt' => $request->minamt,
         ]);
 
@@ -177,21 +217,20 @@ class PaymentController extends Controller
                 'paystack_email' => $request['paystack_email'],
             ]);
 
-        $settingChanges = SettingsCont::find(1);
-        $settingChanges->flw_public_key = $request->flw_public_key;
-        $settingChanges->flw_secret_key = $request->flw_secret_key;
-        $settingChanges->flw_secret_hash = $request->flw_secret_hash;
-        $settingChanges->bnc_api_key = $request->bnc_api_key;
-        $settingChanges->bnc_secret_key = $request->bnc_secret_key;
-        $settingChanges->save();
+        $this->safeTableUpdate('settings_conts', SettingsCont::class, [
+            'flw_public_key' => $request->flw_public_key,
+            'flw_secret_key' => $request->flw_secret_key,
+            'flw_secret_hash' => $request->flw_secret_hash,
+            'bnc_api_key' => $request->bnc_api_key,
+            'bnc_secret_key' => $request->bnc_secret_key,
+        ]);
 
         return response()->json(['status' => 200, 'success' => ' Gateway Settings updated successfully']);
     }
 
     public function updateTransfer(Request $request)
     {
-
-        SettingsCont::where('id', 1)->update([
+        $this->safeTableUpdate('settings_conts', SettingsCont::class, [
             'use_transfer' => $request->usertransfer,
             'min_transfer' => $request->min_transfer,
             'transfer_charges' => $request->charges,
