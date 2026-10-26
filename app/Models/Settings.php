@@ -10,6 +10,8 @@ class Settings extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $casts = [
         'return_capital' => 'boolean',
         'should_cancel_plan' => 'boolean',
@@ -104,13 +106,5 @@ class Settings extends Model
         }
 
         return $value ?: 'USD';
-    }
-
-    /**
-     * Resolve currency ISO code (scurrency) for the currently authenticated user (if set).
-     */
-    public function getScurrencyAttribute($value)
-    {
-        return $this->getSCurrencyAttribute($value);
     }
 }

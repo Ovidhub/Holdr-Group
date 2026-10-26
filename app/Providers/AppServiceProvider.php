@@ -53,8 +53,24 @@ class AppServiceProvider extends ServiceProvider
                 $terms = Schema::hasTable('terms_privacies') ? TermsPrivacy::find(1) : null;
                 $moreset = Schema::hasTable('settings_conts') ? SettingsCont::find(1) : null;
             }
-        } catch (QueryException $e) {
+        } catch (\Throwable $e) {
             $settings = null;
+        }
+
+        if (!$settings) {
+            $settings = new Settings([
+                'site_name' => 'Mortil Holders',
+                'site_title' => 'Mortil Holders — Private & Commercial Digital Banking',
+                'site_address' => url('/'),
+                'contact_email' => 'info@mortilholders.online',
+                'currency' => '$',
+                's_currency' => 'USD',
+                'scurrency' => 'USD',
+                'logo' => 'photos/mortil-logo.svg',
+                'favicon' => 'photos/mortil-icon.svg',
+                'website_theme' => 'atlantis.min.css',
+                'google_translate' => 'on',
+            ]);
         }
 
         View::share('settings', $settings);
