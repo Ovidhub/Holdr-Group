@@ -21,6 +21,7 @@ db.sql
 !database/mortil_holders_mysql.sql
 !storage/vercel-seed.sqlite
 !docs/mortil-holders-cpanel-mysql-ready.zip
+!docs/mortil-holders-cpanel-complete.zip
 
 .phpunit.result.cache
 docker-compose.override.yml
