@@ -215,11 +215,14 @@ class ManageUsersController extends Controller
         ]);
 
         // Also sync default settings currency so global/unauthenticated fallback matches if desired
-        Settings::where('id', 1)->update([
+        $settingsUpdate = [
             'currency' => $symbol,
             's_currency' => $selectedCode,
-            'scurrency' => $selectedCode,
-        ]);
+        ];
+        if (\Illuminate\Support\Facades\Schema::hasColumn('settings', 'scurrency')) {
+            $settingsUpdate['scurrency'] = $selectedCode;
+        }
+        Settings::where('id', 1)->update($settingsUpdate);
 
         return redirect()->back()->with('success', "User dashboard currency updated to {$label}.");
     }

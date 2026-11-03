@@ -86,6 +86,28 @@ $app['config']->set('database.connections.sqlite.database', $sqlitePath);
 Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
 Illuminate\Support\Facades\Artisan::call('livewire:discover');
 
+// Compile-validate index.php, updated classes, routes, and all Blade templates
+token_get_all(file_get_contents($basePath . '/index.php'), TOKEN_PARSE);
+foreach ([
+    \App\Models\User::class,
+    \App\Models\Settings::class,
+    \App\Http\Controllers\User\ProfileController::class,
+    \App\Http\Controllers\User\VerifyController::class,
+    \App\Http\Controllers\Admin\ManageUsersController::class,
+    \App\Http\Controllers\Admin\ManageWithdrawalController::class,
+] as $cls) {
+    if (!class_exists($cls)) {
+        throw new RuntimeException("Failed to load class: {$cls}");
+    }
+}
+Illuminate\Support\Facades\Artisan::call('view:cache');
+foreach (scandir($basePath . '/storage/framework/views') ?: [] as $compiled) {
+    if (substr($compiled, -4) === '.php') {
+        token_get_all(file_get_contents($basePath . '/storage/framework/views/' . $compiled), TOKEN_PARSE);
+    }
+}
+Illuminate\Support\Facades\Artisan::call('view:clear');
+
 $now = now();
 
 Illuminate\Support\Facades\DB::table('settings')->updateOrInsert(['id' => 1], [

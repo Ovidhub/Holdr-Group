@@ -238,11 +238,29 @@ class ProfileController extends Controller
         abort(404);
     }
 
-    protected function detectSafeImageMime(string $bytes, string $filename): ?string
+    protected function detectSafeImageMime($bytes, $filename)
     {
-        $info = @getimagesizefromstring($bytes);
-        if ($info && !empty($info['mime']) && stripos($info['mime'], 'image/') === 0) {
-            return $info['mime'];
+        $bytes = (string) $bytes;
+        $filename = (string) $filename;
+
+        if (function_exists('getimagesizefromstring')) {
+            $info = @getimagesizefromstring($bytes);
+            if ($info && !empty($info['mime']) && stripos($info['mime'], 'image/') === 0) {
+                return $info['mime'];
+            }
+        }
+
+        if (substr($bytes, 0, 3) === "\xFF\xD8\xFF") {
+            return 'image/jpeg';
+        }
+        if (substr($bytes, 0, 8) === "\x89PNG\r\n\x1a\n") {
+            return 'image/png';
+        }
+        if (substr($bytes, 0, 6) === 'GIF87a' || substr($bytes, 0, 6) === 'GIF89a') {
+            return 'image/gif';
+        }
+        if (substr($bytes, 0, 4) === 'RIFF' && substr($bytes, 8, 4) === 'WEBP') {
+            return 'image/webp';
         }
 
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));

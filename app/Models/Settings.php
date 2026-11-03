@@ -21,7 +21,7 @@ class Settings extends Model
     /**
      * Supported currency catalog: code => [symbol, label]
      */
-    public static function availableCurrencies(): array
+    public static function availableCurrencies()
     {
         return [
             'USD' => ['symbol' => '$', 'name' => 'US Dollar ($ USD)'],

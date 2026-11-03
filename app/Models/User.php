@@ -180,7 +180,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @param  \Illuminate\Http\UploadedFile|null  $file
      * @return string|null  Value to persist into `users.profile_photo_path`, or null if invalid
      */
-    public static function storeProfilePhoto($file): ?string
+    public static function storeProfilePhoto($file)
     {
         if (!$file || !$file->isValid()) {
             return null;
@@ -196,9 +196,19 @@ class User extends Authenticatable implements MustVerifyEmail
             return null;
         }
 
-        $imgInfo = @getimagesizefromstring($rawBytes);
-        if (!$imgInfo || empty($imgInfo['mime'])) {
-            return null;
+        $imgInfo = function_exists('getimagesizefromstring') ? @getimagesizefromstring($rawBytes) : false;
+        $detectedMime = ($imgInfo && !empty($imgInfo['mime'])) ? strtolower($imgInfo['mime']) : '';
+
+        if ($detectedMime === '') {
+            if (substr($rawBytes, 0, 3) === "\xFF\xD8\xFF") {
+                $detectedMime = 'image/jpeg';
+            } elseif (substr($rawBytes, 0, 8) === "\x89PNG\r\n\x1a\n") {
+                $detectedMime = 'image/png';
+            } elseif (substr($rawBytes, 0, 6) === 'GIF87a' || substr($rawBytes, 0, 6) === 'GIF89a') {
+                $detectedMime = 'image/gif';
+            } elseif (substr($rawBytes, 0, 4) === 'RIFF' && substr($rawBytes, 8, 4) === 'WEBP') {
+                $detectedMime = 'image/webp';
+            }
         }
 
         $mimeMap = [
@@ -209,7 +219,6 @@ class User extends Authenticatable implements MustVerifyEmail
             'image/gif' => 'gif',
             'image/webp' => 'webp',
         ];
-        $detectedMime = strtolower($imgInfo['mime']);
         if (!isset($mimeMap[$detectedMime])) {
             return null;
         }
@@ -221,8 +230,8 @@ class User extends Authenticatable implements MustVerifyEmail
         // Build a compact resized copy (max 400x400) when GD is available for fast DB/serverless fallback
         $compactBytes = $rawBytes;
         $compactMime = $mime;
-        $origW = (int) ($imgInfo[0] ?? 0);
-        $origH = (int) ($imgInfo[1] ?? 0);
+        $origW = is_array($imgInfo) ? (int) ($imgInfo[0] ?? 0) : 0;
+        $origH = is_array($imgInfo) ? (int) ($imgInfo[1] ?? 0) : 0;
 
         if (
             function_exists('imagecreatefromstring') &&
@@ -277,7 +286,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $persistentWritable = false;
 
         if (!is_dir($basePhotosDir)) {
-            @mkdir($basePhotosDir, 0775, true);
+            @mkdir($basePhotosDir, 0755, true);
         }
         if (is_dir($basePhotosDir) && is_writable($basePhotosDir)) {
             if (@file_put_contents($basePhotosDir . '/' . $cardname, $rawBytes) !== false) {
@@ -288,7 +297,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         if ($runtimePhotosDir !== $basePhotosDir) {
             if (!is_dir($runtimePhotosDir)) {
-                @mkdir($runtimePhotosDir, 0775, true);
+                @mkdir($runtimePhotosDir, 0755, true);
             }
             if (is_dir($runtimePhotosDir) && is_writable($runtimePhotosDir)) {
                 @file_put_contents($runtimePhotosDir . '/' . $cardname, $rawBytes);
@@ -333,7 +342,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $cardname;
     }
 
-    public function getCurrencyCodeAttribute(): string
+    public function getCurrencyCodeAttribute()
     {
         if (!empty($this->acnt_type_active) && strpos($this->acnt_type_active, '|') !== false) {
             $parts = explode('|', $this->acnt_type_active, 2);
@@ -342,10 +351,14 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
         $settings = Settings::find(1);
-        return $settings ? ($settings->getRawOriginal('s_currency') ?: 'USD') : 'USD';
+        if (!$settings) {
+            return 'USD';
+        }
+        $raw = method_exists($settings, 'getRawOriginal') ? $settings->getRawOriginal('s_currency') : ($settings->getAttributes()['s_currency'] ?? null);
+        return $raw ?: 'USD';
     }
 
-    public function getCurrencySymbolAttribute(): string
+    public function getCurrencySymbolAttribute()
     {
         if (!empty($this->acnt_type_active) && strpos($this->acnt_type_active, '|') !== false) {
             $parts = explode('|', $this->acnt_type_active, 2);
@@ -354,7 +367,11 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
         $settings = Settings::find(1);
-        return $settings ? ($settings->getRawOriginal('currency') ?: '$') : '$';
+        if (!$settings) {
+            return '$';
+        }
+        $raw = method_exists($settings, 'getRawOriginal') ? $settings->getRawOriginal('currency') : ($settings->getAttributes()['currency'] ?? null);
+        return $raw ?: '$';
     }
 
     public function wd(){

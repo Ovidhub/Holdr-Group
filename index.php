@@ -3,160 +3,136 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE & ~E_WARNING);
-ini_set('display_errors', '0');
-
 define('LARAVEL_START', microtime(true));
 
-$basePath = __DIR__;
+/*
+|--------------------------------------------------------------------------
+| Safe Directory, Cache & Optional SQLite Fallback Bootstrap (cPanel-safe)
+|--------------------------------------------------------------------------
+| Uses no disabled functions (no ini_set, glob, sys_get_temp_dir, or
+| unguarded putenv) so strict CloudLinux / LiteSpeed / suPHP hosts never
+| throw pre-boot fatal errors.
+*/
 
-// 1. If .env is missing (e.g. hidden dotfile skipped during upload), copy .env.example to .env
-$envFile = $basePath . '/.env';
-$envExample = $basePath . '/.env.example';
-if (!file_exists($envFile) && file_exists($envExample)) {
-    @copy($envExample, $envFile);
-}
+try {
+    $basePath = __DIR__;
 
-// 2. Ensure storage and bootstrap/cache directories exist
-$requiredDirs = [
-    $basePath . '/storage/app/public',
-    $basePath . '/storage/app/public/photos',
-    $basePath . '/storage/framework/views',
-    $basePath . '/storage/framework/cache/data',
-    $basePath . '/storage/framework/sessions',
-    $basePath . '/storage/logs',
-    $basePath . '/bootstrap/cache',
-];
-foreach ($requiredDirs as $dir) {
-    if (!is_dir($dir)) {
-        @mkdir($dir, 0775, true);
+    // 1. Ensure .env exists if only .env.example was uploaded
+    $envFile = $basePath . '/.env';
+    $envExample = $basePath . '/.env.example';
+    if (!file_exists($envFile) && file_exists($envExample)) {
+        @copy($envExample, $envFile);
     }
-}
 
-// Clear stale compiled views & route cache once when this update is deployed
-$cacheFlushMarker = $basePath . '/storage/framework/.mortil_avatar_fix_v2';
-if (!file_exists($cacheFlushMarker)) {
-    foreach (glob($basePath . '/storage/framework/views/*.php') ?: [] as $compiledView) {
-        @unlink($compiledView);
+    // 2. Ensure storage/app/public/photos exists with cPanel-safe 0755 permissions
+    $photosDir = $basePath . '/storage/app/public/photos';
+    if (!is_dir($photosDir)) {
+        @mkdir($photosDir, 0755, true);
     }
-    foreach (glob($basePath . '/bootstrap/cache/routes*.php') ?: [] as $cachedRoute) {
-        @unlink($cachedRoute);
-    }
-    @file_put_contents($cacheFlushMarker, (string) time());
-}
 
-// 3. Parse .env key-values to verify MySQL connectivity or fall back gracefully to SQLite
-$envVars = [];
-if (file_exists($envFile)) {
-    $lines = @file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
-    foreach ($lines as $line) {
-        $line = trim($line);
-        if ($line === '' || $line[0] === '#' || strpos($line, '=') === false) {
-            continue;
-        }
-        [$k, $v] = explode('=', $line, 2);
-        $k = trim($k);
-        $v = trim($v);
-        if ((substr($v, 0, 1) === '"' && substr($v, -1) === '"') || (substr($v, 0, 1) === "'" && substr($v, -1) === "'")) {
-            $v = substr($v, 1, -1);
-        }
-        $envVars[$k] = $v;
-    }
-}
-
-$setEnvVar = static function (string $key, string $val): void {
-    putenv("$key=$val");
-    $_ENV[$key] = $val;
-    $_SERVER[$key] = $val;
-};
-
-// Auto-detect current URL scheme and host so APP_URL always matches the live domain (e.g. auth.orynvest.online)
-$proto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http');
-if ($proto === 'https') {
-    $_SERVER['HTTPS'] = 'on';
-}
-if (!empty($_SERVER['HTTP_HOST'])) {
-    $setEnvVar('APP_URL', $proto . '://' . $_SERVER['HTTP_HOST']);
-}
-
-$dbConn = $envVars['DB_CONNECTION'] ?? getenv('DB_CONNECTION') ?: 'mysql';
-if ($dbConn === 'mysql') {
-    $dbHost = $envVars['DB_HOST'] ?? getenv('DB_HOST') ?: '127.0.0.1';
-    $dbPort = $envVars['DB_PORT'] ?? getenv('DB_PORT') ?: '3306';
-    $dbName = $envVars['DB_DATABASE'] ?? getenv('DB_DATABASE') ?: '';
-    $dbUser = $envVars['DB_USERNAME'] ?? getenv('DB_USERNAME') ?: '';
-    $dbPass = $envVars['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?: '';
-
-    $mysqlConnected = false;
-    $workingHost = $dbHost;
-    $hostsToTry = array_unique([$dbHost, ($dbHost === '127.0.0.1' ? 'localhost' : '127.0.0.1')]);
-
-    if ($dbName !== '' && $dbUser !== '' && extension_loaded('pdo_mysql')) {
-        foreach ($hostsToTry as $tryHost) {
-            try {
-                $dsn = "mysql:host={$tryHost};port={$dbPort};dbname={$dbName};charset=utf8mb4";
-                $pdo = new PDO($dsn, $dbUser, $dbPass, [
-                    PDO::ATTR_TIMEOUT => 3,
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                ]);
-                $workingHost = $tryHost;
-                $mysqlConnected = true;
-
-                // Check if `settings` table exists; if not, auto-import database/mortil_holders_mysql.sql
-                $check = $pdo->query("SHOW TABLES LIKE 'settings'");
-                if ($check && $check->rowCount() === 0) {
-                    $sqlDumpPath = $basePath . '/database/mortil_holders_mysql.sql';
-                    if (file_exists($sqlDumpPath)) {
-                        $sqlContent = file_get_contents($sqlDumpPath);
-                        $pdo->exec($sqlContent);
+    // 3. Flush stale compiled Blade views & cached route map once after update
+    $flushMarker = $basePath . '/storage/framework/.avatar_fix_v3';
+    if (is_dir($basePath . '/storage/framework') && !file_exists($flushMarker) && function_exists('scandir')) {
+        $viewsDir = $basePath . '/storage/framework/views';
+        if (is_dir($viewsDir) && is_writable($viewsDir)) {
+            $entries = @scandir($viewsDir);
+            if (is_array($entries)) {
+                foreach ($entries as $entry) {
+                    if ($entry !== '.' && $entry !== '..' && substr($entry, -4) === '.php') {
+                        @unlink($viewsDir . '/' . $entry);
                     }
                 }
-                break;
-            } catch (\Throwable $e) {
-                $mysqlConnected = false;
+            }
+        }
+
+        $cacheDir = $basePath . '/bootstrap/cache';
+        if (is_dir($cacheDir) && is_writable($cacheDir)) {
+            $entries = @scandir($cacheDir);
+            if (is_array($entries)) {
+                foreach ($entries as $entry) {
+                    if (strpos($entry, 'routes') === 0 && substr($entry, -4) === '.php') {
+                        @unlink($cacheDir . '/' . $entry);
+                    }
+                }
+            }
+        }
+
+        @file_put_contents($flushMarker, '1');
+    }
+
+    // 4. Preserve SQLite fallback ONLY if storage/database.sqlite (or seed) exists AND .env has unconfigured root credentials
+    $runtimeSqlite = $basePath . '/storage/database.sqlite';
+    $seedSqlite = $basePath . '/storage/vercel-seed.sqlite';
+    if (file_exists($runtimeSqlite) || file_exists($seedSqlite)) {
+        $envVars = [];
+        if (file_exists($envFile)) {
+            $lines = @file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            if (is_array($lines)) {
+                foreach ($lines as $line) {
+                    $line = trim($line);
+                    if ($line === '' || $line[0] === '#' || strpos($line, '=') === false) {
+                        continue;
+                    }
+                    $parts = explode('=', $line, 2);
+                    $k = trim($parts[0]);
+                    $v = trim($parts[1]);
+                    if ((substr($v, 0, 1) === '"' && substr($v, -1) === '"') || (substr($v, 0, 1) === "'" && substr($v, -1) === "'")) {
+                        $v = substr($v, 1, -1);
+                    }
+                    $envVars[$k] = $v;
+                }
+            }
+        }
+
+        $dbConn = isset($envVars['DB_CONNECTION']) ? $envVars['DB_CONNECTION'] : 'mysql';
+        $dbUser = isset($envVars['DB_USERNAME']) ? $envVars['DB_USERNAME'] : '';
+        $dbPass = isset($envVars['DB_PASSWORD']) ? $envVars['DB_PASSWORD'] : '';
+
+        if ($dbConn === 'mysql' && ($dbUser === '' || ($dbUser === 'root' && $dbPass === ''))) {
+            if ((!file_exists($runtimeSqlite) || @filesize($runtimeSqlite) === 0) && file_exists($seedSqlite)) {
+                @copy($seedSqlite, $runtimeSqlite);
+            }
+            if (file_exists($runtimeSqlite)) {
+                if (function_exists('putenv')) {
+                    @putenv('DB_CONNECTION=sqlite');
+                    @putenv('DB_DATABASE=' . $runtimeSqlite);
+                }
+                $_ENV['DB_CONNECTION'] = 'sqlite';
+                $_SERVER['DB_CONNECTION'] = 'sqlite';
+                $_ENV['DB_DATABASE'] = $runtimeSqlite;
+                $_SERVER['DB_DATABASE'] = $runtimeSqlite;
             }
         }
     }
-
-    if ($mysqlConnected) {
-        if ($workingHost !== $dbHost) {
-            $setEnvVar('DB_HOST', $workingHost);
-        }
-    } else {
-        // Fallback to pre-seeded SQLite database so the site works immediately without 500 errors
-        $seedSqlite = $basePath . '/storage/vercel-seed.sqlite';
-        $runtimeSqlite = $basePath . '/storage/database.sqlite';
-        if (!is_writable($basePath . '/storage')) {
-            $runtimeSqlite = rtrim(sys_get_temp_dir(), '/\\') . '/mortil-database.sqlite';
-        }
-        if ((!file_exists($runtimeSqlite) || filesize($runtimeSqlite) === 0) && file_exists($seedSqlite)) {
-            @copy($seedSqlite, $runtimeSqlite);
-        }
-        if (file_exists($runtimeSqlite)) {
-            $setEnvVar('DB_CONNECTION', 'sqlite');
-            $setEnvVar('DB_DATABASE', $runtimeSqlite);
-        }
-    }
+} catch (\Throwable $e) {
+    // Continue normal Laravel boot
 }
 
-if (file_exists($basePath . '/storage/framework/maintenance.php')) {
-    require $basePath . '/storage/framework/maintenance.php';
+/*
+|--------------------------------------------------------------------------
+| Check If Application Is Under Maintenance
+|--------------------------------------------------------------------------
+*/
+
+if (file_exists(__DIR__ . '/storage/framework/maintenance.php')) {
+    require __DIR__ . '/storage/framework/maintenance.php';
 }
 
-require $basePath . '/vendor/autoload.php';
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+*/
 
-$app = require_once $basePath . '/bootstrap/app.php';
+require __DIR__ . '/vendor/autoload.php';
 
-// If storage/framework/views is not writable on shared hosting, use system temp directory
-if (!is_writable($basePath . '/storage/framework/views')) {
-    $tmpStorage = rtrim(sys_get_temp_dir(), '/\\') . '/mortil_storage';
-    foreach (['/app/public', '/framework/views', '/framework/cache/data', '/framework/sessions', '/logs'] as $sub) {
-        if (!is_dir($tmpStorage . $sub)) {
-            @mkdir($tmpStorage . $sub, 0775, true);
-        }
-    }
-    $app->useStoragePath($tmpStorage);
-}
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+*/
+
+$app = require_once __DIR__ . '/bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
