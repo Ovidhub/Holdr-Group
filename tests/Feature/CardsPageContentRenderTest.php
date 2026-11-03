@@ -25,9 +25,9 @@ class CardsPageContentRenderTest extends TestCase
     public function test_cards_shows_seeded_content()
     {
         $this->get('/cards')->assertOk()
-            ->assertSee('Cards Designed Around How You Spend')
-            ->assertSee('Apply for a Credit Card')
-            ->assertSee('Full Card Control at Your Fingertips')
-            ->assertSee('Over 2 million credit card users');
+            ->assertSee('Precision-Engineered Credit & Multi-Currency Debit Cards')
+            ->assertSee('Request Your Mortil Holders Card')
+            ->assertSee('Granular Card Governance at Your Fingertips')
+            ->assertSee('Over 2.4 million active Mortil Holders cardholders globally');
     }
 }

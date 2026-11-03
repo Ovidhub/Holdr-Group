@@ -25,8 +25,8 @@ class AboutPageContentRenderTest extends TestCase
     {
         $this->get('/about')->assertOk()
             ->assertSee('About Mortil Holders')
-            ->assertSee('Digital Banking, Reinvented')
-            ->assertSee('world-class banking simple')
-            ->assertSee('with responsive support whenever you need it.');
+            ->assertSee('Engineering the Future of Private & Commercial Banking')
+            ->assertSee('tier-one capital stewardship')
+            ->assertSee('Direct interbank pricing with zero concealed spreads');
     }
 }

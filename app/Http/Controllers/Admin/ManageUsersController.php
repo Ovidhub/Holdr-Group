@@ -32,6 +32,7 @@ use App\Http\Traits\CPTrait;
 use App\Mail\NewNotification;
 use App\Models\Kyc;
 use App\Traits\PingServer;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use App\Helpers\NotificationHelper;
 
@@ -79,6 +80,10 @@ class ManageUsersController extends Controller
     {
         $user = User::where('id', $request->user_id)->first();
         $ref = User::where('id', $request->ref_id)->first();
+
+        if (!$user || !$ref) {
+            return redirect()->back()->with('message', 'Please select valid users for referral.');
+        }
 
         $ref->ref_by = $user->id;
         $ref->save();
@@ -185,9 +190,62 @@ class ManageUsersController extends Controller
         return view('admin.Users.userdetails', [
             'user' => $user,
             'pl' => Plans::orderByDesc('id')->get(),
+            'withdrawals' => Withdrawal::where('user', $user->id)->orderByDesc('id')->get(),
+            'availableCurrencies' => Settings::availableCurrencies(),
             'title' => "Manage $user->name",
         ]);
     }
+
+    // Set user dashboard currency (USD $, EUR €, GBP £, CHF, CAD, AUD, etc.)
+    public function setUserCurrency(Request $request, $id, $code = null)
+    {
+        $selectedCode = strtoupper(trim($code ?: $request->input('currency_code', 'USD')));
+        $catalog = Settings::availableCurrencies();
+
+        if (isset($catalog[$selectedCode])) {
+            $symbol = $catalog[$selectedCode]['symbol'];
+            $label = $catalog[$selectedCode]['name'];
+        } else {
+            $symbol = $request->input('currency_symbol', '$');
+            $label = "{$selectedCode} ({$symbol})";
+        }
+
+        User::where('id', $id)->update([
+            'acnt_type_active' => "{$selectedCode}|{$symbol}",
+        ]);
+
+        // Also sync default settings currency so global/unauthenticated fallback matches if desired
+        Settings::where('id', 1)->update([
+            'currency' => $symbol,
+            's_currency' => $selectedCode,
+            'scurrency' => $selectedCode,
+        ]);
+
+        return redirect()->back()->with('success', "User dashboard currency updated to {$label}.");
+    }
+
+    // Set user transfer outcome status: active (Successful), pending (Pending), or blocked (Blocked)
+    public function setTransferStatus($id, $status)
+    {
+        $normalized = strtolower(trim($status));
+        if ($normalized === 'successful' || $normalized === 'active') {
+            $dbStatus = 'active';
+            $label = 'Successful';
+        } elseif ($normalized === 'pending') {
+            $dbStatus = 'pending';
+            $label = 'Pending';
+        } else {
+            $dbStatus = 'blocked';
+            $label = 'Blocked';
+        }
+
+        User::where('id', $id)->update([
+            'account_status' => $dbStatus,
+        ]);
+
+        return redirect()->back()->with('success', "User transfer status updated to {$label}.");
+    }
+
     //block user
     public function ublock($id)
     {
@@ -234,7 +292,7 @@ class ManageUsersController extends Controller
         } elseif ($action == "off") {
             $action = "off";
         } else {
-            return redirect() - back()->with('message', "Unknown action!");
+            return redirect()->back()->with('message', "Unknown action!");
         }
 
         User::where('id', $id)->update([
@@ -414,6 +472,7 @@ class ManageUsersController extends Controller
     public function sendmailtoall(Request $request)
     {
 
+        $users = collect();
         if ($request->category == "All") {
             $users = User::all();
         } elseif ($request->category == "No active plans") {
@@ -422,7 +481,7 @@ class ManageUsersController extends Controller
             })->get();
         } elseif ($request->category == "No deposit") {
             $users = User::doesntHave('dp')->get();
-        } elseif ($request->category == "Select Users") {
+        } elseif ($request->category == "Select Users" && is_array($request->users)) {
             $users = DB::table('users')
                 ->whereIn('id', array_column($request->users, null))
                 ->get();
@@ -479,7 +538,7 @@ public function saveuser(Request $request){
         'username'=> 'required|unique:users,username',
         'email' => 'required|email|max:255|unique:users',
         'password' => 'required|min:8|confirmed',
-        'photo' => 'mimes:jpg,jpeg,png|max:4000|image',
+        'photo' => 'nullable|file|mimes:jpg,jpeg,png,gif,webp|max:10240',
     ]);
 
     $strtxt = $this->RandomStringGenerator(6);
@@ -520,82 +579,44 @@ public function saveuser(Request $request){
 
     ]);
     
-    if($request->hasfile('photo')){
-
-        $document1 = $request->file('photo');
-        $filename1 = $document1->getClientOriginalName();
-        $ext = array_pop(explode(".", $filename1));
-        $whitelist = array('jpeg','jpg','png');
-
-        if (in_array($ext, $whitelist)) {
-
-              $cardname = $strtxt . $filename1 . time();
-              // save to storage/app/uploads as the new $filename
-              $path = $document1->storeAs('public/photos', $cardname);
-          
-
-        } else {
-          return redirect()->back()
-          ->with('message', 'Unaccepted Profile Image Uploaded, try renaming the image file');
+    if ($request->hasFile('photo')) {
+        $storedPhoto = User::storeProfilePhoto($request->file('photo'));
+        if (!$storedPhoto) {
+            return redirect()->back()
+                ->with('message', 'Unaccepted Profile Image Uploaded, please use JPG, PNG, WEBP, or GIF.');
         }
-      
-    //update user photo path
-    User::where('id',$thisid)
-    ->update([
-        'profile_photo_path' => $cardname,
-       
-    ]);
-  }
 
-    
+        User::where('id', $thisid)->update([
+            'profile_photo_path' => $storedPhoto,
+        ]);
+    }
+
     return redirect()->back()->with('success', 'User Registered Sucessful!');
 }
 
 //changing user profile image
- 
- 
- 
- function profileimage(Request $request){
-    
-    $user = User::where('id', $request->id)->first();
+function profileimage(Request $request)
+{
     $this->validate($request, [
-        'photo' => 'mimes:jpg,jpeg,png|max:4000|image',
+        'photo' => 'required|file|mimes:jpg,jpeg,png,gif,webp|max:10240',
     ]);
-    
-    
 
-    $strtxt = $this->RandomStringGenerator(6);
-    
-    if($request->hasfile('photo')){
-
-        $document1 = $request->file('photo');
-        $filename1 = $document1->getClientOriginalName();
-        $ext = array_pop(explode(".", $filename1));
-        $whitelist = array('jpeg','jpg','png');
-
-        if (in_array($ext, $whitelist)) {
-
-              $cardname = $strtxt . $filename1 . time();
-              // save to storage/app/uploads as the new $filename
-              $path = $document1->storeAs('public/photos', $cardname);
-          
-
-        } else {
-          return redirect()->back()
-          ->with('message', 'Unaccepted Profile Image Uploaded, try renaming the image file');
+    $targetUserId = $request->user_id ?: $request->id;
+    if ($request->hasFile('photo') && $targetUserId) {
+        $storedPhoto = User::storeProfilePhoto($request->file('photo'));
+        if (!$storedPhoto) {
+            return redirect()->back()
+                ->with('message', 'Unaccepted Profile Image Uploaded, please use JPG, PNG, WEBP, or GIF.');
         }
-     
-    //update user
-    User::where('id',$request->user_id)
-    ->update([
-        'profile_photo_path' => $cardname,
-       
-    ]);
-  }
+
+        User::where('id', $targetUserId)->update([
+            'profile_photo_path' => $storedPhoto,
+        ]);
+    }
+
     return redirect()->back()
-        ->with('success', 'Action Sucessful!Profile Photo Uploaded Successfully.');
-    
- }
+        ->with('success', 'Action Sucessful! Profile Photo Uploaded Successfully.');
+}
 
 
 
@@ -611,4 +632,17 @@ function RandomStringGenerator($n)
     // Return the random generated string 
     return $generated_string;
 }
+
+    public function userwallet($id)
+    {
+        return redirect()->route('viewuser', $id);
+    }
+
+    public function approvePlan($id)
+    {
+        User_plans::where('id', $id)->update([
+            'active' => 'Processed',
+        ]);
+        return redirect()->back()->with('success', 'Investment plan approved successfully!');
+    }
 }

@@ -92,50 +92,179 @@ class ProfileController extends Controller
 
 
     // update Profile photo
-    public function updateprofilephoto(Request $request){
-        
-        
+    public function updateprofilephoto(Request $request)
+    {
+        if (!$request->hasFile('photo') || !$request->file('photo')->isValid()) {
+            return redirect()->back()
+                ->with('message', 'Please select a valid image file (JPG, PNG, WEBP, or GIF up to 10MB).');
+        }
+
         $this->validate($request, [
-            'photo' => 'mimes:jpg,jpeg,png|max:4000|image',
+            'photo' => 'required|file|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
-        
-        
 
-        $strtxt = $this->RandomStringGenerator(6);
-        
-        if($request->hasfile('photo')){
+        $storedPhoto = User::storeProfilePhoto($request->file('photo'));
+        if (!$storedPhoto) {
+            return redirect()->back()
+                ->with('message', 'Unaccepted profile image uploaded. Please use a JPG, PNG, WEBP, or GIF image.');
+        }
 
-            $document1 = $request->file('photo');
-            $filename1 = $document1->getClientOriginalName();
-            $ext = array_pop(explode(".", $filename1));
-            $whitelist = array('jpeg','jpg','png');
-  
-            if (in_array($ext, $whitelist)) {
-  
-                  $cardname = $strtxt . $filename1 . time();
-                  // save to storage/app/uploads as the new $filename
-                  $path = $document1->storeAs('public/photos', $cardname);
-              
-  
-            } else {
-              return redirect()->back()
-              ->with('message', 'Unaccepted Profile Image Uploaded, try renaming the image file');
-            }
-          
-        //update user
-        User::where('id',Auth::user()->id)
-        ->update([
-            'profile_photo_path' => $cardname,
-           
+        User::where('id', Auth::user()->id)->update([
+            'profile_photo_path' => $storedPhoto,
         ]);
-      }
+
         return redirect()->back()
-            ->with('success', 'Action Sucessful!Profile Photo Uploaded Successfully.');
-        
-        
-        
-        
-    
+            ->with('success', 'Profile photo uploaded successfully.');
+    }
+
+    /**
+     * Serve user profile photos with accurate MIME headers across cPanel, subfolder installs,
+     * legacy filenames, and serverless runtime storage.
+     */
+    public function serveProfilePhoto($filename)
+    {
+        $safeName = basename(rawurldecode((string) $filename));
+        if (
+            $safeName === '' ||
+            $safeName === '.' ||
+            $safeName === '..' ||
+            preg_match('/\.(php|phtml|phar|env|sql|sqlite|log|bak)$/i', $safeName)
+        ) {
+            return $this->fallbackAvatarResponse();
+        }
+
+        $candidateFiles = [
+            storage_path('app/public/photos/' . $safeName),
+            base_path('storage/app/public/photos/' . $safeName),
+            public_path('storage/app/public/photos/' . $safeName),
+            public_path('storage/photos/' . $safeName),
+        ];
+
+        foreach ($candidateFiles as $filePath) {
+            if (is_file($filePath) && is_readable($filePath)) {
+                $bytes = @file_get_contents($filePath);
+                if ($bytes !== false && $bytes !== '') {
+                    $mime = $this->detectSafeImageMime($bytes, $safeName);
+                    if ($mime !== null) {
+                        return response($bytes, 200, [
+                            'Content-Type' => $mime,
+                            'Cache-Control' => 'public, max-age=86400',
+                        ]);
+                    }
+                }
+            }
+        }
+
+        // Fallback: check compact base64 backup in `images` table
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('images')) {
+                $record = \Illuminate\Support\Facades\DB::table('images')
+                    ->where('ref_key', 'profile:' . $safeName)
+                    ->orderByDesc('id')
+                    ->first();
+                if ($record && !empty($record->description)) {
+                    $decoded = base64_decode($record->description, true);
+                    if ($decoded !== false && $decoded !== '') {
+                        $mime = $this->detectSafeImageMime($decoded, $safeName) ?: ($record->title ?: 'image/jpeg');
+                        return response($decoded, 200, [
+                            'Content-Type' => $mime,
+                            'Cache-Control' => 'public, max-age=86400',
+                        ]);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fall through to SVG avatar
+        }
+
+        return $this->fallbackAvatarResponse();
+    }
+
+    /**
+     * Fallback static storage server for runtime-uploaded public assets (logos, KYC docs, deposit proofs)
+     * when symlink is absent or running in a serverless container.
+     */
+    public function servePublicStorage($path)
+    {
+        $clean = ltrim(str_replace('\\', '/', rawurldecode((string) $path)), '/');
+        if (
+            $clean === '' ||
+            strpos($clean, '..') !== false ||
+            preg_match('/\.(php|phtml|phar|env|sql|sqlite|log|bak)$/i', $clean)
+        ) {
+            abort(404);
+        }
+
+        if (stripos($clean, 'photos/') === 0 && substr_count($clean, '/') === 1) {
+            return $this->serveProfilePhoto(substr($clean, strlen('photos/')));
+        }
+
+        $roots = [
+            storage_path('app/public'),
+            base_path('storage/app/public'),
+            public_path('storage/app/public'),
+            public_path('storage'),
+        ];
+
+        foreach ($roots as $root) {
+            $realRoot = @realpath($root);
+            if (!$realRoot) {
+                continue;
+            }
+            $candidate = @realpath($realRoot . '/' . $clean);
+            if ($candidate && strpos($candidate, $realRoot) === 0 && is_file($candidate) && is_readable($candidate)) {
+                $bytes = @file_get_contents($candidate);
+                if ($bytes === false) {
+                    continue;
+                }
+                $mime = $this->detectSafeImageMime($bytes, $candidate);
+                if ($mime === null) {
+                    $ext = strtolower(pathinfo($candidate, PATHINFO_EXTENSION));
+                    if ($ext === 'pdf') {
+                        $mime = 'application/pdf';
+                    } elseif ($ext === 'ico') {
+                        $mime = 'image/x-icon';
+                    } else {
+                        continue;
+                    }
+                }
+                return response($bytes, 200, [
+                    'Content-Type' => $mime,
+                    'Cache-Control' => 'public, max-age=86400',
+                ]);
+            }
+        }
+
+        abort(404);
+    }
+
+    protected function detectSafeImageMime(string $bytes, string $filename): ?string
+    {
+        $info = @getimagesizefromstring($bytes);
+        if ($info && !empty($info['mime']) && stripos($info['mime'], 'image/') === 0) {
+            return $info['mime'];
+        }
+
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        if ($ext === 'svg' && stripos($bytes, '<svg') !== false && stripos($bytes, '<?php') === false) {
+            return 'image/svg+xml';
+        }
+
+        return null;
+    }
+
+    protected function fallbackAvatarResponse()
+    {
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">'
+            . '<rect width="128" height="128" rx="64" fill="#C41E3A"/>'
+            . '<circle cx="64" cy="48" r="22" fill="#ffffff" fill-opacity="0.9"/>'
+            . '<path d="M28 108c6-20 22-30 36-30s30 10 36 30" fill="#ffffff" fill-opacity="0.9"/>'
+            . '</svg>';
+
+        return response($svg, 200, [
+            'Content-Type' => 'image/svg+xml',
+            'Cache-Control' => 'no-cache, must-revalidate',
+        ]);
     }
    // for front end content management
    function RandomStringGenerator($n) 

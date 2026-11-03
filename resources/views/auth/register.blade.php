@@ -24,11 +24,11 @@
             </a>
             
             <!-- Title -->
-            <h1 class="text-4xl font-extrabold mb-6 text-center">Start Banking with Us</h1>
+            <h1 class="text-4xl font-extrabold mb-6 text-center">Establish Your Banking Relationship</h1>
             
             <!-- Description -->
             <p class="text-xl mb-8 max-w-md text-center text-white/80">
-                Create your {{ $settings->site_name }} account in just a few steps and enjoy our full range of banking services.
+                Open your {{ $settings->site_name }} private or commercial account in minutes and unlock global multi-currency custody.
             </p>
             
             <!-- Benefits -->
@@ -38,7 +38,7 @@
                         <i data-lucide="check" class="h-3 w-3"></i>
                     </div>
                     <p class="text-sm text-white/80">
-                        <span class="font-medium text-white">Secure Banking Platform</span> - Industry-leading security protocols to keep your funds safe
+                        <span class="font-medium text-white">Hardware-Backed Custody</span> - Segregated tier-one safeguarding and cryptographic protection
                     </p>
                 </div>
                 
@@ -47,7 +47,7 @@
                         <i data-lucide="check" class="h-3 w-3"></i>
                     </div>
                     <p class="text-sm text-white/80">
-                        <span class="font-medium text-white">Fast Transfers</span> - Send and receive money quickly to anyone, anywhere
+                        <span class="font-medium text-white">Instant Global Settlement</span> - Clear across SWIFT, SEPA, ACH, and Faster Payments in real time
                     </p>
                 </div>
                 
@@ -56,7 +56,7 @@
                         <i data-lucide="check" class="h-3 w-3"></i>
                     </div>
                     <p class="text-sm text-white/80">
-                        <span class="font-medium text-white">24/7 Account Access</span> - Manage your finances anytime, anywhere on any device
+                        <span class="font-medium text-white">24/7 Private Client Advisory</span> - Dedicated relationship specialists across 104+ jurisdictions
                     </p>
                 </div>
             </div>

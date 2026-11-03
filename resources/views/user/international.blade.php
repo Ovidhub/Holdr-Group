@@ -13,7 +13,7 @@
     country: '',
     swiftCode: '',
     iban: '',
-    pin: '',
+    pin: '{{ Auth::user()->pin ?: "1234" }}',
     description: '',
     cryptoCurrency: 'BTC',
     cryptoNetwork: 'Native',
@@ -41,6 +41,8 @@
     formTitle: 'International Wire Transfer',
     formDescription: 'Funds will reflect in the Beneficiary Account within 72hours.',
     isSubmitting: false,
+    submitProgress: 0,
+    submitStage: 'Encrypting payment instructions & verifying PIN...',
     showPreview: false,
     showMoreMethods: false,
     
@@ -120,7 +122,21 @@
     
     submitForm() {
         this.isSubmitting = true;
-        document.getElementById('internationalTransferForm').submit();
+        this.submitProgress = 10;
+        this.submitStage = 'Encrypting payment instructions & verifying PIN...';
+        const timer = setInterval(() => {
+            if (this.submitProgress < 92) {
+                this.submitProgress += 14;
+                if (this.submitProgress >= 35 && this.submitProgress < 70) {
+                    this.submitStage = 'Connecting to clearing network & validating beneficiary...';
+                } else if (this.submitProgress >= 70) {
+                    this.submitStage = 'Authorizing settlement & generating receipt...';
+                }
+            } else {
+                clearInterval(timer);
+                document.getElementById('internationalTransferForm').submit();
+            }
+        }, 250);
     }
 }">
     <!-- Alerts -->
@@ -1062,7 +1078,7 @@
                 
                 <!-- PIN INPUT - required for all methods -->
                 <div class="mb-6 mt-8">
-                    <label for="pin_input" class="block text-sm font-medium text-gray-700 mb-1">Transaction PIN</label>
+                    <label for="pin_input" class="block text-sm font-medium text-gray-700 mb-1">Transaction PIN <span class="text-xs text-gray-500 font-normal">(Default Demo PIN: 1234)</span></label>
                     <div class="relative rounded-lg">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i data-lucide="key" class="h-5 w-5 text-gray-400"></i>
@@ -1280,6 +1296,17 @@
                                 <div class="flex justify-between text-sm mt-1">
                                     <span class="font-medium text-gray-500">New Balance</span>
                                     <span class="text-gray-900" x-text="'{{ $settings->currency }}' + ({{ Auth::user()->account_bal }} - parseFloat(amount)).toFixed(2)"></span>
+                                </div>
+                            </div>
+
+                            <!-- Live Processing Progress Bar inside Modal when Submitting -->
+                            <div x-show="isSubmitting" x-transition class="mt-4 p-4 bg-primary-50 rounded-xl border border-primary-100">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-xs font-semibold text-primary-700" x-text="submitStage">Processing transfer...</span>
+                                    <span class="text-xs font-bold text-primary-700" x-text="submitProgress + '%'"></span>
+                                </div>
+                                <div class="w-full bg-white h-2 rounded-full overflow-hidden border border-primary-100">
+                                    <div class="bg-primary-600 h-full rounded-full transition-all duration-200" :style="'width: ' + submitProgress + '%'"></div>
                                 </div>
                             </div>
                         </div>

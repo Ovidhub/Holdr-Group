@@ -18,32 +18,22 @@ class SoftwareModule extends Component
     public function updateModule($module, $value)
     {
         $settings = Settings::find(1);
-
-        if ($module == 'membership' or $module == 'signal') {
-
-            $response = $this->fetctApi('/set-modules', [
-                'value' => $value,
-                'module' => $module
-            ], 'POST');
-            $info = json_decode($response);
-
-            if ($response->failed() or $info->error) {
-                return redirect()->route('appsettingshow')->with('message', $info->message);
-            }
-            if (!$info->error or $response->successful()) {
-                $options = $settings->modules;
-                $options[$module] = $value == 'true' ? true : false;
-                $settings->modules = $options;
-                $settings->save();
-                return redirect()->route('appsettingshow')->with('success', $info->message);
-            }
-        } else {
-            //save option
-            $options = $settings->modules;
-            $options[$module] = $value == 'true' ? true : false;
-            $settings->modules = $options;
-            $settings->save();
-            return redirect()->route('appsettingshow')->with('success', 'Action Successful');
+        if (!$settings) {
+            return redirect()->route('appsettingshow')->with('message', 'Settings not found');
         }
+
+        $defaultModules = [
+            'investment' => 'true',
+            'cryptoswap' => true,
+            'subscription' => false,
+            'signal' => false,
+            'membership' => false,
+        ];
+        $options = is_array($settings->modules) ? array_merge($defaultModules, $settings->modules) : $defaultModules;
+        $options[$module] = ($value == 'true' || $value === true) ? ($module === 'investment' ? 'true' : true) : ($module === 'investment' ? 'false' : false);
+        $settings->modules = $options;
+        $settings->save();
+
+        return redirect()->route('appsettingshow')->with('success', 'Action Successful');
     }
 }

@@ -57,9 +57,9 @@
                                                     <td>
                                                         <div class="d-flex align-items-center">
                                                             @if ($card->user && $card->user->profile_photo_path)
-                                                                <img src="{{ asset('storage/app/public/photos/'.$card->user->profile_photo_path) }}" alt="profile" class="mr-2 rounded-circle" style="width: 30px; height: 30px;">
-                                                            @else
-                                                                <img src="{{ asset('dash/images/profile/profile.png') }}" alt="profile" class="mr-2 rounded-circle" style="width: 30px; height: 30px;">
+                                                                <img src="{{ $card->user->profile_photo_url }}" onerror="this.onerror=null;this.src='{{ $card->user->defaultProfilePhotoUrl() }}';" alt="profile" class="mr-2 rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
+                                                            @elseif ($card->user)
+                                                                <img src="{{ $card->user->defaultProfilePhotoUrl() }}" alt="profile" class="mr-2 rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
                                                             @endif
                                                             <div>
                                                                 {{ $card->user ? $card->user->name : 'N/A' }}

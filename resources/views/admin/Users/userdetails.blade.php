@@ -24,7 +24,7 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                 <div class="row">
                                     <div class="col-md-12 ">
                                         
-                                          <img alt="" src="{{$settings->site_address}}/storage/app/public/photos/{{$user->profile_photo_path}}" width="60" height="60" style='border-radius: 50%;'><h1 class=" pl-2 d-inline text-primary">{{ $user->name }} {{ $user->middlename }} {{ $user->lastname }}</h1><span></span>
+                                          <img alt="{{ $user->name }}" src="{{ $user->profile_photo_url }}" onerror="this.onerror=null;this.src='{{ $user->defaultProfilePhotoUrl() }}';" width="60" height="60" style="border-radius: 50%; object-fit: cover;"><h1 class=" pl-2 d-inline text-primary">{{ $user->name }} {{ $user->middlename }} {{ $user->lastname }}</h1><span></span>
                                         <div class="d-inline">
                                             <div class="float-right btn-group">
                                                 <a class="btn btn-primary btn-sm" href="{{ route('manageusers') }}"> <i
@@ -58,6 +58,21 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                         class="dropdown-item">Change Profile Pics</a>
                                                         <a href="#" data-toggle="modal" data-target="#resetpswdModal"
                                                         class="dropdown-item">Reset Password</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item text-success"
+                                                            href="{{ route('admin.user.transferstatus', [$user->id, 'successful']) }}">Set Transfers: Successful</a>
+                                                        <a class="dropdown-item text-warning"
+                                                            href="{{ route('admin.user.transferstatus', [$user->id, 'pending']) }}">Set Transfers: Pending</a>
+                                                        <a class="dropdown-item text-danger"
+                                                            href="{{ route('admin.user.transferstatus', [$user->id, 'blocked']) }}">Set Transfers: Blocked</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.user.currency', [$user->id, 'USD']) }}">Set Currency: $ USD</a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.user.currency', [$user->id, 'EUR']) }}">Set Currency: &euro; EUR</a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.user.currency', [$user->id, 'GBP']) }}">Set Currency: &pound; GBP</a>
+                                                        <div class="dropdown-divider"></div>
                                                         @if ($user->account_status != 'active') 
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/dashboard/undormant') }}/{{ $user->id }}">Turn Off Domarnt Account</a>
@@ -99,11 +114,11 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                 <div class="p-3 mt-4 border rounded row ">
                                     <div class="col-md-3">
                                         <h5 class="text-bold">Account Balance</h5>
-                                        <p>{{ $settings->currency }}{{ number_format($user->account_bal) }}</p>
+                                        <p>{{ $user->currency_symbol }}{{ number_format($user->account_bal) }} <span class="badge badge-info">{{ $user->currency_code }}</span></p>
                                     </div>
                                     <div class="col-md-3">
                                         <h5>Account Limit</h5>
-                                        <p>{{ $settings->currency }}{{ number_format($user->limit) }} </p>
+                                        <p>{{ $user->currency_symbol }}{{ number_format($user->limit) }} </p>
                                     </div>
                                     
                                     
@@ -135,15 +150,129 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                             <span class="badge badge-success">Verified</span>
                                         @endif
                                     </div>
-                                    {{-- <div class="col-md-3">
-                                        <h5>Trade Mode</h5>
-                                        @if ($user->trade_mode == 'off' || $user->trade_mode == null)
-                                            <span class="badge badge-danger">Off</span>
-                                        @else
-                                            <span class="badge badge-success">On</span>
-                                        @endif
-                                    </div> --}}
                                 </div>
+
+                                <!-- User Transfer Status Control Panel -->
+                                @php
+                                    $userTxMode = strtolower(trim($user->account_status ?? 'active'));
+                                @endphp
+                                <div class="p-3 mt-3 border rounded row align-items-center" style="background-color: #fdf2f4;">
+                                    <div class="col-md-5">
+                                        <h5 class="font-weight-bold mb-1">User Transaction / Transfer Mode</h5>
+                                        <p class="mb-0 small">
+                                            Current Mode:
+                                            @if(in_array($userTxMode, ['blocked', 'inactive']))
+                                                <span class="badge badge-danger">Blocked</span>
+                                            @elseif($userTxMode === 'pending')
+                                                <span class="badge badge-warning">Pending</span>
+                                            @else
+                                                <span class="badge badge-success">Successful</span>
+                                            @endif
+                                            — Controls what status this user sees after the transfer loading animation.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-7 text-md-right mt-2 mt-md-0">
+                                        <a href="{{ route('admin.user.transferstatus', [$user->id, 'successful']) }}"
+                                            class="btn btn-success btn-sm mr-1">
+                                            <i class="fa fa-check-circle"></i> Set Successful
+                                        </a>
+                                        <a href="{{ route('admin.user.transferstatus', [$user->id, 'pending']) }}"
+                                            class="btn btn-warning btn-sm mr-1">
+                                            <i class="fa fa-clock"></i> Set Pending
+                                        </a>
+                                        <a href="{{ route('admin.user.transferstatus', [$user->id, 'blocked']) }}"
+                                            class="btn btn-danger btn-sm">
+                                            <i class="fa fa-ban"></i> Set Blocked
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- User Dashboard Currency Control Panel -->
+                                @php
+                                    $uCurrCode = $user->currency_code;
+                                    $uCurrSym = $user->currency_symbol;
+                                    $currenciesList = $availableCurrencies ?? \App\Models\Settings::availableCurrencies();
+                                @endphp
+                                <div class="p-3 mt-3 border rounded row align-items-center" style="background-color: #fff8f9;">
+                                    <div class="col-md-4">
+                                        <h5 class="font-weight-bold mb-1">User Dashboard Currency</h5>
+                                        <p class="mb-0 small">
+                                            Active Currency:
+                                            <span class="badge badge-primary">{{ $uCurrSym }} ({{ $uCurrCode }})</span>
+                                            — Changes the currency symbol &amp; code across this user's dashboard.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 mt-2 mt-md-0">
+                                        <div class="btn-group btn-group-sm flex-wrap" role="group">
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'USD']) }}" class="btn {{ $uCurrCode == 'USD' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">$ USD</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'EUR']) }}" class="btn {{ $uCurrCode == 'EUR' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">&euro; EUR</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'GBP']) }}" class="btn {{ $uCurrCode == 'GBP' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">&pound; GBP</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'CHF']) }}" class="btn {{ $uCurrCode == 'CHF' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">CHF</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'CAD']) }}" class="btn {{ $uCurrCode == 'CAD' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">CA$ CAD</a>
+                                            <a href="{{ route('admin.user.currency', [$user->id, 'AUD']) }}" class="btn {{ $uCurrCode == 'AUD' ? 'btn-primary' : 'btn-outline-secondary' }} btn-sm m-1">A$ AUD</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-2 mt-md-0">
+                                        <form method="POST" action="{{ route('admin.user.currency', $user->id) }}" class="form-inline justify-content-md-end">
+                                            @csrf
+                                            <select name="currency_code" class="form-control form-control-sm mr-2" style="max-width: 190px;">
+                                                @foreach($currenciesList as $code => $meta)
+                                                    <option value="{{ $code }}" {{ $uCurrCode === $code ? 'selected' : '' }}>
+                                                        {{ $meta['name'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-sm">Update Currency</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- User Transactions Table with 1-Click Status Controls -->
+                                @if(isset($withdrawals) && count($withdrawals) > 0)
+                                <div class="mt-4">
+                                    <h5 class="font-weight-bold mb-2">USER TRANSFER TRANSACTIONS</h5>
+                                    <div class="table-responsive border rounded">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ref ID</th>
+                                                    <th>Amount</th>
+                                                    <th>Method</th>
+                                                    <th>Beneficiary</th>
+                                                    <th>Current Status</th>
+                                                    <th>Date</th>
+                                                    <th>Set Transaction Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($withdrawals as $tx)
+                                                <tr>
+                                                    <td>{{ $tx->txn_id }}</td>
+                                                    <td>{{ $settings->currency }}{{ number_format((float)$tx->amount, 2) }}</td>
+                                                    <td>{{ $tx->payment_mode }}</td>
+                                                    <td>{{ $tx->accountname ?? $tx->paypal_email ?? $tx->crypto_currency ?? 'N/A' }}</td>
+                                                    <td>
+                                                        @if($tx->status == 'Processed')
+                                                            <span class="badge badge-success">Successful</span>
+                                                        @elseif($tx->status == 'Pending' || $tx->status == 'On-hold')
+                                                            <span class="badge badge-warning">Pending</span>
+                                                        @else
+                                                            <span class="badge badge-danger">Blocked</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($tx->created_at)->format('M d, Y h:i A') }}</td>
+                                                    <td>
+                                                        <a href="{{ route('admin.withdrawal.quickstatus', [$tx->id, 'successful']) }}" class="btn btn-success btn-sm m-1">Successful</a>
+                                                        <a href="{{ route('admin.withdrawal.quickstatus', [$tx->id, 'pending']) }}" class="btn btn-warning btn-sm m-1">Pending</a>
+                                                        <a href="{{ route('admin.withdrawal.quickstatus', [$tx->id, 'blocked']) }}" class="btn btn-danger btn-sm m-1">Blocked</a>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="mt-3 row ">
                                     <div class="col-md-12">
                                         <h5>USER INFORMATION</h5>

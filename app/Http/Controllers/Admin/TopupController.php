@@ -25,13 +25,16 @@ class TopupController extends Controller
         
        
     $user = User::where('id', $request->user_id)->first();
+        if (!$user) {
+            return redirect()->back()->with('message', 'User not found.');
+        }
         $userdpo = Deposit::where('user', $request['user_id'])->first();
         $settings = Settings::where('id', '1')->first();
-        $user_bal=$user->account_bal;
-        $user_bonus=$user->bonus;
-        $user_roi=$user->roi;
-        $user_Ref=$user->ref_bonus;
-        $user_deposit = $userdpo->amount;
+        $user_bal = $user->account_bal;
+        $user_bonus = $user->bonus;
+        $user_roi = $user->roi;
+        $user_Ref = $user->ref_bonus;
+        $user_deposit = optional($userdpo)->amount ?? 0;
 
         $subtxn =substr(strtoupper($settings->site_name),0,4);
         $codetxn1 = $this->RandomStringGenerator(8);
@@ -63,7 +66,7 @@ class TopupController extends Controller
                 $dp->amount= $request['amount'];
                 $dp->payment_mode = $request['scope'];
                 $dp->Description = $request['Description'];
-                $dp->created_at  = $request['date'];
+                $dp->created_at  = $request['date'] ?: Carbon::now();
                 $dp->type    = $request['t_type'];
                 $dp->accountname = 'Self';
                 $dp->bankname = $settings->site_name;
@@ -126,7 +129,7 @@ class TopupController extends Controller
   
           
   
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             
         }
 
@@ -163,7 +166,7 @@ class TopupController extends Controller
             }elseif($request['type']=="Ref_Bonus"){
               User::where('id', $request->user_id)
                 ->update([
-                  'Ref_Bonus'=> $user_Ref - $request->amount,
+                  'ref_bonus'=> $user_Ref - $request->amount,
                   'account_bal'=> $user_bal - $request->amount,
                 ]);
             }
@@ -173,14 +176,14 @@ class TopupController extends Controller
                 $dp->amount= $request['amount'];
                 $dp->payment_mode = $request['scope'];
                 $dp->Description = $request['Description'];
-                $dp->created_at  = $request['date'];
+                $dp->created_at  = $request['date'] ?: Carbon::now();
                 $dp->type    = $request['t_type'];
                 $dp->accountname = 'Self';
                 $dp->status= 'Processed';
                 $dp->user= $request['user_id'];
-                 $dp->bankname = $settings->bankname;
+                 $dp->bankname = $settings->bank_name ?? $settings->site_name;
               $dp->accountnumber = $user->usernumber;
-                $dp->Accounttype = $user->Accountype;
+                $dp->Accounttype = $user->accounttype;
                 $dp->country  = $user->country;
                 $dp->bankaddress = $settings->address;
                 $dp->txn_id = "$subtxn/$codetxn1-$codetxn2";
@@ -232,7 +235,7 @@ class TopupController extends Controller
      
              
      
-           } catch (Exception $e) {
+           } catch (\Throwable $e) {
                
            }
    

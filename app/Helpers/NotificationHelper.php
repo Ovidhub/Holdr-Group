@@ -21,25 +21,28 @@ class NotificationHelper
      */
     public static function create($user, $message, $title = null, $type = 'info', $icon = null, $link = null, $data = null)
     {
-        $userId = $user instanceof User ? $user->id : $user;
-        
-        // Set default icon based on type if not provided
-        if ($icon === null) {
-            $icon = self::getDefaultIconForType($type);
+        try {
+            $userId = $user instanceof User ? $user->id : $user;
+
+            if ($icon === null) {
+                $icon = self::getDefaultIconForType($type);
+            }
+
+            return Notification::create([
+                'user_id' => $userId,
+                'title' => $title,
+                'message' => $message,
+                'type' => $type,
+                'icon' => $icon,
+                'link' => $link,
+                'data' => $data,
+                'is_read' => false,
+            ]);
+        } catch (\Throwable $e) {
+            return new Notification();
         }
-        
-        return Notification::create([
-            'user_id' => $userId,
-            'title' => $title,
-            'message' => $message,
-            'type' => $type,
-            'icon' => $icon,
-            'link' => $link,
-            'data' => $data,
-            'is_read' => false,
-        ]);
     }
-    
+
     /**
      * Get the default icon for a notification type.
      *
@@ -60,4 +63,4 @@ class NotificationHelper
                 return 'info';
         }
     }
-} 
+}

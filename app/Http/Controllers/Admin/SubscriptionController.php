@@ -105,4 +105,40 @@ class SubscriptionController extends Controller
         Mt4Details::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Subscription Sucessfully Deleted');
     }
+
+    public function confirmsub($id)
+    {
+        $sub = Mt4Details::find($id);
+        if (!$sub) {
+            return redirect()->back()->with('message', 'Subscription record not found.');
+        }
+        $user = \App\Models\User::where('id', $sub->client_id)->first();
+
+        $end_at = now()->addMonths(1);
+        if ($sub->duration == 'Monthly') {
+            $end_at = now()->addMonths(1);
+        } elseif ($sub->duration == 'Quaterly') {
+            $end_at = now()->addMonths(4);
+        } elseif ($sub->duration == 'Yearly') {
+            $end_at = now()->addYears(1);
+        }
+        $remindAt = (clone $end_at)->subDays(10);
+
+        $sub->start_date = now();
+        $sub->end_date = $end_at;
+        $sub->reminded_at = $remindAt;
+        $sub->status = 'Active';
+        $sub->save();
+
+        if ($user) {
+            $settings = Settings::where('id', '=', '1')->first();
+            $message = "$user->name, This is to inform you that your trading account management request has been reviewed and processed. Thank you for trusting $settings->site_name";
+            try {
+                \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\NewNotification($message, 'Subscription Account Started!', $user->name));
+            } catch (\Throwable $e) {
+            }
+        }
+
+        return redirect()->back()->with('success', 'Subscription Account Started!');
+    }
 }

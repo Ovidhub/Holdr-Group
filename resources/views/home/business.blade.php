@@ -6,7 +6,7 @@
 @endphp
 @extends('layouts.base')
 @inject('content', 'App\Http\Controllers\FrontController')
-@section('title', 'About Us')
+@section('title', 'Commercial & Business Banking')
 
 
 @section('content')
@@ -16,7 +16,7 @@
 <div class="container">
 <div class="breadcrumb-title">
 <br><br>
-<h2>Business Banking</h2>
+<h2>Commercial &amp; Business Banking</h2>
 <ul class="breadcrumb-menu list-style">
 <li><a href="/">Home </a></li>
 <li>Business Banking</li>
@@ -31,7 +31,7 @@
 <div class="row">
 <div class="col-xl-6 offset-xl-3 col-lg-10 offset-lg-1">
 <div class="section-title style1 text-center mb-40">
-<span style="text-transform: uppercase;">{{$settings->site_name}}</span>
+<span style="text-transform: uppercase;">{{$settings->site_name}} COMMERCIAL TREASURY</span>
 <h4>{{ pc('business','intro_heading') }}</h4>
 </div>
 </div>
@@ -44,14 +44,11 @@
 			<h3>{{ pc('business','overview_heading') }}</h3>
 			<p>{{ pc('business','overview_body') }}</p>
 			<ul class="content-feature-list list-style">
-			<li><i class="ri-checkbox-multiple-line"></i>A mix of current and savings accounts to cover your banking needs.</li>
-			<li><i class="ri-checkbox-multiple-line"></i>Accounts that complement each other, combining to suit the needs of each individual’s cash portfolio.</li>
-			<li><i class="ri-checkbox-multiple-line"></i>A range of benefits including instant access to funds, free day-to-day transactions and fee-free currency
-conversion – see account pages for individual details.</li>
-			<li><i class="ri-checkbox-multiple-line"></i>All personal accounts can have up to four joint account holders, apart from the Cash Hub Account which can
-have two.</li>
-			<li><i class="ri-checkbox-multiple-line"></i>A mix of current and savings accounts to cover your banking needs.</li>
-			
+			<li><i class="ri-checkbox-multiple-line"></i><strong>Global Multi-Currency Operating Accounts:</strong> Open dedicated IBAN, ACH, and Faster Payments accounts in 50+ currencies to invoice clients and settle international suppliers without forced conversions.</li>
+			<li><i class="ri-checkbox-multiple-line"></i><strong>Automated Batch Payables &amp; Global Payroll:</strong> Execute thousands of domestic and cross-border disbursements in a single batch with automated beneficiary verification and real-time reconciliation.</li>
+			<li><i class="ri-checkbox-multiple-line"></i><strong>Institutional FX Execution &amp; Hedging:</strong> Lock in interbank foreign exchange rates, schedule forward contracts, and protect operating margins across volatile currency corridors.</li>
+			<li><i class="ri-checkbox-multiple-line"></i><strong>Multi-Entity Governance &amp; Role Permissions:</strong> Manage subsidiaries, regional divisions, and dual-authorization approval workflows from one consolidated treasury command center.</li>
+			<li><i class="ri-checkbox-multiple-line"></i><strong>Revolving Working Capital &amp; Trade Finance:</strong> Access structured credit lines, invoice financing, and documentary letters of credit tailored to your cash conversion cycle.</li>
 			</ul>
 			</div>
 		</div>
@@ -65,66 +62,66 @@ have two.</li>
 <div class="feature-card style3">
 <div class="feature-title">
 <span>
-<i class="ri-apple-fill"></i>
+<i class="ri-global-line"></i>
 </span>
-<h3><a href="login">Apple ios</a></h3>
+<h3><a href="register">Multi-Currency Ledgers</a></h3>
 </div>
-<p></p>
+<p>Hold, convert, and settle funds across 50+ currencies with local routing details in major commercial hubs.</p>
 </div>
 </div>
 <div class="col-xl-4 col-lg-6 col-md-6">
 <div class="feature-card style3">
 <div class="feature-title">
 <span>
-<i class="ri-android-fill"></i>
+<i class="ri-exchange-funds-line"></i>
 </span>
-<h3><a href="chart">Google Android</a></h3>
+<h3><a href="register">Batch Payroll &amp; Payouts</a></h3>
 </div>
-<p></p>
+<p>Automate global contractor disbursements, supplier invoices, and multi-country payroll in one click.</p>
 </div>
 </div>
 <div class="col-xl-4 col-lg-6 col-md-6">
 <div class="feature-card style3">
 <div class="feature-title">
 <span>
-<i class="ri-github-line"></i>
+<i class="ri-bank-card-2-line"></i>
 </span>
-<h3><a href="alerts">Alexa</a></h3>
+<h3><a href="cards">Corporate Spend Cards</a></h3>
 </div>
-<p></p>
+<p>Issue physical and virtual expense cards for teams with programmable merchant and daily spend limits.</p>
 </div>
 </div>
 <div class="col-xl-4 col-lg-6 col-md-6">
 <div class="feature-card style3">
 <div class="feature-title">
 <span>
-<i class="ri-slack-line"></i>
+<i class="ri-shield-check-line"></i>
 </span>
-<h3><a href="register">Slack</a></h3>
+<h3><a href="register">Dual-Signatory Controls</a></h3>
 </div>
-<p></p>
+<p>Enforce custom approval hierarchies, audit trails, and role-based treasury permissions across your finance team.</p>
 </div>
 </div>
 <div class="col-xl-4 col-lg-6 col-md-6">
 <div class="feature-card style3">
 <div class="feature-title">
 <span>
-<i class="ri-google-fill"></i>
+<i class="ri-line-chart-line"></i>
 </span>
-<h3><a href="register">Google Assistant</a></h3>
+<h3><a href="loans">Working Capital Lines</a></h3>
 </div>
-<p></p>
+<p>Draw down revolving commercial credit, asset financing, and trade facilities with transparent terms.</p>
 </div>
 </div>
 <div class="col-xl-4 col-lg-6 col-md-6">
 <div class="feature-card style3">
 <div class="feature-title">
 <span>
-<i class="ri-facebook-fill"></i>
+<i class="ri-customer-service-2-line"></i>
 </span>
-<h3><a href="register">Facebook</a></h3>
+<h3><a href="contact">Dedicated Treasury Desk</a></h3>
 </div>
-<p></p>
+<p>Partner with a senior relationship manager for bespoke FX execution, liquidity sweeps, and custom structures.</p>
 </div>
 </div>
  </div>
@@ -137,23 +134,23 @@ have two.</li>
 <div class="row gx-5 align-items-center">
 <div class="col-lg-6">
 <div class="app-img-wrap">
-<img src="temp/custom/assets/img/shape-4.png" alt="Image" class="app-shape-one bounce">
-<img src="temp/custom/assets/img/app-screen.png" alt="Image">
+<img src="temp/custom/assets/img/shape-4.png?v=cherry3" alt="Image" class="app-shape-one bounce">
+<img src="temp/custom/assets/img/app-screen.png?v=cherry3" alt="Image">
 </div>
 </div>
 <div class="col-lg-6">
 <div class="app-content">
 <div class="content-title style1">
-<span>OUR APP</span>
+<span>EXECUTIVE MOBILE SUITE</span>
 <h2>{{ pc('business','app_heading') }}</h2>
 <p>{{ pc('business','app_body') }}</p>
 </div>
 <h5>{{ pc('business','app_stat') }}</h5>
 <div class="app-btn-wrap">
 <a href="app">
-<img src="temp/custom/assets/img/about/play-store.png" alt="Image">
+<img src="temp/custom/assets/img/about/play-store.png?v=cherry3" alt="Image">
 </a><a href="app">
-<img src="temp/custom/assets/img/about/app-store.png" alt="Image">
+<img src="temp/custom/assets/img/about/app-store.png?v=cherry3" alt="Image">
 </a>
 </div>
 </div>
@@ -163,5 +160,4 @@ have two.</li>
 </section>
 
 </div>
-
 @endsection

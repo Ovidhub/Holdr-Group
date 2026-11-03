@@ -15,6 +15,11 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user')->nullable();
+            $table->string('ip_address')->nullable();
+            $table->string('device')->nullable();
+            $table->string('browser')->nullable();
+            $table->string('os')->nullable();
             $table->timestamps();
         });
     }

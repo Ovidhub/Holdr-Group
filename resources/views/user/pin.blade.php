@@ -138,9 +138,9 @@
             <div class="relative transform transition-transform duration-300 hover:scale-105">
                 <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg">
                     <img 
-                        src="{{$settings->site_address}}/storage/app/public/photos/{{Auth::user()->profile_photo_path}}" 
+                        src="{{ Auth::user()->profile_photo_url }}" 
                         alt="{{ Auth::user()->name }}" 
-                        onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&color=7F9CF5&background=EBF4FF';"
+                        onerror="this.onerror=null;this.src='{{ Auth::user()->defaultProfilePhotoUrl() }}';"
                         class="w-full h-full object-cover transform transition-transform duration-300 hover:scale-110">
                 </div>
                 

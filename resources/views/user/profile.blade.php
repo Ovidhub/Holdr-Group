@@ -4,7 +4,9 @@
 
 <div x-data="{ 
     showProfilePictureModal: false,
-    showTransactionPinModal: false
+    showTransactionPinModal: false,
+    photoPreviewUrl: null,
+    selectedFileName: ''
 }">
     <!-- Alerts -->
     <x-danger-alert />
@@ -34,10 +36,10 @@
                     <div class="relative mb-3">
                         <div class="h-24 w-24 rounded-full border-4 border-white/50 overflow-hidden bg-white shadow-md">
                             <img 
-                                src="{{$settings->site_address}}/storage/app/public/photos/{{Auth::user()->profile_photo_path}}" 
+                                src="{{ Auth::user()->profile_photo_url }}" 
                                 class="h-full w-full object-cover"
                                 alt="{{ Auth::user()->name }}"
-                                onerror="this.src='https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random'"
+                                onerror="this.onerror=null;this.src='{{ Auth::user()->defaultProfilePhotoUrl() }}';"
                             />
                         </div>
                         <button 
@@ -353,15 +355,39 @@
                         </label>
                         <div class="mt-2">
                             <div class="flex items-center justify-center w-full">
-                                <label for="photo-upload" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <i data-lucide="upload-cloud" class="h-10 w-10 text-gray-400 mb-2"></i>
-                                        <p class="mb-2 text-sm text-gray-500">
-                                            <span class="font-semibold">Click to upload</span> or drag and drop
-                                        </p>
-                                        <p class="text-xs text-gray-500">PNG, JPG or JPEG (MAX. 2MB)</p>
-                                    </div>
-                                    <input id="photo-upload" type="file" name="photo" class="hidden" required />
+                                <label for="photo-upload" class="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 overflow-hidden">
+                                    <template x-if="!photoPreviewUrl">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <i data-lucide="upload-cloud" class="h-10 w-10 text-gray-400 mb-2"></i>
+                                            <p class="mb-2 text-sm text-gray-500">
+                                                <span class="font-semibold">Click to upload</span> or drag and drop
+                                            </p>
+                                            <p class="text-xs text-gray-500">PNG, JPG, JPEG, WEBP or GIF (MAX. 10MB)</p>
+                                        </div>
+                                    </template>
+                                    <template x-if="photoPreviewUrl">
+                                        <div class="flex flex-col items-center justify-center py-3">
+                                            <img :src="photoPreviewUrl" alt="Preview" class="h-20 w-20 rounded-full object-cover border-2 border-primary-600 shadow-sm mb-2">
+                                            <p class="text-xs font-medium text-gray-700 truncate max-w-xs px-4" x-text="selectedFileName"></p>
+                                        </div>
+                                    </template>
+                                    <input
+                                        id="photo-upload"
+                                        type="file"
+                                        name="photo"
+                                        accept="image/png,image/jpeg,image/jpg,image/webp,image/gif"
+                                        class="hidden"
+                                        required
+                                        @change="
+                                            const file = $event.target.files[0];
+                                            if (file) {
+                                                selectedFileName = file.name;
+                                                const reader = new FileReader();
+                                                reader.onload = (e) => { photoPreviewUrl = e.target.result; };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        "
+                                    />
                                 </label>
                             </div>
                         </div>

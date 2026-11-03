@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TermsPrivacy extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
 }

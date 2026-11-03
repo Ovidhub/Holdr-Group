@@ -52,11 +52,11 @@ class CreateNewUser implements CreatesNewUsers
         if (session('ref_by')) {
             $ref_by = session('ref_by');
             $user = User::where('username', $ref_by)->first();
-            $ref_by_id = $user->id;
+            $ref_by_id = optional($user)->id;
         } else {
             if (!empty($input['ref_by'])) {
                 $sponsor = User::where('username', $input['ref_by'])->first();
-                $ref_by_id = $sponsor->id;
+                $ref_by_id = optional($sponsor)->id;
             } else {
                 $ref_by_id = NULL;
             }
@@ -65,13 +65,13 @@ class CreateNewUser implements CreatesNewUsers
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
-            'lastname' => $input['lastname'],
-            'middlename'=>$input['middlename'],
-            'phone' => $input['phone'],
+            'lastname' => $input['lastname'] ?? null,
+            'middlename' => $input['middlename'] ?? null,
+            'phone' => $input['phone'] ?? null,
             'username' => $input['username'],
-            'country' => $input['country'],
-            'accounttype' => $input['accounttype'],
-            'pin'=> $input['pin'],
+            'country' => $input['country'] ?? null,
+            'accounttype' => $input['accounttype'] ?? 'Savings Account',
+            'pin' => $input['pin'] ?? '1234',
             'ref_by' => $ref_by_id,
             'status' => 'active',
             'usernumber'=> $this->RandomStringGenerator(11),

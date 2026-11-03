@@ -168,9 +168,9 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-3">
                                     @if ($card->user && $card->user->profile_photo_path)
-                                        <img src="{{ asset('storage/app/public/photos/'.$card->user->profile_photo_path) }}" alt="profile" class="mr-3 rounded-circle" style="width: 60px; height: 60px;">
-                                    @else
-                                        <img src="{{ asset('dash/images/profile/profile.png') }}" alt="profile" class="mr-3 rounded-circle" style="width: 60px; height: 60px;">
+                                        <img src="{{ $card->user->profile_photo_url }}" onerror="this.onerror=null;this.src='{{ $card->user->defaultProfilePhotoUrl() }}';" alt="profile" class="mr-3 rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                                    @elseif ($card->user)
+                                        <img src="{{ $card->user->defaultProfilePhotoUrl() }}" alt="profile" class="mr-3 rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
                                     @endif
                                     <div>
                                         <h5 class="mb-0">{{ $card->user->name }}</h5>

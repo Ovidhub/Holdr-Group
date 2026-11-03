@@ -94,10 +94,11 @@ class CardController extends Controller
         ]);
 
         $user = Auth::user();
+        $settings = \App\Models\Settings::find(1);
         
         if($user->account_status != 'active'){
             return redirect()->back()
-                ->with("message", "Sorry, your account is dormant. Contact support on $settings->contact_email for more details.");
+                ->with("message", "Sorry, your account is dormant. Contact support on " . optional($settings)->contact_email . " for more details.");
         }
         
         // Get appropriate issuance fee based on card level

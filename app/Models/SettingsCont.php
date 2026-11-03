@@ -9,6 +9,8 @@ class SettingsCont extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $casts = [
         'use_transfer' => 'boolean',
     ];

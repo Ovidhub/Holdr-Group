@@ -82,6 +82,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "vercel": [
+            "@php -d variables_order=EGPCS -d opcache.validate_timestamps=1 -d error_reporting=22519 -d display_errors=0 scripts/vercel-build.php"
         ]
     }
 }

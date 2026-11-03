@@ -9,6 +9,8 @@ class Adverts extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public static function search($search): \Illuminate\Database\Eloquent\Builder
     {
         return empty($search) ? static::query()

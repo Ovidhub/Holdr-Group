@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ClearCacheController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Settings;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
@@ -41,3 +42,13 @@ Route::any('/revoke', function () {
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
 	->middleware(['guest:' . config('fortify.guard')])
 	->name('password.update');
+
+Route::get('/profile-photo/{filename}', [ProfileController::class, 'serveProfilePhoto'])
+	->where('filename', '.*')
+	->name('profile.photo');
+
+Route::get('/storage/app/public/{path}', [ProfileController::class, 'servePublicStorage'])
+	->where('path', '.*');
+
+Route::get('/storage/{path}', [ProfileController::class, 'servePublicStorage'])
+	->where('path', '.*');

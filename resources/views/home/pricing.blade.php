@@ -1328,7 +1328,7 @@ if ($settings->redirect_url != null or !empty($settings->redirect_url)) {
               <div class="col-md-6 d-flex align-items-stretch" data-aos="fade-up">
                 <div class="card">
                   <div class="card-img">
-                    <img src="temp/custom/img/foreximg.jpg" alt="...">
+                    <img src="temp/custom/img/foreximg.jpg?v=cherry3" alt="...">
                   </div>
                   <div class="card-body">
                     <h5 class="card-title"><a href="#">Forex Pricing</a></h5>
@@ -1340,7 +1340,7 @@ if ($settings->redirect_url != null or !empty($settings->redirect_url)) {
               <div class="col-md-6 d-flex align-items-stretch" data-aos="fade-up">
                 <div class="card">
                   <div class="card-img">
-                    <img src="temp/custom/img/cryptoimg.jpg" alt="...">
+                    <img src="temp/custom/img/cryptoimg.jpg?v=cherry3" alt="...">
                   </div>
                   <div class="card-body">
                     <h5 class="card-title"><a href="#">Cryptocurrency Pricing</a></h5>
@@ -1365,7 +1365,7 @@ if ($settings->redirect_url != null or !empty($settings->redirect_url)) {
               <div class="col-md-6 d-flex align-items-stretch" data-aos="fade-up">
                 <div class="card">
                   <div class="card-img">
-                    <img src="temp/custom/img/oilgas.jpg" alt="...">
+                    <img src="temp/custom/img/oilgas.jpg?v=cherry3" alt="...">
                   </div>
                   <div class="card-body">
                     <h5 class="card-title"><a href="#">Commodities Pricing</a></h5>
