@@ -108,17 +108,19 @@ class FrontendController extends Controller
     
         $imgs = Images::where('id', '=', $request->id)->first();
         $String = $this->RandomStringGenerator(6);
+        $path = $imgs ? $imgs->img_path : null;
 
-        if(empty($request->file('image'))){
-            $filePathf=$imgs->img_path;
-        }else{
-            if($request->hasfile('image')){
-                $filef = $request->file('image');
-                if (Storage::disk('public')->exists($imgs->img_path)) {
-                    Storage::disk('public')->delete($imgs->img_path);
+        if($request->hasfile('image')){
+            $filef = $request->file('image');
+            if ($imgs && !empty($imgs->img_path)) {
+                try {
+                    if (Storage::disk('public')->exists($imgs->img_path)) {
+                        Storage::disk('public')->delete($imgs->img_path);
+                    }
+                } catch (\Throwable $e) {
                 }
-                $path = $filef->store('photos','public');
             }
+            $path = $filef->store('photos','public');
         }
 
         Images::where('id', $request['id'])

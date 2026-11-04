@@ -25,9 +25,9 @@ class LoansPageContentRenderTest extends TestCase
     public function test_loans_shows_seeded_content()
     {
         $this->get('/loans')->assertOk()
-            ->assertSee('Flexible Loans for Every Stage of Life')
-            ->assertSee('Apply for a Loan Today')
-            ->assertSee('Fast Financing for Your Next Chapter')
-            ->assertSee('Over 700K+ loans approved');
+            ->assertSee('Bespoke Credit Facilities & Flexible Lending Solutions')
+            ->assertSee('Structured Financing With Rapid Decisions')
+            ->assertSee('Fast, Transparent Capital for Your Next Milestone')
+            ->assertSee('Over 750K+ personal and commercial credit facilities funded');
     }
 }

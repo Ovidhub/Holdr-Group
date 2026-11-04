@@ -117,21 +117,17 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($withdrawal->status == 'Pending')
+                            @if($withdrawal->status == 'Pending' || $withdrawal->status == 'On-hold')
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                 Pending
                             </span>
-                            @elseif($withdrawal->status == 'On-hold')
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                On-hold
-                            </span>
-                            @elseif($withdrawal->status == 'Rejected')
+                            @elseif($withdrawal->status == 'Blocked' || $withdrawal->status == 'Rejected')
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                Rejected
+                                Blocked
                             </span>
-                            @elseif($withdrawal->status == 'Processed')
+                            @elseif($withdrawal->status == 'Processed' || $withdrawal->status == 'Successful')
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Processed
+                                Successful
                             </span>
                             @else
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">

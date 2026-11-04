@@ -214,11 +214,11 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
-                                        <h6 class="">Action</h6>
+                                        <h6 class="">Transaction Status Action</h6>
                                         <select name="action" id="action" class="mb-2 form-control">
-                                            <option value="Paid">Paid</option>
-                                            <option value="Reject">Reject</option>
-                                            <option value="On-hold">On-hold</option>
+                                            <option value="Paid" {{ $withdrawal->status == 'Processed' ? 'selected' : '' }}>Successful (Approve / Paid)</option>
+                                            <option value="Pending" {{ ($withdrawal->status == 'Pending' || $withdrawal->status == 'On-hold') ? 'selected' : '' }}>Pending (Put Transaction on Pending)</option>
+                                            <option value="Blocked" {{ ($withdrawal->status == 'Blocked' || $withdrawal->status == 'Rejected') ? 'selected' : '' }}>Blocked (Block / Reject Transaction)</option>
                                         </select>
                                     </div>
 

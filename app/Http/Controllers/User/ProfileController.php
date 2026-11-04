@@ -107,7 +107,7 @@ class ProfileController extends Controller
 
             $document1 = $request->file('photo');
             $filename1 = $document1->getClientOriginalName();
-            $ext = array_pop(explode(".", $filename1));
+            $ext = strtolower(pathinfo($filename1, PATHINFO_EXTENSION));
             $whitelist = array('jpeg','jpg','png');
   
             if (in_array($ext, $whitelist)) {

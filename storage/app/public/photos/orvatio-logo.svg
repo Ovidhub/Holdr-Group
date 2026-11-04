@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 84" width="380" height="84" fill="none">
+  <defs>
+    <linearGradient id="orvatioEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#065F46"/>
+      <stop offset="50%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#022C22"/>
+    </linearGradient>
+    <linearGradient id="orvatioGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="50%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+  </defs>
+  <!-- Sovereign Octagonal Shield Crest -->
+  <g transform="translate(6, 8)">
+    <rect x="2" y="2" width="64" height="64" rx="16" fill="url(#orvatioEmerald)" stroke="url(#orvatioGold)" stroke-width="2.5"/>
+    <path d="M34 13L50 22.5V45.5L34 55L18 45.5V22.5L34 13Z" stroke="url(#orvatioGold)" stroke-width="2" fill="rgba(251, 191, 36, 0.08)"/>
+    <circle cx="34" cy="34" r="10.5" stroke="#FBBF24" stroke-width="2.5" fill="none"/>
+    <path d="M34 18V23.5M34 44.5V50M18 34H23.5M44.5 34H50" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="34" cy="34" r="3.5" fill="url(#orvatioGold)"/>
+  </g>
+  <!-- Typography -->
+  <text x="86" y="42" font-family="'Georgia', 'Times New Roman', serif" font-size="27" font-weight="700" letter-spacing="1.5" fill="#064E3B">ORVATIO</text>
+  <text x="235" y="42" font-family="'Georgia', 'Times New Roman', serif" font-size="27" font-weight="400" letter-spacing="1.5" fill="#D97706">HOLDERS</text>
+  <line x1="86" y1="51" x2="364" y2="51" stroke="url(#orvatioGold)" stroke-width="1.2" opacity="0.7"/>
+  <text x="87" y="65" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="600" letter-spacing="3.2" fill="#047857">SOVEREIGN PRIVATE &amp; COMMERCIAL BANKING</text>
+</svg>

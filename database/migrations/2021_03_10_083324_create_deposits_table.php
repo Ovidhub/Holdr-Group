@@ -23,6 +23,7 @@ class CreateDepositsTable extends Migration
             $table->integer('plan')->nullable();
             $table->string('status')->nullable();
             $table->string('proof')->nullable();
+            $table->string('to_deduct')->nullable();
             $table->timestamps();
         });
     }

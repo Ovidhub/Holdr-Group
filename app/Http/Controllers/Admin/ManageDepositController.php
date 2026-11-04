@@ -21,9 +21,24 @@ class ManageDepositController extends Controller
     public function deldeposit($id)
     {
         $deposit = Deposit::where('id', $id)->first();
-        Storage::disk('public')->delete($deposit->proof);
+        if ($deposit && !empty($deposit->proof)) {
+            try {
+                @Storage::disk('public')->delete($deposit->proof);
+            } catch (\Throwable $e) {
+            }
+        }
         Deposit::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Deposit history has been deleted!');
+    }
+
+    public function editamount(\Illuminate\Http\Request $request)
+    {
+        if ($request->id && $request->amount !== null) {
+            Deposit::where('id', $request->id)->update([
+                'amount' => $request->amount,
+            ]);
+        }
+        return redirect()->back()->with('success', 'Deposit amount updated successfully!');
     }
 
     //process deposits
@@ -31,16 +46,12 @@ class ManageDepositController extends Controller
     {
         //confirm the users plan
         $deposit = Deposit::where('id', $id)->first();
+        if (!$deposit) {
+            return redirect()->back()->with('message', 'Deposit record not found.');
+        }
         $user = User::where('id', $deposit->user)->first();
         //get settings 
         $settings = Settings::where('id', '=', '1')->first();
-
-        $response = $this->callServer('earnings', '/process-deposit', [
-            'referral_commission' => $settings->referral_commission,
-            'amount' => $deposit->amount,
-            'account_bal' => $user->account_bal,
-            'depositBonus' => $settings->deposit_bonus,
-        ]);
 
     if($deposit->user==$user->id){
             //add funds to user's account

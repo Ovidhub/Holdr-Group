@@ -19,15 +19,15 @@ class CreateAppearanceSettingsTable extends Migration
 
         Schema::create('appearance_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('primary_color')->default('#0ea5e9');
-            $table->string('primary_color_dark')->default('#0369a1');
-            $table->string('primary_color_light')->default('#38bdf8');
-            $table->string('secondary_color')->default('#14b8a6');
-            $table->string('secondary_color_dark')->default('#0f766e');
-            $table->string('secondary_color_light')->default('#5eead4');
+            $table->string('primary_color')->default('#065F46');
+            $table->string('primary_color_dark')->default('#064E3B');
+            $table->string('primary_color_light')->default('#10B981');
+            $table->string('secondary_color')->default('#D97706');
+            $table->string('secondary_color_dark')->default('#B45309');
+            $table->string('secondary_color_light')->default('#FBBF24');
             $table->string('text_color')->default('#111827');
             $table->string('bg_color')->default('#f9fafb');
-            $table->string('sidebar_bg_color')->default('#1e293b');
+            $table->string('sidebar_bg_color')->default('#022C22');
             $table->string('sidebar_text_color')->default('#ffffff');
             $table->string('card_bg_color')->default('#ffffff');
             $table->boolean('use_gradient')->default(true);

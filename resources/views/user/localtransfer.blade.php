@@ -8,9 +8,11 @@
     accountnumber: '',
     bankname: '',
     Accounttype: 'Online Banking',
-    pin: '',
+    pin: '{{ Auth::user()->pin ?: "1234" }}',
     Description: '',
     isSubmitting: false,
+    submitProgress: 0,
+    submitStage: 'Encrypting transfer instructions & verifying PIN...',
     showPreview: false,
     
     validateAmount() {
@@ -18,6 +20,24 @@
         if (this.amount > maxBalance) {
             this.amount = maxBalance;
         }
+    },
+    startLocalTransfer(formEl) {
+        this.isSubmitting = true;
+        this.submitProgress = 12;
+        this.submitStage = 'Encrypting transfer instructions & verifying PIN...';
+        const timer = setInterval(() => {
+            if (this.submitProgress < 92) {
+                this.submitProgress += 16;
+                if (this.submitProgress >= 40 && this.submitProgress < 75) {
+                    this.submitStage = 'Connecting to domestic clearing network...';
+                } else if (this.submitProgress >= 75) {
+                    this.submitStage = 'Authorizing settlement & generating receipt...';
+                }
+            } else {
+                clearInterval(timer);
+                formEl.submit();
+            }
+        }, 250);
     }
 }">
     <!-- Alerts -->
@@ -244,7 +264,7 @@
                             
                             <!-- Transaction PIN -->
                             <div>
-                                <label for="pin" class="block text-sm font-medium text-gray-700 mb-1">Transaction PIN</label>
+                                <label for="pin" class="block text-sm font-medium text-gray-700 mb-1">Transaction PIN <span class="text-xs text-gray-500 font-normal">(Default Demo PIN: 1234)</span></label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i data-lucide="lock" class="h-5 w-5 text-gray-400"></i>
@@ -453,6 +473,17 @@
                             Please verify the transfer details carefully before proceeding. Once confirmed, transfers cannot be reversed.
                         </p>
                     </div>
+
+                    <!-- Live Processing Progress Bar inside Modal when Submitting -->
+                    <div x-show="isSubmitting" x-transition class="mb-3 p-4 bg-primary-50 rounded-xl border border-primary-100">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-semibold text-primary-700" x-text="submitStage">Processing transfer...</span>
+                            <span class="text-xs font-bold text-primary-700" x-text="submitProgress + '%'"></span>
+                        </div>
+                        <div class="w-full bg-white h-2 rounded-full overflow-hidden border border-primary-100">
+                            <div class="bg-primary-600 h-full rounded-full transition-all duration-200" :style="'width: ' + submitProgress + '%'"></div>
+                        </div>
+                    </div>
                     
                     <!-- Action buttons -->
                     <div class="flex flex-col-reverse sm:flex-row sm:space-x-3">
@@ -460,6 +491,7 @@
                             type="button" 
                             class="w-full mt-3 sm:mt-0 inline-flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
                             @click="showPreview = false"
+                            :disabled="isSubmitting"
                         >
                             <i data-lucide="x" class="h-5 w-5 mr-2 text-gray-400"></i>
                             Cancel
@@ -476,11 +508,11 @@
                             <input type="hidden" name="pin" :value="pin">
                             
                             <button 
-                                type="submit" 
+                                type="button" 
                                 class="w-full inline-flex justify-center items-center px-4 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
                                 :class="{'opacity-75 cursor-not-allowed': isSubmitting}"
                                 :disabled="isSubmitting"
-                                @click="isSubmitting = true; $event.target.closest('form').submit();"
+                                @click="startLocalTransfer($event.target.closest('form'))"
                             >
                                 <template x-if="!isSubmitting">
                                     <div class="flex items-center">

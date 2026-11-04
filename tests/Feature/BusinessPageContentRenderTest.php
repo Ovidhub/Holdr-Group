@@ -25,9 +25,9 @@ class BusinessPageContentRenderTest extends TestCase
     public function test_business_shows_seeded_content()
     {
         $this->get('/business')->assertOk()
-            ->assertSee('Smarter Banking for Every Business')
-            ->assertSee('Built for the Way Businesses Actually Work')
-            ->assertSee('Manage Your Business Finances on the Move')
-            ->assertSee('Trusted by 500K+ businesses worldwide');
+            ->assertSee('Enterprise Treasury & Commercial Banking Built for Scale')
+            ->assertSee('Institutional Financial Infrastructure for Modern Enterprises')
+            ->assertSee('Command Your Corporate Treasury From Anywhere')
+            ->assertSee('Trusted by 550K+ corporate and commercial entities worldwide');
     }
 }

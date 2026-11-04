@@ -26,8 +26,14 @@ class PaystackController extends Controller
 
     public function handleGatewayCallback()
     {
-        $paymentDetails = Paystack::getPaymentData();
-        //dd($paymentDetails);
+        try {
+            $paymentDetails = Paystack::getPaymentData();
+        } catch (\Throwable $e) {
+            return redirect()->route('deposits')->with('message', 'Unable to verify Paystack payment. Please try again.');
+        }
+        if (empty($paymentDetails['data'])) {
+            return redirect()->route('deposits')->with('message', 'Invalid payment response.');
+        }
         $payamount = $paymentDetails['data']['amount'];
         $txn_ref = $paymentDetails['data']['reference'];
         $amount = $payamount / 100;

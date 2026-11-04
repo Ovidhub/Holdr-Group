@@ -1,7 +1,9 @@
 /node_modules
+/public
 /public/hot
 /public/storage
 /storage/*.key
+/storage/logs/*.log
 /vendor
 
 # Environment & secrets — never commit
@@ -14,8 +16,12 @@
 db.sql
 *.sql
 *.sqlite
-# ...but keep the safe branding script (no user data)
+# ...but keep the safe branding script and ready-to-import MySQL seed dump
 !database/branding-mortil-holders.sql
+!database/mortil_holders_mysql.sql
+!database/orvatio_holders_mysql.sql
+!storage/vercel-seed.sqlite
+!docs/orvatio-holders-cpanel-mysql-ready.zip
 
 .phpunit.result.cache
 docker-compose.override.yml

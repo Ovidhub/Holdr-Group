@@ -471,21 +471,17 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            @if($transaction->status == 'Pending')
+                                            @if($transaction->status == 'Pending' || $transaction->status == 'On-hold')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                                 Pending
                                             </span>
-                                            @elseif($transaction->status == 'On-hold')
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                On-hold
-                                            </span>
-                                            @elseif($transaction->status == 'Rejected')
+                                            @elseif($transaction->status == 'Blocked' || $transaction->status == 'Rejected')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                Rejected
+                                                Blocked
                                             </span>
-                                            @elseif($transaction->status == 'Processed' || $transaction->status == 'Completed')
+                                            @elseif($transaction->status == 'Processed' || $transaction->status == 'Completed' || $transaction->status == 'Successful')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                {{ $transaction->status }}
+                                                Successful
                                             </span>
                                             @else
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">

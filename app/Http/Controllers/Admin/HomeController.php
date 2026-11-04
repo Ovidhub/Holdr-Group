@@ -95,12 +95,22 @@ class HomeController extends Controller
 
     public function editplan($id)
     {
+        $plan = Plans::where('id', $id)->first();
+        if (!$plan) {
+            return redirect()->route('plans')->with('message', 'Plan not found.');
+        }
         return view('admin.Plans.editplan')
             ->with(array(
                 'title' => 'Edit Investment Plan',
-                'plan' => Plans::where('id', $id)->first(),
-
+                'plan' => $plan,
             ));
+    }
+
+    public function calendar()
+    {
+        return view('admin.calender', [
+            'title' => 'Create To do List',
+        ]);
     }
 
     //Return manage users route
@@ -240,29 +250,22 @@ class HomeController extends Controller
     //Return view agent route
     public function viewagent($agent)
     {
+        $agentUser = User::where('id', $agent)->first();
+        if (!$agentUser) {
+            return redirect()->route('agents')->with('message', 'Agent not found.');
+        }
         return view('admin.viewagent')
             ->with(array(
                 'title' => 'Agent record',
-                'agent' => User::where('id', $agent)->first(),
+                'agent' => $agentUser,
                 'ag_r' => User::where('ref_by', $agent)->get(),
-
             ));
     }
 
     //return settings form
     public function settings(Request $request)
     {
-        include 'currencies.php';
-        return view('admin.settings')->with(array(
-
-            'wmethods' => Wdmethod::where('type', 'withdrawal')->get(),
-            'assets' => Asset::all(),
-            //'markets' => markets::all(),
-            'cpd' => Cp_transaction::where('id', '=', '1')->first(),
-            'currencies' => $currencies,
-            'title' => 'System Settings'
-        ));
-        //return view('settings')->with(array('title' =>'System Settings'));
+        return redirect()->route('appsettingshow');
     }
 
     public function msubtrade()
@@ -277,12 +280,15 @@ class HomeController extends Controller
 
     public function userplans($id)
     {
+        $user = User::where('id', $id)->first();
+        if (!$user) {
+            return redirect()->route('manageusers')->with('message', 'User not found.');
+        }
         return view('admin.Users.user_plans')
             ->with(array(
                 'plans' => User_plans::where('user', $id)->orderBy('id', 'desc')->get(),
-                'user' => User::where('id', $id)->first(),
+                'user' => $user,
                 'title' => 'User Loans',
-
             ));
     }
 
@@ -337,10 +343,14 @@ class HomeController extends Controller
 
     public function viewKycApplication($id)
     {
+        $kyc = Kyc::where('id', $id)->with(['user'])->first();
+        if (!$kyc) {
+            return redirect()->route('kyc')->with('message', 'KYC Application not found.');
+        }
 
         return view('admin.kyc-applications', [
             'title' => 'View KYC Application',
-            'kyc' => Kyc::where('id', $id)->with(['user'])->first(),
+            'kyc' => $kyc,
         ]);
     }
 

@@ -4,6 +4,8 @@
     <title>@yield('title') - {{$settings->site_name}}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="index, follow">
     <meta name="apple-mobile-web-app-title" content="{{$settings->site_name}}">
@@ -20,28 +22,28 @@
                 extend: {
                     colors: {
                         primary: {
-                            50: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#f0f9ff" }}',
-                            100: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#e0f2fe" }}',
-                            200: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#bae6fd" }}',
-                            300: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#7dd3fc" }}',
-                            400: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#38bdf8" }}',
-                            500: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#0ea5e9" }}',
-                            600: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#0284c7" }}',
-                            700: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#0369a1" }}',
-                            800: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#075985" }}',
-                            900: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#0c4a6e" }}',
+                            50: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#fff1f2" }}',
+                            100: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#ffe4e6" }}',
+                            200: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#fecdd3" }}',
+                            300: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#fda4af" }}',
+                            400: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#fb7185" }}',
+                            500: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#065F46" }}',
+                            600: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#065F46" }}',
+                            700: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#9f1239" }}',
+                            800: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#064E3B" }}',
+                            900: '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#4c0519" }}',
                         },
                         secondary: {
-                            50: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#f0fdfa" }}',
-                            100: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#ccfbf1" }}',
-                            200: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#99f6e4" }}',
-                            300: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#5eead4" }}',
-                            400: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#2dd4bf" }}',
-                            500: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#14b8a6" }}',
-                            600: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#0d9488" }}',
-                            700: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#0f766e" }}',
-                            800: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#115e59" }}',
-                            900: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#134e4a" }}',
+                            50: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#fff1f2" }}',
+                            100: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#ffe4e6" }}',
+                            200: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#fecdd3" }}',
+                            300: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#fda4af" }}',
+                            400: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#fb7185" }}',
+                            500: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#9f1239" }}',
+                            600: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#064E3B" }}',
+                            700: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#7f0d22" }}',
+                            800: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#4c0519" }}',
+                            900: '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#2a0812" }}',
                         }
                     },
                     fontFamily: {
@@ -69,12 +71,12 @@
     <!-- CSS Variables -->
     <script>
         // Set CSS theme variables
-        document.documentElement.style.setProperty('--primary-color', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#0ea5e9" }}');
-        document.documentElement.style.setProperty('--primary-color-dark', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#0369a1" }}');
-        document.documentElement.style.setProperty('--primary-color-light', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#38bdf8" }}');
-        document.documentElement.style.setProperty('--secondary-color', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#14b8a6" }}');
-        document.documentElement.style.setProperty('--secondary-color-dark', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#0f766e" }}');
-        document.documentElement.style.setProperty('--secondary-color-light', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#5eead4" }}');
+        document.documentElement.style.setProperty('--primary-color', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color : "#065F46" }}');
+        document.documentElement.style.setProperty('--primary-color-dark', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_dark : "#064E3B" }}');
+        document.documentElement.style.setProperty('--primary-color-light', '{{ isset($appearanceSettings) ? $appearanceSettings->primary_color_light : "#10B981" }}');
+        document.documentElement.style.setProperty('--secondary-color', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color : "#D97706" }}');
+        document.documentElement.style.setProperty('--secondary-color-dark', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_dark : "#022C22" }}');
+        document.documentElement.style.setProperty('--secondary-color-light', '{{ isset($appearanceSettings) ? $appearanceSettings->secondary_color_light : "#FBBF24" }}');
         document.documentElement.style.setProperty('--text-color', '{{ isset($appearanceSettings) ? $appearanceSettings->text_color : "#111827" }}');
         document.documentElement.style.setProperty('--bg-color', '{{ isset($appearanceSettings) ? $appearanceSettings->bg_color : "#f9fafb" }}');
         document.documentElement.style.setProperty('--card-bg-color', '{{ isset($appearanceSettings) ? $appearanceSettings->card_bg_color : "#ffffff" }}');
@@ -268,6 +270,12 @@
         </div>
     </div>
     
+    <!-- Floating Language Selector -->
+    <div class="fixed top-4 right-4 z-50 flex items-center px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-lg shadow-md border border-gray-200" title="Select Language">
+        <i data-lucide="globe" class="h-4 w-4 text-primary-600 mr-1.5"></i>
+        <div id="google_translate_element"></div>
+    </div>
+
     <!-- Main Content -->
     <div class="w-full">
         @yield('content')
@@ -292,9 +300,40 @@
             }, 800);
         };
     </script>
-    <script>
-        
+    <style>
+        #google_translate_element .goog-te-gadget {
+            font-family: inherit !important;
+            font-size: 0 !important;
+            color: transparent !important;
+            line-height: 1 !important;
+        }
+        #google_translate_element .goog-te-gadget span {
+            display: none !important;
+        }
+        #google_translate_element .goog-te-gadget .goog-te-combo {
+            background: transparent !important;
+            color: #1f2937 !important;
+            border: none !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            padding: 2px 4px !important;
+            margin: 0 !important;
+            outline: none !important;
+            cursor: pointer;
+        }
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+        body {
+            top: 0px !important;
+        }
+    </style>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
     </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
     <!-- Tidio Chat -->
     @if($settings->tido)

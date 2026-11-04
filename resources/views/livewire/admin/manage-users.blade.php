@@ -1,5 +1,5 @@
 @php
-    if (Auth('admin')->User()->dashboard_style == 'light') {
+    if (optional(Auth('admin')->User())->dashboard_style == 'light') {
         $text = 'dark';
         $bg = 'light';
     } else {
@@ -95,6 +95,8 @@
                                                 <th>Email</th>
                                                 <th>Phone</th>
                                                 <th>Status</th>
+                                                <th>Currency</th>
+                                                <th>Transfer Mode</th>
                                                 <th>Date registered</th>
                                                 <th>Action</th>
                                             </tr>
@@ -107,7 +109,12 @@
                                                         <input type="checkbox" wire:model='checkrecord'
                                                             value="{{ $user->id }}" />
                                                     </td>
-                                                    <td><img alt="" src="{{$settings->site_address}}/storage/app/public/photos/{{$user->profile_photo_path}}" width="35" height="35" style='border-radius: 50%;'>{{ $user->name }}</td>
+                                                    <td>
+                                                        @if(!empty($user->profile_photo_path))
+                                                            <img alt="" src="{{ asset('storage/app/public/photos/' . $user->profile_photo_path) }}" width="35" height="35" style="border-radius: 50%; margin-right: 8px;">
+                                                        @endif
+                                                        {{ $user->name }}
+                                                    </td>
                                                     <td>{{ $user->username }}</td>
                                                     <td>{{ $user->email }}</td>
                                                     <td>{{ $user->phone }}</td>
@@ -118,6 +125,35 @@
                                                         @else
                                                             <span class='badge badge-danger'>{{ $user->status }}</span>
                                                         @endif
+                                                    </td>
+                                                    <td>
+                                                        <div class="mb-1">
+                                                            <span class="badge badge-info">{{ $user->currency_symbol }} ({{ $user->currency_code }})</span>
+                                                        </div>
+                                                        <div class="btn-group btn-group-sm" role="group">
+                                                            <a href="{{ route('admin.user.currency', [$user->id, 'USD']) }}" class="btn btn-outline-primary btn-xs px-2 py-1" title="Set Currency to US Dollar">$ USD</a>
+                                                            <a href="{{ route('admin.user.currency', [$user->id, 'EUR']) }}" class="btn btn-outline-primary btn-xs px-2 py-1" title="Set Currency to Euro">&euro; EUR</a>
+                                                            <a href="{{ route('admin.user.currency', [$user->id, 'GBP']) }}" class="btn btn-outline-primary btn-xs px-2 py-1" title="Set Currency to British Pound">&pound; GBP</a>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @php
+                                                            $uTxMode = strtolower(trim($user->account_status ?? 'active'));
+                                                        @endphp
+                                                        <div class="mb-1">
+                                                            @if(in_array($uTxMode, ['blocked', 'inactive']))
+                                                                <span class="badge badge-danger">Blocked</span>
+                                                            @elseif($uTxMode === 'pending')
+                                                                <span class="badge badge-warning">Pending</span>
+                                                            @else
+                                                                <span class="badge badge-success">Successful</span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="btn-group btn-group-sm" role="group">
+                                                            <a href="{{ route('admin.user.transferstatus', [$user->id, 'successful']) }}" class="btn btn-success btn-xs px-2 py-1" title="Set User Transfers to Successful">Successful</a>
+                                                            <a href="{{ route('admin.user.transferstatus', [$user->id, 'pending']) }}" class="btn btn-warning btn-xs px-2 py-1" title="Set User Transfers to Pending">Pending</a>
+                                                            <a href="{{ route('admin.user.transferstatus', [$user->id, 'blocked']) }}" class="btn btn-danger btn-xs px-2 py-1" title="Set User Transfers to Blocked">Blocked</a>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         {{ $user->created_at->diffForHumans() }}
@@ -232,8 +268,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header ">
-                    <h4 class="modal-title text-{{ $text }}">Add ROI to selected users{{ $user->l_name }}
-                    </h4>
+                    <h4 class="modal-title text-{{ $text }}">Add ROI to selected users</h4>
                     <button type="button" class="close text-{{ $text }}"
                         data-dismiss="modal">&times;</button>
                 </div>

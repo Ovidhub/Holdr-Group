@@ -16,7 +16,13 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->nullable();
+            $table->string('title')->nullable();
             $table->text('message')->nullable();
+            $table->string('type')->default('info')->nullable();
+            $table->string('icon')->nullable();
+            $table->string('link')->nullable();
+            $table->boolean('is_read')->default(false)->nullable();
+            $table->text('data')->nullable();
             $table->timestamps();
         });
     }

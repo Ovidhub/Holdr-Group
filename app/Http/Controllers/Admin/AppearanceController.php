@@ -88,22 +88,22 @@ class AppearanceController extends Controller
         
         // Reset to default values
         $appearanceSettings->update([
-            'primary_color' => '#0ea5e9',
-            'primary_color_dark' => '#0369a1',
-            'primary_color_light' => '#38bdf8',
-            'secondary_color' => '#14b8a6',
-            'secondary_color_dark' => '#0f766e',
-            'secondary_color_light' => '#5eead4',
+            'primary_color' => '#065F46',
+            'primary_color_dark' => '#064E3B',
+            'primary_color_light' => '#10B981',
+            'secondary_color' => '#D97706',
+            'secondary_color_dark' => '#B45309',
+            'secondary_color_light' => '#FBBF24',
             'text_color' => '#111827',
             'bg_color' => '#f9fafb',
-            'sidebar_bg_color' => '#1e293b',
+            'sidebar_bg_color' => '#022C22',
             'sidebar_text_color' => '#ffffff',
             'card_bg_color' => '#ffffff',
             'use_gradient' => true,
             'gradient_direction' => 'to right',
             'custom_css' => null,
             'disable_animations' => false,
-            'notes' => 'Default appearance settings',
+            'notes' => 'Default cherry appearance settings',
         ]);
 
         return redirect()->route('admin.appearance')->with([

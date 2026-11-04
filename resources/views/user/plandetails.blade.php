@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-md-3">
                                 <p>Start Date: <br>
-                                    <strong>{{ $plan->created_at->addHour()->toDayDateTimeString() }}</strong>
+                                    <strong>{{ \Carbon\Carbon::parse($plan->created_at)->addHour()->toDayDateTimeString() }}</strong>
                                 </p>
                             </div>
                             <div class="col-md-3">
