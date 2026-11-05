@@ -57,7 +57,7 @@ $setEnvVar = static function (string $key, string $val): void {
     $_SERVER[$key] = $val;
 };
 
-// Auto-detect current URL scheme and host so APP_URL always matches the live domain (e.g. auth.orynvest.online)
+// Auto-detect current URL scheme and host so APP_URL always matches the live domain (e.g. orvatioholders.com)
 $proto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http');
 if ($proto === 'https') {
     $_SERVER['HTTPS'] = 'on';
@@ -89,10 +89,12 @@ if ($dbConn === 'mysql') {
                 $workingHost = $tryHost;
                 $mysqlConnected = true;
 
-                // Check if `settings` table exists; if not, auto-import database/mortil_holders_mysql.sql
+                // Check if `settings` table exists; if not, auto-import database/orvatio_holders_mysql.sql
                 $check = $pdo->query("SHOW TABLES LIKE 'settings'");
                 if ($check && $check->rowCount() === 0) {
-                    $sqlDumpPath = $basePath . '/database/mortil_holders_mysql.sql';
+                    $sqlDumpPath = file_exists($basePath . '/database/orvatio_holders_mysql.sql')
+                        ? $basePath . '/database/orvatio_holders_mysql.sql'
+                        : $basePath . '/database/mortil_holders_mysql.sql';
                     if (file_exists($sqlDumpPath)) {
                         $sqlContent = file_get_contents($sqlDumpPath);
                         $pdo->exec($sqlContent);
@@ -114,7 +116,7 @@ if ($dbConn === 'mysql') {
         $seedSqlite = $basePath . '/storage/vercel-seed.sqlite';
         $runtimeSqlite = $basePath . '/storage/database.sqlite';
         if (!is_writable($basePath . '/storage')) {
-            $runtimeSqlite = rtrim(sys_get_temp_dir(), '/\\') . '/mortil-database.sqlite';
+            $runtimeSqlite = rtrim(sys_get_temp_dir(), '/\\') . '/orvatio-database.sqlite';
         }
         if ((!file_exists($runtimeSqlite) || filesize($runtimeSqlite) === 0) && file_exists($seedSqlite)) {
             @copy($seedSqlite, $runtimeSqlite);
@@ -136,7 +138,7 @@ $app = require_once $basePath . '/bootstrap/app.php';
 
 // If storage/framework/views is not writable on shared hosting, use system temp directory
 if (!is_writable($basePath . '/storage/framework/views')) {
-    $tmpStorage = rtrim(sys_get_temp_dir(), '/\\') . '/mortil_storage';
+    $tmpStorage = rtrim(sys_get_temp_dir(), '/\\') . '/orvatio_storage';
     foreach (['/app/public', '/framework/views', '/framework/cache/data', '/framework/sessions', '/logs'] as $sub) {
         if (!is_dir($tmpStorage . $sub)) {
             @mkdir($tmpStorage . $sub, 0775, true);
