@@ -89,15 +89,48 @@ if ($dbConn === 'mysql') {
                 $workingHost = $tryHost;
                 $mysqlConnected = true;
 
-                // Check if `settings` table exists; if not, auto-import database/orvatio_holders_mysql.sql
-                $check = $pdo->query("SHOW TABLES LIKE 'settings'");
-                if ($check && $check->rowCount() === 0) {
+                // Auto-import or auto-upgrade database/orvatio_holders_mysql.sql if needed
+                $needsImport = !empty($_GET['import_sql']);
+                if (!$needsImport) {
+                    $check = $pdo->query("SHOW TABLES LIKE 'settings'");
+                    if (!$check || $check->rowCount() === 0) {
+                        $needsImport = true;
+                    } else {
+                        try {
+                            $siteCheck = $pdo->query("SELECT site_name FROM settings WHERE id = 1 LIMIT 1");
+                            $row = $siteCheck ? $siteCheck->fetch(PDO::FETCH_ASSOC) : false;
+                            if (!$row || stripos((string) ($row['site_name'] ?? ''), 'Orvatio') === false) {
+                                $needsImport = true;
+                            }
+                        } catch (\Throwable $e) {
+                            $needsImport = true;
+                        }
+                    }
+                }
+
+                if ($needsImport) {
                     $sqlDumpPath = file_exists($basePath . '/database/orvatio_holders_mysql.sql')
                         ? $basePath . '/database/orvatio_holders_mysql.sql'
                         : $basePath . '/database/mortil_holders_mysql.sql';
                     if (file_exists($sqlDumpPath)) {
-                        $sqlContent = file_get_contents($sqlDumpPath);
-                        $pdo->exec($sqlContent);
+                        $sqlContent = str_replace("\r\n", "\n", (string) file_get_contents($sqlDumpPath));
+                        $chunks = explode(";\n", $sqlContent);
+                        foreach ($chunks as $chunk) {
+                            $cleanLines = [];
+                            foreach (explode("\n", $chunk) as $ln) {
+                                if (strpos(ltrim($ln), '--') !== 0) {
+                                    $cleanLines[] = $ln;
+                                }
+                            }
+                            $stmt = trim(implode("\n", $cleanLines));
+                            if ($stmt !== '') {
+                                try {
+                                    $pdo->exec($stmt);
+                                } catch (\Throwable $stmtErr) {
+                                    // Continue past non-fatal statement warnings
+                                }
+                            }
+                        }
                     }
                 }
                 break;

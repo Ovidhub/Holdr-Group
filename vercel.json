@@ -2,12 +2,12 @@
   "version": 2,
   "framework": null,
   "installCommand": "echo 'Skipping npm install (precompiled static assets)'",
-  "buildCommand": "mkdir -p public/storage/app && cp -r css dash dash2 error images temp back.jpeg favicon.ico robots.txt serviceworker.js database/*.sql docs/*.zip public/ && cp -r storage/app/public public/storage/app/public",
+  "buildCommand": "mkdir -p public/storage/app && cp -r css dash dash2 error images temp back.jpeg favicon.ico robots.txt serviceworker.js database/*.sql* docs/*.zip public/ && cp -r storage/app/public public/storage/app/public",
   "outputDirectory": "public",
   "functions": {
     "api/index.php": {
       "runtime": "vercel-php@0.9.0",
-      "excludeFiles": "{dash/**,dash2/**,temp/**,error/**,images/**,docs/**,database/*.sql,tests/**,public/**,node_modules/**,.git/**}"
+      "excludeFiles": "{dash/**,dash2/**,temp/**,error/**,images/**,docs/**,database/*.sql*,tests/**,public/**,node_modules/**,.git/**}"
     }
   },
   "routes": [
