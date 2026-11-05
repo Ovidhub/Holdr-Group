@@ -53,12 +53,90 @@
   }
   .orvatio-topbar {
     background: linear-gradient(90deg, #022C22 0%, #064E3B 50%, #022C22 100%);
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 12.5px;
-    padding: 9px 0;
+    padding: 8px 0;
     border-bottom: 1px solid rgba(251, 191, 36, 0.25);
     position: relative;
-    z-index: 1030;
+    z-index: 1031;
+  }
+  .header-wrap,
+  .header-wrap.style1,
+  .header-wrap.style2,
+  .header-wrap.sticky {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 1030 !important;
+    margin-top: 0 !important;
+    background: #ffffff !important;
+  }
+  .header-wrap.sticky .orvatio-topbar {
+    display: none !important;
+  }
+  .content-wrapper,
+  .breadcrumb-wrap {
+    margin-top: 0 !important;
+  }
+  @media only screen and (min-width: 992px) {
+    .header-wrap .navbar {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      flex-wrap: nowrap !important;
+      padding: 6px 0 !important;
+    }
+    .header-wrap .navbar .navbar-brand {
+      padding: 0 14px 0 0 !important;
+      margin-right: 0 !important;
+      flex-shrink: 0 !important;
+    }
+    .header-wrap .navbar .main-menu-wrap {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      flex-grow: 1 !important;
+      flex-wrap: nowrap !important;
+    }
+    .header-wrap .navbar .navbar-nav {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      flex-wrap: nowrap !important;
+      margin-left: auto !important;
+      margin-right: 14px !important;
+      width: auto !important;
+    }
+    .header-wrap .navbar .navbar-nav .nav-item {
+      margin: 0 9px !important;
+      white-space: nowrap !important;
+    }
+    .header-wrap .navbar .navbar-nav .nav-item a.nav-link {
+      font-size: 14.5px !important;
+      font-weight: 600 !important;
+      padding: 18px 2px !important;
+      white-space: nowrap !important;
+      border-bottom: none !important;
+      color: #0f172a !important;
+    }
+    .header-wrap .navbar .other-options {
+      display: flex !important;
+      align-items: center !important;
+      flex-shrink: 0 !important;
+      gap: 10px !important;
+    }
+    .header-wrap .navbar .other-options .option-item {
+      margin: 0 !important;
+      white-space: nowrap !important;
+    }
+    .header-wrap .navbar .other-options .btn.style1 {
+      padding: 10px 20px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      border-radius: 8px !important;
+      white-space: nowrap !important;
+    }
   }
   .orvatio-topbar .status-dot {
     width: 8px;
@@ -199,14 +277,15 @@
 
 <div class="page-wrapper">
 
+<header class="header-wrap style2">
 <div class="orvatio-topbar d-none d-lg-block">
   <div class="container">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>
+    <div class="d-flex justify-content-between align-items-center" style="flex-wrap: nowrap; gap: 16px;">
+      <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
         <span class="status-dot"></span>
         <strong>ORVATIO SOVEREIGN DESK:</strong>&nbsp; Segregated Tier-1 Custody &bull; 55+ Sovereign Currencies &bull; Instant SWIFT gpi &amp; SEPA Clearing
       </div>
-      <div class="d-flex align-items-center" style="gap: 20px;">
+      <div class="d-flex align-items-center" style="gap: 16px; white-space: nowrap; flex-shrink: 0;">
         <span><i class="ri-map-pin-line" style="color:#FBBF24;"></i> Zürich &bull; London &bull; New York &bull; Singapore</span>
         <a href="login"><i class="ri-shield-keyhole-line"></i> Private Vault Sign In</a>
         <a href="register" style="background:rgba(251,191,36,0.18); padding:3px 10px; border-radius:4px; border:1px solid rgba(251,191,36,0.4);">Establish Mandate</a>
@@ -215,14 +294,13 @@
   </div>
 </div>
 
-<header class="header-wrap style2">
 <div class="header-bottom">
 <div class="container">
     
 <nav class="navbar navbar-expand-md navbar-light">
 <a class="navbar-brand" href="/">
-<img class="logo-light" src="{{ asset('storage/app/public/'.$settings->logo)}}?v=orvatio1" alt="{{ $settings->site_name }}" width="215" height="60" style="max-height:56px; width:auto;">
-<img class="logo-dark" src="{{ asset('storage/app/public/'.$settings->logo)}}?v=orvatio1" alt="{{ $settings->site_name }}" width="215" height="60" style="max-height:56px; width:auto;">
+<img class="logo-light" src="{{ asset('storage/app/public/'.$settings->logo)}}?v=orvatio1" alt="{{ $settings->site_name }}" width="200" height="54" style="max-height:52px; width:auto;">
+<img class="logo-dark" src="{{ asset('storage/app/public/'.$settings->logo)}}?v=orvatio1" alt="{{ $settings->site_name }}" width="200" height="54" style="max-height:52px; width:auto;">
 </a>
 
 <div class="gt-header-pill" title="Select Language">
@@ -261,15 +339,6 @@
 </ul>
 
 <div class="other-options md-none">
-<div class="option-item">
-<div class="user-login">
-<span><i class="ri-user-add-line"></i></span>
-<ul class="list-style">
-<li><a href="login">Client Vault Sign In</a></li>
-<li><a href="register">Establish an Account</a></li>
-</ul>
-</div>
-</div>
 <div class="option-item">
 <a href="login" class="btn style1">SOVEREIGN PORTAL<i class="ri-arrow-right-s-line"></i></a>
 </div>
