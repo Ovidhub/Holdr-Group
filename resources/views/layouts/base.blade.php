@@ -260,13 +260,20 @@
   .goog-te-banner-frame.skiptranslate {
     display: none !important;
   }
+  @keyframes orvatioHidePreloader {
+    0%, 70% { opacity: 1; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+  }
+  .preloader.js-preloader {
+    animation: orvatioHidePreloader 0.7s ease forwards !important;
+  }
 </style>
 <title>{{$settings->site_name}} — Sovereign Private &amp; Commercial Banking</title>
-<link rel="icon" type="image/svg+xml" href="{{ asset('storage/app/public/'.$settings->favicon)}}?v=orvatio1">
+<link rel="icon" type="image/svg+xml" href="storage/app/public/{{$settings->favicon}}?v=orvatio1">
 </head>
 <body>
 
-<div class="preloader js-preloader">
+<div class="preloader js-preloader" id="orvatio-preloader">
 <div class="loader loader-inner-1">
 <div class="loader loader-inner-2">
 <div class="loader loader-inner-3">
@@ -274,6 +281,17 @@
 </div>
 </div>
 </div>
+<script>
+  (function(){
+    var hide = function(){
+      var el = document.getElementById('orvatio-preloader');
+      if (el) { el.style.opacity = '0'; el.style.visibility = 'hidden'; el.style.pointerEvents = 'none'; setTimeout(function(){ el.style.display = 'none'; }, 250); }
+    };
+    if (document.readyState === 'interactive' || document.readyState === 'complete') { setTimeout(hide, 300); }
+    else { document.addEventListener('DOMContentLoaded', function(){ setTimeout(hide, 300); }); }
+    setTimeout(hide, 800);
+  })();
+</script>
 
 <div class="page-wrapper">
 
@@ -299,8 +317,8 @@
     
 <nav class="navbar navbar-expand-md navbar-light">
 <a class="navbar-brand" href="/">
-<img class="logo-light" src="{{ asset('storage/app/public/'.$settings->logo)}}?v=orvatio1" alt="{{ $settings->site_name }}" width="200" height="54" style="max-height:52px; width:auto;">
-<img class="logo-dark" src="{{ asset('storage/app/public/'.$settings->logo)}}?v=orvatio1" alt="{{ $settings->site_name }}" width="200" height="54" style="max-height:52px; width:auto;">
+<img class="logo-light" src="storage/app/public/{{$settings->logo}}?v=orvatio1" alt="{{ $settings->site_name }}" width="200" height="54" style="max-height:52px; width:auto;">
+<img class="logo-dark" src="storage/app/public/{{$settings->logo}}?v=orvatio1" alt="{{ $settings->site_name }}" width="200" height="54" style="max-height:52px; width:auto;">
 </a>
 
 <div class="gt-header-pill" title="Select Language">
@@ -370,7 +388,7 @@
   <div class="col-xl-3 col-lg-5 col-md-5 col-sm-6">
   <div class="footer-widget">
   <a href="/" class="footer-logo">
-  <img src="{{ asset('storage/app/public/'.$settings->logo)}}?v=orvatio1" alt="{{ $settings->site_name }}" style="filter: brightness(1.35); max-height: 56px;">
+  <img src="storage/app/public/{{$settings->logo}}?v=orvatio1" alt="{{ $settings->site_name }}" style="filter: brightness(1.35); max-height: 56px;">
   </a>
   <p class="comp-desc">
   {{ $settings->site_name }} is a sovereign-grade private and commercial banking institution delivering segregated multi-currency custody, instant cross-border clearing, and Lombard credit across 108 jurisdictions.
